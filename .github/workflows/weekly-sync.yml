@@ -1,64 +1,61 @@
-# Weekly Upstream Sync & Database Upload
-# 
-# Syncs latest n8n nodes/templates from upstream czlonkowski/n8n-mcp,
-# rebuilds the SQLite database, uploads to Tech Factory Supabase Storage,
-# and triggers a Render redeploy to pick up the fresh database.
-#
-# Schedule: Every Sunday 6am UTC
-# Manual trigger: workflow_dispatch
-
-name: Weekly Upstream Sync
+name: Weekly Upstream Sync & Database Upload
 
 on:
   schedule:
-    - cron: '0 6 * * 0'  # Every Sunday 6am UTC
-  workflow_dispatch:  # Manual trigger for testing
+    # Every Sunday at 6am UTC
+    - cron: '0 6 * * 0'
+  workflow_dispatch:
+    # Manual trigger for testing
+    inputs:
+      skip_render_deploy:
+        description: 'Skip Render redeploy (for testing)'
+        required: false
+        default: 'false'
+        type: boolean
 
 jobs:
   sync-build-upload:
     runs-on: ubuntu-latest
     
     steps:
-      # =========================================================================
-      # Step 1: Checkout fork with full history (needed for merge)
-      # =========================================================================
+      # ============================================
+      # STEP 1: Sync upstream → fork
+      # ============================================
       - name: Checkout fork
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      # =========================================================================
-      # Step 2: Sync upstream (czlonkowski/n8n-mcp) → fork (baxterlabsai/n8n-mcp)
-      # =========================================================================
-      - name: Sync upstream changes
+      - name: Configure git
         run: |
-          echo "📥 Syncing upstream czlonkowski/n8n-mcp → baxterlabsai/n8n-mcp"
-          
-          # Configure git
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          
-          # Add upstream remote
+
+      - name: Sync from upstream
+        run: |
+          echo "📥 Adding upstream remote..."
           git remote add upstream https://github.com/czlonkowski/n8n-mcp.git || true
+          
+          echo "📥 Fetching upstream..."
           git fetch upstream
           
-          # Check for new commits
-          UPSTREAM_COMMITS=$(git rev-list HEAD..upstream/main --count)
-          echo "New commits from upstream: $UPSTREAM_COMMITS"
+          echo "🔀 Merging upstream/main..."
+          git merge upstream/main --no-edit || {
+            echo "⚠️ Merge conflict detected, attempting auto-resolve..."
+            git checkout --theirs .
+            git add .
+            git commit -m "chore: auto-resolve merge conflicts from upstream"
+          }
           
-          if [ "$UPSTREAM_COMMITS" -gt 0 ]; then
-            echo "🔄 Merging $UPSTREAM_COMMITS new commits from upstream..."
-            git merge upstream/main --no-edit -m "chore: sync upstream czlonkowski/n8n-mcp"
-            git push origin main
-            echo "✅ Upstream sync complete"
-          else
-            echo "✅ Already up to date with upstream"
-          fi
+          echo "📤 Pushing to origin..."
+          git push origin main
+          
+          echo "✅ Upstream sync complete"
 
-      # =========================================================================
-      # Step 3: Setup Node.js and install dependencies
-      # =========================================================================
+      # ============================================
+      # STEP 2: Build fresh database
+      # ============================================
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -68,15 +65,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # =========================================================================
-      # Step 4: Build TypeScript and rebuild database
-      # =========================================================================
-      - name: Build and rebuild database
+      - name: Build TypeScript
+        run: npm run build
+
+      - name: Rebuild database
         run: |
-          echo "🔨 Building TypeScript..."
-          npm run build
-          
-          echo "🗃️ Rebuilding nodes database..."
+          echo "🔨 Rebuilding nodes.db..."
           npm run rebuild
           
           # Validate database
@@ -94,10 +88,10 @@ jobs:
           
           echo "✅ Database rebuild complete"
 
-      # =========================================================================
-      # Step 5: Compress and upload to Supabase Storage
-      # =========================================================================
-      - name: Upload to Supabase Storage
+      # ============================================
+      # STEP 3: Upload to Supabase Storage
+      # ============================================
+      - name: Compress and upload to Supabase
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
@@ -105,17 +99,15 @@ jobs:
           echo "📦 Compressing database..."
           gzip -c data/nodes.db > nodes.db.gz
           
-          ORIGINAL_SIZE=$(ls -lh data/nodes.db | awk '{print $5}')
-          COMPRESSED_SIZE=$(ls -lh nodes.db.gz | awk '{print $5}')
-          echo "   Original: $ORIGINAL_SIZE"
-          echo "   Compressed: $COMPRESSED_SIZE"
+          FILESIZE=$(ls -lh nodes.db.gz | awk '{print $5}')
+          echo "   Compressed size: $FILESIZE"
           
-          echo "📤 Uploading to Supabase Storage (build-cache bucket)..."
-          
+          echo "📤 Uploading to Supabase Storage..."
           HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
             -X PUT "${SUPABASE_URL}/storage/v1/object/build-cache/nodes.db.gz" \
             -H "Authorization: Bearer ${SUPABASE_SERVICE_KEY}" \
             -H "Content-Type: application/gzip" \
+            -H "Cache-Control: no-cache" \
             -H "x-upsert: true" \
             --data-binary @nodes.db.gz)
           
@@ -126,15 +118,16 @@ jobs:
             exit 1
           fi
 
-      # =========================================================================
-      # Step 6: Trigger Render redeploy
-      # =========================================================================
+      # ============================================
+      # STEP 4: Trigger Render redeploy
+      # ============================================
       - name: Trigger Render redeploy
+        if: ${{ inputs.skip_render_deploy != 'true' }}
         env:
           RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
           SERVICE_ID: ${{ secrets.SERVICE_ID }}
         run: |
-          echo "🚀 Triggering Render redeploy for Tech Factory..."
+          echo "🚀 Triggering Render redeploy..."
           
           RESPONSE=$(curl -s -X POST "https://api.render.com/v1/services/${SERVICE_ID}/deploys" \
             -H "Authorization: Bearer ${RENDER_API_KEY}" \
@@ -144,26 +137,28 @@ jobs:
           DEPLOY_ID=$(echo "$RESPONSE" | jq -r '.id // empty')
           
           if [ -n "$DEPLOY_ID" ]; then
-            echo "✅ Render deploy triggered: $DEPLOY_ID"
-            echo "   Dashboard: https://dashboard.render.com/web/${SERVICE_ID}/deploys/${DEPLOY_ID}"
+            echo "✅ Redeploy triggered successfully"
+            echo "   Deploy ID: $DEPLOY_ID"
           else
-            echo "⚠️ Render deploy may have failed. Response:"
+            echo "⚠️ Redeploy may have failed. Response:"
             echo "$RESPONSE"
-            # Don't fail the workflow - the upload succeeded
+            # Don't fail the workflow - upload was successful
           fi
 
-      # =========================================================================
-      # Step 7: Summary
-      # =========================================================================
+      # ============================================
+      # Summary
+      # ============================================
       - name: Summary
         run: |
           echo ""
-          echo "=============================================="
-          echo "Weekly Sync Complete"
-          echo "=============================================="
-          echo "✅ Upstream synced: czlonkowski/n8n-mcp → baxterlabsai/n8n-mcp"
-          echo "✅ Database rebuilt: data/nodes.db"
-          echo "✅ Uploaded to: Supabase Storage (build-cache/nodes.db.gz)"
-          echo "✅ Render redeploy triggered"
+          echo "============================================"
+          echo "✅ Weekly sync complete!"
+          echo "============================================"
           echo ""
-          echo "Next run: $(date -d 'next sunday 06:00' '+%Y-%m-%d %H:%M UTC' 2>/dev/null || echo 'Next Sunday 6am UTC')"
+          echo "Actions performed:"
+          echo "  1. Synced upstream czlonkowski/n8n-mcp → baxterlabsai/n8n-mcp"
+          echo "  2. Rebuilt nodes.db with latest n8n data"
+          echo "  3. Uploaded nodes.db.gz to Supabase Storage"
+          echo "  4. Triggered Render redeploy (if not skipped)"
+          echo ""
+          echo "Tech Factory will use the updated database on next deployment."
