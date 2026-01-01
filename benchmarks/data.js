@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1767289770349,
+  "lastUpdate": 1767294846420,
   "repoUrl": "https://github.com/baxterlabsai/n8n-mcp",
   "entries": {
     "n8n-mcp Benchmarks": [
@@ -147,6 +147,37 @@ window.BENCHMARK_DATA = {
           "url": "https://github.com/baxterlabsai/n8n-mcp/commit/ec72b1b30896623d3851751f43e0399b4af8dd3e"
         },
         "date": 1767289769673,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "sample - array sorting - small",
+            "value": 0.0136,
+            "range": "0.3096",
+            "unit": "ms",
+            "extra": "73341 ops/sec"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "george@baxterlabs.ai",
+            "name": "baxterlabsai",
+            "username": "baxterlabsai"
+          },
+          "committer": {
+            "email": "george@baxterlabs.ai",
+            "name": "baxterlabsai",
+            "username": "baxterlabsai"
+          },
+          "distinct": true,
+          "id": "52fec5a5612ee347c22fa14ccfec555ea7167352",
+          "message": "revert: Remove TUS upload, restore standard curl upload\n\nFile size limit manually increased: 50MB → 500MB\nCurrent database: 60MB (8.3x smaller than limit)\nDatabase would need 55,800+ templates to approach 500MB\n\nTUS protocol was solving a problem that no longer exists:\n- TUS: Complex (3 failure points: install, metadata, upload)\n- Standard: Simple (1 failure point: curl upload)\n- Standard: Proven to work (successful on Dec 28 with 27MB)\n- TUS: Failed on first attempt (Jan 1)\n\nChanges:\n- Remove \"Install TUS client\" step entirely\n- Revert to simple curl PUT upload\n- Add response body logging for debugging\n- Update comment: \"standard upload, 500MB limit\"\n\nIf database approaches 400MB in the future, TUS can be reconsidered.\nFor now, keep it simple and reliable.\n\nReverts commit ec72b1b",
+          "timestamp": "2026-01-01T11:12:01-08:00",
+          "tree_id": "c9ee332219f258b74e4e7c0f8e4955ec11bad908",
+          "url": "https://github.com/baxterlabsai/n8n-mcp/commit/52fec5a5612ee347c22fa14ccfec555ea7167352"
+        },
+        "date": 1767294846048,
         "tool": "customSmallerIsBetter",
         "benches": [
           {
