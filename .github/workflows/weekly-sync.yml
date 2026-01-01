@@ -110,6 +110,13 @@ jobs:
       # ============================================
       # STEP 3: Upload to Supabase Storage
       # ============================================
+      - name: Install TUS client for resumable uploads
+        run: |
+          echo "📥 Installing tusc (TUS client for large file uploads)..."
+          curl -sSLo ~/tusc https://raw.githubusercontent.com/adhocore/tusc.sh/main/tusc.sh
+          chmod +x ~/tusc
+          echo "✅ tusc installed successfully"
+
       - name: Compress and upload to Supabase
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
@@ -117,23 +124,31 @@ jobs:
         run: |
           echo "📦 Compressing database..."
           gzip -c data/nodes.db > nodes.db.gz
-          
+
           FILESIZE=$(ls -lh nodes.db.gz | awk '{print $5}')
           echo "   Compressed size: $FILESIZE"
-          
-          echo "📤 Uploading to Supabase Storage..."
-          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
-            -X PUT "${SUPABASE_URL}/storage/v1/object/build-cache/nodes.db.gz" \
+
+          echo "📤 Uploading to Supabase Storage (using resumable upload for >50MB files)..."
+
+          # Extract project ID from SUPABASE_URL (e.g., https://cgyhgvkukltibbsisdvl.supabase.co)
+          PROJECT_ID=$(echo "$SUPABASE_URL" | sed -E 's|https://([^.]+)\.supabase\.co.*|\1|')
+          echo "   Project ID: $PROJECT_ID"
+
+          # Use TUS protocol for resumable upload (bypasses 50MB standard upload limit)
+          # Uploads in 6MB chunks, supports files up to 500GB
+          ~/tusc \
             -H "Authorization: Bearer ${SUPABASE_SERVICE_KEY}" \
-            -H "Content-Type: application/gzip" \
-            -H "Cache-Control: no-cache" \
             -H "x-upsert: true" \
-            --data-binary @nodes.db.gz)
-          
-          if [ "$HTTP_STATUS" -eq 200 ] || [ "$HTTP_STATUS" -eq 201 ]; then
-            echo "✅ Upload successful (HTTP $HTTP_STATUS)"
+            -m "bucketName=build-cache,objectName=nodes.db.gz" \
+            nodes.db.gz \
+            "https://${PROJECT_ID}.supabase.co/storage/v1/upload/resumable"
+
+          UPLOAD_STATUS=$?
+
+          if [ $UPLOAD_STATUS -eq 0 ]; then
+            echo "✅ Upload successful (resumable upload)"
           else
-            echo "❌ Upload failed (HTTP $HTTP_STATUS)"
+            echo "❌ Upload failed (exit code: $UPLOAD_STATUS)"
             exit 1
           fi
 
