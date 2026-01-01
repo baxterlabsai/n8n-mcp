@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1767233571704,
+  "lastUpdate": 1767239607049,
   "repoUrl": "https://github.com/baxterlabsai/n8n-mcp",
   "entries": {
     "n8n-mcp Benchmarks": [
@@ -85,6 +85,37 @@ window.BENCHMARK_DATA = {
           "url": "https://github.com/baxterlabsai/n8n-mcp/commit/52e53c13781145dec8498db43be1536e00241686"
         },
         "date": 1767233571436,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "sample - array sorting - small",
+            "value": 0.0136,
+            "range": "0.3096",
+            "unit": "ms",
+            "extra": "73341 ops/sec"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "george@baxterlabs.ai",
+            "name": "baxterlabsai",
+            "username": "baxterlabsai"
+          },
+          "committer": {
+            "email": "george@baxterlabs.ai",
+            "name": "baxterlabsai",
+            "username": "baxterlabsai"
+          },
+          "distinct": true,
+          "id": "ad58e1cb96682c8198122941d6dfe7f65c3eb8c6",
+          "message": "fix: Add guard condition to properly disable MIN_VIEWS filter\n\nBug: When MIN_VIEWS=0, templates with exactly 0 views were still being skipped\nbecause the condition (views <= 0) evaluated to TRUE for 0-view templates.\n\nRoot Cause:\n- Previous: if (views <= MIN_VIEWS) → skip\n- When MIN_VIEWS=0: if (0 <= 0) → TRUE → skipped 0-view templates\n- Result: 3,203 templates filtered out (7,620 fetched → 4,417 saved)\n\nFix:\n- Added guard: if (MIN_VIEWS > 0 && views <= MIN_VIEWS) → skip\n- When MIN_VIEWS=0: guard fails, NO templates skipped\n- Result: All 7,620 templates will be saved\n\nBehavior:\n- MIN_VIEWS=10: Templates with ≤10 views skipped (original behavior)\n- MIN_VIEWS=0: NO templates skipped (filter disabled)\n- MIN_VIEWS=5: Templates with ≤5 views skipped (custom threshold)\n\nEvidence:\n- DATE_MONTHS=0 worked (7,620 templates fetched)\n- MIN_VIEWS=0 failed (only 4,417 saved instead of 7,620)\n- Compiled code had env var support but logic was wrong\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>",
+          "timestamp": "2025-12-31T19:51:28-08:00",
+          "tree_id": "5240b9b7e8cd0299adab0994f1eff5a2274df0c6",
+          "url": "https://github.com/baxterlabsai/n8n-mcp/commit/ad58e1cb96682c8198122941d6dfe7f65c3eb8c6"
+        },
+        "date": 1767239606791,
         "tool": "customSmallerIsBetter",
         "benches": [
           {
