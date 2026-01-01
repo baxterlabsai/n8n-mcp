@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1767239607049,
+  "lastUpdate": 1767289770349,
   "repoUrl": "https://github.com/baxterlabsai/n8n-mcp",
   "entries": {
     "n8n-mcp Benchmarks": [
@@ -116,6 +116,37 @@ window.BENCHMARK_DATA = {
           "url": "https://github.com/baxterlabsai/n8n-mcp/commit/ad58e1cb96682c8198122941d6dfe7f65c3eb8c6"
         },
         "date": 1767239606791,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "sample - array sorting - small",
+            "value": 0.0136,
+            "range": "0.3096",
+            "unit": "ms",
+            "extra": "73341 ops/sec"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "george@baxterlabs.ai",
+            "name": "baxterlabsai",
+            "username": "baxterlabsai"
+          },
+          "committer": {
+            "email": "george@baxterlabs.ai",
+            "name": "baxterlabsai",
+            "username": "baxterlabsai"
+          },
+          "distinct": true,
+          "id": "ec72b1b30896623d3851751f43e0399b4af8dd3e",
+          "message": "fix: Use TUS resumable upload for database files >50MB\n\nSupabase Storage free tier has 50MB limit for standard uploads.\nFull database (7,620 templates) compresses to ~60MB, exceeding limit.\n\nSolution: TUS protocol resumable uploads bypass 50MB limit\n- Install tusc.sh bash client for TUS protocol\n- Extract project ID from SUPABASE_URL dynamically\n- Upload to /storage/v1/upload/resumable endpoint\n- Uploads in 6MB chunks, supports files up to 500GB\n- No Supabase tier upgrade required\n\nPrevious database: 27MB compressed (2,737 templates) ✅ worked\nCurrent database: 60MB compressed (7,620 templates) ✅ will work\n\nReference: https://supabase.com/docs/guides/storage/uploads/resumable-uploads",
+          "timestamp": "2026-01-01T09:47:19-08:00",
+          "tree_id": "257cc3d909151831cbd6563086bed1d7fbf85bfd",
+          "url": "https://github.com/baxterlabsai/n8n-mcp/commit/ec72b1b30896623d3851751f43e0399b4af8dd3e"
+        },
+        "date": 1767289769673,
         "tool": "customSmallerIsBetter",
         "benches": [
           {
