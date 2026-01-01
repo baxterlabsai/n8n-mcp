@@ -111,8 +111,9 @@ export class TemplateRepository {
    */
   saveTemplate(workflow: TemplateWorkflow, detail: TemplateDetail, categories: string[] = []): void {
     // Filter out templates with low views (configurable via MIN_VIEWS env var)
-    const MIN_VIEWS = process.env.MIN_VIEWS ? parseInt(process.env.MIN_VIEWS) : 10;
-    if ((workflow.totalViews || 0) <= MIN_VIEWS) {
+    // Set MIN_VIEWS=0 to disable filter entirely
+    const MIN_VIEWS = process.env.MIN_VIEWS !== undefined ? parseInt(process.env.MIN_VIEWS) : 10;
+    if (MIN_VIEWS > 0 && (workflow.totalViews || 0) <= MIN_VIEWS) {
       logger.debug(`Skipping template ${workflow.id}: ${workflow.name} (only ${workflow.totalViews} views, threshold: ${MIN_VIEWS})`);
       return;
     }
