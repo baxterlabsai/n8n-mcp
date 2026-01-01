@@ -110,13 +110,6 @@ jobs:
       # ============================================
       # STEP 3: Upload to Supabase Storage
       # ============================================
-      - name: Install TUS client for resumable uploads
-        run: |
-          echo "📥 Installing tusc (TUS client for large file uploads)..."
-          curl -sSLo ~/tusc https://raw.githubusercontent.com/adhocore/tusc.sh/main/tusc.sh
-          chmod +x ~/tusc
-          echo "✅ tusc installed successfully"
-
       - name: Compress and upload to Supabase
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
@@ -128,27 +121,22 @@ jobs:
           FILESIZE=$(ls -lh nodes.db.gz | awk '{print $5}')
           echo "   Compressed size: $FILESIZE"
 
-          echo "📤 Uploading to Supabase Storage (using resumable upload for >50MB files)..."
+          echo "📤 Uploading to Supabase Storage (standard upload, 500MB limit)..."
 
-          # Extract project ID from SUPABASE_URL (e.g., https://cgyhgvkukltibbsisdvl.supabase.co)
-          PROJECT_ID=$(echo "$SUPABASE_URL" | sed -E 's|https://([^.]+)\.supabase\.co.*|\1|')
-          echo "   Project ID: $PROJECT_ID"
-
-          # Use TUS protocol for resumable upload (bypasses 50MB standard upload limit)
-          # Uploads in 6MB chunks, supports files up to 500GB
-          ~/tusc \
+          HTTP_STATUS=$(curl -s -o /tmp/upload-response.txt -w "%{http_code}" \
+            -X PUT "${SUPABASE_URL}/storage/v1/object/build-cache/nodes.db.gz" \
             -H "Authorization: Bearer ${SUPABASE_SERVICE_KEY}" \
+            -H "Content-Type: application/gzip" \
+            -H "Cache-Control: no-cache" \
             -H "x-upsert: true" \
-            -m "bucketName=build-cache,objectName=nodes.db.gz" \
-            nodes.db.gz \
-            "https://${PROJECT_ID}.supabase.co/storage/v1/upload/resumable"
+            --data-binary @nodes.db.gz)
 
-          UPLOAD_STATUS=$?
-
-          if [ $UPLOAD_STATUS -eq 0 ]; then
-            echo "✅ Upload successful (resumable upload)"
+          if [ "$HTTP_STATUS" -eq 200 ] || [ "$HTTP_STATUS" -eq 201 ]; then
+            echo "✅ Upload successful (HTTP $HTTP_STATUS)"
           else
-            echo "❌ Upload failed (exit code: $UPLOAD_STATUS)"
+            echo "❌ Upload failed (HTTP $HTTP_STATUS)"
+            echo "Response:"
+            cat /tmp/upload-response.txt
             exit 1
           fi
 
