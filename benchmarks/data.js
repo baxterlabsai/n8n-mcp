@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1766638121398,
+  "lastUpdate": 1767233571704,
   "repoUrl": "https://github.com/baxterlabsai/n8n-mcp",
   "entries": {
     "n8n-mcp Benchmarks": [
@@ -54,6 +54,37 @@ window.BENCHMARK_DATA = {
           "url": "https://github.com/baxterlabsai/n8n-mcp/commit/9f3ca695f1556a4b93fadf16845ebc66d9854b82"
         },
         "date": 1766638121030,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "sample - array sorting - small",
+            "value": 0.0136,
+            "range": "0.3096",
+            "unit": "ms",
+            "extra": "73341 ops/sec"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "george@baxterlabs.ai",
+            "name": "baxterlabsai",
+            "username": "baxterlabsai"
+          },
+          "committer": {
+            "email": "george@baxterlabs.ai",
+            "name": "baxterlabsai",
+            "username": "baxterlabsai"
+          },
+          "distinct": true,
+          "id": "52e53c13781145dec8498db43be1536e00241686",
+          "message": "fix: Add template fetching with configurable filters to GitHub Action\n\nFixes database degradation issue where automated sync created incomplete database.\n\nChanges:\n1. Added MIN_VIEWS environment variable (default: 10)\n   - Set to 0 to disable view count filter\n   - Controlled in template-repository.ts\n\n2. Added DATE_MONTHS environment variable (default: 12)\n   - Set to 0 to include all templates regardless of date\n   - Controlled in template-fetcher.ts\n\n3. Updated GitHub Action workflow:\n   - Added step to clone n8n-docs for node documentation\n   - Added npm run fetch:templates to fetch templates from n8n.io\n   - Set MIN_VIEWS=0 and DATE_MONTHS=0 to disable all filters\n   - Updated validation: >7000 templates, >700 documented nodes\n\nExpected Results:\n- Templates: ~7,600 (up from 2,737)\n- Documentation coverage: 88% (706/802 nodes)\n- File size: ~68MB uncompressed, ~27MB compressed\n- Prevents future Sunday sync degradation\n\nRoot Cause:\n- View filter removed 1,165 templates (7,656 → 6,491)\n- Date filter removed 3,754 templates (6,491 → 2,737)\n- Missing fetch:templates step meant workflow only built nodes\n- Missing n8n-docs clone resulted in partial documentation\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>",
+          "timestamp": "2025-12-31T18:10:49-08:00",
+          "tree_id": "fa35ef95627b0b7f353ea869e0d05bb797a0f3ad",
+          "url": "https://github.com/baxterlabsai/n8n-mcp/commit/52e53c13781145dec8498db43be1536e00241686"
+        },
+        "date": 1767233571436,
         "tool": "customSmallerIsBetter",
         "benches": [
           {
