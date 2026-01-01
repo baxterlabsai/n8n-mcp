@@ -106,8 +106,9 @@ class TemplateRepository {
         }
     }
     saveTemplate(workflow, detail, categories = []) {
-        if ((workflow.totalViews || 0) <= 10) {
-            logger_1.logger.debug(`Skipping template ${workflow.id}: ${workflow.name} (only ${workflow.totalViews} views)`);
+        const MIN_VIEWS = process.env.MIN_VIEWS ? parseInt(process.env.MIN_VIEWS) : 10;
+        if ((workflow.totalViews || 0) <= MIN_VIEWS) {
+            logger_1.logger.debug(`Skipping template ${workflow.id}: ${workflow.name} (only ${workflow.totalViews} views, threshold: ${MIN_VIEWS})`);
             return;
         }
         const stmt = this.db.prepare(`
