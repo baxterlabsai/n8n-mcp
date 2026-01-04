@@ -7,6 +7,66 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.31.5] - 2026-01-02
+
+### Added
+
+**MCP Tool Annotations (PR #512)**
+
+Added MCP tool annotations to all 20 tools following the [MCP specification](https://spec.modelcontextprotocol.io/specification/2025-03-26/server/tools/#annotations). These annotations help AI assistants understand tool behavior and capabilities.
+
+**Annotations added:**
+- `title`: Human-readable name for each tool
+- `readOnlyHint`: True for tools that don't modify state (11 tools)
+- `destructiveHint`: True for delete operations (3 tools)
+- `idempotentHint`: True for operations that produce same result when called repeatedly (14 tools)
+- `openWorldHint`: True for tools accessing external n8n API (13 tools)
+
+**Documentation tools** (7): All marked `readOnlyHint=true`, `idempotentHint=true`
+- `tools_documentation`, `search_nodes`, `get_node`, `validate_node`, `get_template`, `search_templates`, `validate_workflow`
+
+**Management tools** (13): All marked `openWorldHint=true`
+- Read-only: `n8n_get_workflow`, `n8n_list_workflows`, `n8n_validate_workflow`, `n8n_health_check`
+- Idempotent updates: `n8n_update_full_workflow`, `n8n_update_partial_workflow`, `n8n_autofix_workflow`
+- Destructive: `n8n_delete_workflow`, `n8n_executions` (delete action), `n8n_workflow_versions` (delete/truncate)
+
+## [2.31.4] - 2026-01-02
+
+### Fixed
+
+**Workflow Data Mangled During Serialization: snake_case Conversion (Issue #517)**
+
+Fixed a critical bug where workflow mutation data was corrupted during serialization to Supabase, making 98.9% of collected workflow data invalid for n8n API operations.
+
+**Problem:**
+The `toSnakeCase()` function in `batch-processor.ts` was applied **recursively** to the entire mutation object, including nested workflow data that should be preserved exactly as-is:
+
+- **Connection keys mangled**: Node names like `"Webhook"` became `"_webhook"`, `"AI Agent"` became `"_a_i _agent"`
+- **Node field names mangled**: n8n camelCase fields like `typeVersion`, `webhookId`, `onError` became `type_version`, `webhook_id`, `on_error`
+
+**Root Cause:**
+```javascript
+// Old code - recursive conversion corrupted nested data
+result[snakeKey] = toSnakeCase(obj[key]); // WRONG
+```
+
+**Solution:**
+Replaced recursive `toSnakeCase()` with selective `mutationToSupabaseFormat()` that:
+- Converts **only** top-level field names to snake_case (for Supabase columns)
+- Preserves all nested data (workflow JSON, operations, validations) **exactly as-is**
+
+```javascript
+// New code - preserves nested workflow structure
+for (const [key, value] of Object.entries(mutation)) {
+  result[keyToSnakeCase(key)] = value; // Value preserved as-is
+}
+```
+
+**Impact:**
+- Workflow mutation data now maintains n8n API compatibility
+- Deployability rate improved from ~21% to ~68%
+- Added 3 regression tests to prevent future occurrences
+
 ## [2.31.3] - 2025-12-26
 
 ### Fixed
