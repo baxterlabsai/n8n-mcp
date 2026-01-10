@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1768077533920,
+  "lastUpdate": 1768077610441,
   "repoUrl": "https://github.com/baxterlabsai/n8n-mcp",
   "entries": {
     "n8n-mcp Benchmarks": [
@@ -85,6 +85,37 @@ window.BENCHMARK_DATA = {
           "url": "https://github.com/baxterlabsai/n8n-mcp/commit/22d23d16e2e6caaca3d3676641ec6bf036767d1e"
         },
         "date": 1768077533573,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "sample - array sorting - small",
+            "value": 0.0136,
+            "range": "0.3096",
+            "unit": "ms",
+            "extra": "73341 ops/sec"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "george@baxterlabs.ai",
+            "name": "baxterlabsai",
+            "username": "baxterlabsai"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "750931b40d2a1e6f23cb37ac9621bbdc6392d226",
+          "message": "Add weekly sync workflow for upstream repository\n\nThis workflow automates the weekly synchronization of the repository with the upstream source. It includes steps for syncing, building, and deploying, along with error handling for merge conflicts and upload processes.",
+          "timestamp": "2026-01-10T12:38:05-08:00",
+          "tree_id": "6d5d6cb7fe9f62060a0e97d70559c4cc97e690ec",
+          "url": "https://github.com/baxterlabsai/n8n-mcp/commit/750931b40d2a1e6f23cb37ac9621bbdc6392d226"
+        },
+        "date": 1768077609804,
         "tool": "customSmallerIsBetter",
         "benches": [
           {
