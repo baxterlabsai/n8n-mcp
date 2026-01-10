@@ -1,4 +1,4 @@
-name: Weekly Upstream Sync
+name: Sync
 on:
   schedule:
     - cron: '0 6 * * 0'
