@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1768077454983,
+  "lastUpdate": 1768077533920,
   "repoUrl": "https://github.com/baxterlabsai/n8n-mcp",
   "entries": {
     "n8n-mcp Benchmarks": [
@@ -54,6 +54,37 @@ window.BENCHMARK_DATA = {
           "url": "https://github.com/baxterlabsai/n8n-mcp/commit/ea4ca3d9508982500044710112d3d34f4648cfd8"
         },
         "date": 1768077454253,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "sample - array sorting - small",
+            "value": 0.0136,
+            "range": "0.3096",
+            "unit": "ms",
+            "extra": "73341 ops/sec"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "george@baxterlabs.ai",
+            "name": "baxterlabsai",
+            "username": "baxterlabsai"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "22d23d16e2e6caaca3d3676641ec6bf036767d1e",
+          "message": "Delete .github/workflows/weekly-sync.yml",
+          "timestamp": "2026-01-10T12:37:00-08:00",
+          "tree_id": "7e90fa95e2a149fd92eaf26e75d067371ab7b2ac",
+          "url": "https://github.com/baxterlabsai/n8n-mcp/commit/22d23d16e2e6caaca3d3676641ec6bf036767d1e"
+        },
+        "date": 1768077533573,
         "tool": "customSmallerIsBetter",
         "benches": [
           {
