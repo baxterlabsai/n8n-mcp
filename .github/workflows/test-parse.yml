@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
     inputs:
       skip_render_deploy:
-        description: 'Skip Render redeploy (for testing)'
+        description: 'Skip Render redeploy'
         required: false
         default: 'false'
         type: boolean
@@ -16,115 +16,9 @@ jobs:
   sync-build-upload:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Configure Git
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-      - name: Sync from upstream
-        run: |
-          echo "Adding upstream remote..."
-          git remote add upstream https://github.com/czlonkowski/n8n-mcp.git || true
-          echo "Fetching upstream..."
-          git fetch upstream
-          echo "Merging upstream/main..."
-          git merge upstream/main --no-edit -X ours || {
-            echo "Merge conflict detected, resolving..."
-            git checkout --theirs package*.json || true
-            git checkout --theirs src/ || true
-            git checkout --theirs tsconfig.json || true
-            git checkout --ours dist/ || true
-            git checkout --ours patches/ || true
-            git checkout --ours .github/workflows/weekly-sync.yml || true
-            git add .
-            git commit -m "chore: auto-resolve merge conflicts from upstream"
-          }
-          echo "Pushing to origin..."
-          git push origin main
-          echo "Upstream sync complete"
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-      - name: Install dependencies
-        run: npm ci
-      - name: Clone n8n docs for parsing
-        run: |
-          git clone --depth 1 https://github.com/n8n-io/n8n-docs.git n8n-docs
-      - name: Build TypeScript
-        run: npm run build
-      - name: Build MCP database
-        run: npm run rebuild
-      - name: Fetch workflow templates
-        env:
-          MIN_VIEWS: 0
-          DATE_MONTHS: 0
-        run: npm run fetch:templates
-      - name: Apply comprehensive custom schema patches
-        run: |
-          echo "Applying comprehensive schema patches for 17 nodes..."
-          if [ ! -f "patches/comprehensive_node_patches.sql" ]; then
-            echo "Patch file not found"
-            exit 1
-          fi
-          sqlite3 data/nodes.db < patches/comprehensive_node_patches.sql
-          SALESFORCE_OPS=$(sqlite3 data/nodes.db "SELECT json_array_length(operations) FROM nodes WHERE node_type = 'n8n-nodes-base.salesforce';")
-          JIRA_OPS=$(sqlite3 data/nodes.db "SELECT json_array_length(operations) FROM nodes WHERE node_type = 'n8n-nodes-base.jira';")
-          FRESHDESK_OPS=$(sqlite3 data/nodes.db "SELECT json_array_length(operations) FROM nodes WHERE node_type = 'n8n-nodes-base.freshdesk';")
-          echo "  Salesforce: $SALESFORCE_OPS operations (expected: 51)"
-          echo "  Jira: $JIRA_OPS operations (expected: 25)"
-          echo "  Freshdesk: $FRESHDESK_OPS operations (expected: 10)"
-          if [ "$SALESFORCE_OPS" -lt 50 ] || [ "$JIRA_OPS" -lt 24 ] || [ "$FRESHDESK_OPS" -lt 9 ]; then
-            echo "Patch verification failed"
-            exit 1
-          fi
-          echo "All node patches verified successfully"
-      - name: Compress database
-        run: |
-          echo "Compressing database..."
-          gzip -c data/nodes.db > nodes.db.gz
-          ls -lh nodes.db.gz
-      - name: Upload to Supabase Storage
-        env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
-        run: |
-          echo "Uploading to Supabase Storage..."
-          UPLOAD_URL="${SUPABASE_URL}/storage/v1/object/build-cache/nodes.db.gz"
-          HTTP_STATUS=$(curl -s -o /tmp/upload-response.txt -w "%{http_code}" \
-            -X PUT "$UPLOAD_URL" \
-            -H "Authorization: Bearer ${SUPABASE_SERVICE_KEY}" \
-            -H "Content-Type: application/gzip" \
-            -H "x-upsert: true" \
-            --data-binary @nodes.db.gz)
-          if [ "$HTTP_STATUS" -eq 200 ] || [ "$HTTP_STATUS" -eq 201 ]; then
-            echo "Upload successful (HTTP $HTTP_STATUS)"
-          else
-            echo "Upload failed (HTTP $HTTP_STATUS)"
-            cat /tmp/upload-response.txt
-            exit 1
-          fi
-      - name: Trigger Render redeploy
-        if: ${{ github.event.inputs.skip_render_deploy != 'true' }}
-        env:
-          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
-          SERVICE_ID: ${{ secrets.SERVICE_ID }}
-        run: |
-          echo "Triggering Tech Factory redeploy..."
-          RESPONSE=$(curl -s -X POST "https://api.render.com/v1/services/${SERVICE_ID}/deploys" \
-            -H "Authorization: Bearer ${RENDER_API_KEY}" \
-            -H "Content-Type: application/json" \
-            -d '{"clearCache": "do_not_clear"}')
-          DEPLOY_ID=$(echo "$RESPONSE" | jq -r '.id // empty')
-          if [ -n "$DEPLOY_ID" ]; then
-            echo "Redeploy triggered successfully"
-            echo "  Deploy ID: $DEPLOY_ID"
-          else
-            echo "Redeploy may have failed. Response:"
-            echo "$RESPONSE"
-          fi
+      - name: Test
+        run: echo "works"
