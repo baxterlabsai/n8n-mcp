@@ -78,11 +78,13 @@ export class TemplateFetcher {
   async fetchTemplates(progressCallback?: (current: number, total: number) => void, sinceDate?: Date): Promise<TemplateWorkflow[]> {
     const allTemplates = await this.fetchAllTemplates(progressCallback);
 
-    // Use provided date or default to 12 months ago
+    // Use provided date or default based on DATE_MONTHS env var (default 12 months)
     const cutoffDate = sinceDate || (() => {
-      const oneYearAgo = new Date();
-      oneYearAgo.setMonth(oneYearAgo.getMonth() - 12);
-      return oneYearAgo;
+      const months = process.env.DATE_MONTHS ? parseInt(process.env.DATE_MONTHS) : 12;
+      if (months === 0) return new Date('1970-01-01'); // No date filtering
+      const cutoff = new Date();
+      cutoff.setMonth(cutoff.getMonth() - months);
+      return cutoff;
     })();
 
     const recentTemplates = allTemplates.filter((w: TemplateWorkflow) => {

@@ -110,9 +110,10 @@ export class TemplateRepository {
    * Save a template to the database
    */
   saveTemplate(workflow: TemplateWorkflow, detail: TemplateDetail, categories: string[] = []): void {
-    // Filter out templates with 10 or fewer views
-    if ((workflow.totalViews || 0) <= 10) {
-      logger.debug(`Skipping template ${workflow.id}: ${workflow.name} (only ${workflow.totalViews} views)`);
+    // Filter out templates with too few views (configurable via MIN_VIEWS env var, default 10)
+    const minViews = process.env.MIN_VIEWS ? parseInt(process.env.MIN_VIEWS) : 10;
+    if ((workflow.totalViews || 0) <= minViews) {
+      logger.debug(`Skipping template ${workflow.id}: ${workflow.name} (only ${workflow.totalViews} views, min: ${minViews})`);
       return;
     }
     
