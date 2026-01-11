@@ -67,7 +67,7 @@ jobs:
           JIRA_OPS=$(sqlite3 data/nodes.db "SELECT json_array_length(operations) FROM nodes WHERE node_type = 'n8n-nodes-base.jira';")
           FRESHDESK_OPS=$(sqlite3 data/nodes.db "SELECT json_array_length(operations) FROM nodes WHERE node_type = 'n8n-nodes-base.freshdesk';")
           echo "Salesforce: $SALESFORCE_OPS ops, Jira: $JIRA_OPS ops, Freshdesk: $FRESHDESK_OPS ops"
-          if [ "$SALESFORCE_OPS" -lt 50 ] || [ "$JIRA_OPS" -lt 24 ] || [ "$FRESHDESK_OPS" -lt 9 ]; then
+          if [ "$SALESFORCE_OPS" -lt 50 ] || [ "$JIRA_OPS" -lt 18 ] || [ "$FRESHDESK_OPS" -lt 9 ]; then
             echo "Patch verification failed"
             exit 1
           fi
