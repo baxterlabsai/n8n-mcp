@@ -111,9 +111,10 @@ export class TemplateRepository {
    */
   saveTemplate(workflow: TemplateWorkflow, detail: TemplateDetail, categories: string[] = []): void {
     // Filter out templates with too few views (configurable via MIN_VIEWS env var, default 10)
+    // MIN_VIEWS=0 means include all templates, MIN_VIEWS=10 means require 10+ views
     const minViews = process.env.MIN_VIEWS ? parseInt(process.env.MIN_VIEWS) : 10;
-    if ((workflow.totalViews || 0) <= minViews) {
-      logger.debug(`Skipping template ${workflow.id}: ${workflow.name} (only ${workflow.totalViews} views, min: ${minViews})`);
+    if ((workflow.totalViews || 0) < minViews) {
+      logger.debug(`Skipping template ${workflow.id}: ${workflow.name} (only ${workflow.totalViews} views, requires ${minViews}+)`);
       return;
     }
     
