@@ -105,18 +105,18 @@ export class PropertyExtractor {
   
   private extractOperationsFromDescription(description: any): any[] {
     const operations: any[] = [];
-    
+
     if (!description) return operations;
-    
+
     // Declarative nodes (with routing)
     if (description.routing) {
       const routing = description.routing;
-      
+
       // Extract from request.resource and request.operation
       if (routing.request?.resource) {
         const resources = routing.request.resource.options || [];
         const operationOptions = routing.request.operation?.options || {};
-        
+
         resources.forEach((resource: any) => {
           const resourceOps = operationOptions[resource.value] || [];
           resourceOps.forEach((op: any) => {
@@ -130,24 +130,101 @@ export class PropertyExtractor {
         });
       }
     }
-    
-    // Programmatic nodes - look for operation property in properties
+
+    // Programmatic nodes - look for operations in properties
     if (description.properties && Array.isArray(description.properties)) {
-      const operationProp = description.properties.find(
+      // First, find the resource property to understand available resources
+      const resourceProp = description.properties.find(
+        (p: any) => p.name === 'resource'
+      );
+
+      // Find ALL operation/action properties (there may be multiple for different resources)
+      const operationProps = description.properties.filter(
         (p: any) => p.name === 'operation' || p.name === 'action'
       );
-      
-      if (operationProp?.options) {
-        operationProp.options.forEach((op: any) => {
-          operations.push({
-            operation: op.value,
-            name: op.name,
-            description: op.description
+
+      if (operationProps.length > 0) {
+        // Check if this is a resource-based node (has resource property with options)
+        const hasResourceOptions = resourceProp?.options && Array.isArray(resourceProp.options);
+
+        if (hasResourceOptions && operationProps.length >= 1) {
+          // Resource-based node: extract operations for each resource
+          // Build a map of resource -> operations
+          const resourceOperationsMap = new Map<string, any[]>();
+
+          // Initialize map with all resources
+          resourceProp.options.forEach((res: any) => {
+            resourceOperationsMap.set(res.value, []);
           });
-        });
+
+          // Match each operation property to its resource via displayOptions
+          operationProps.forEach((opProp: any) => {
+            if (!opProp.options) return;
+
+            // Check displayOptions.show.resource to determine which resource this belongs to
+            const showResource = opProp.displayOptions?.show?.resource;
+
+            if (showResource && Array.isArray(showResource)) {
+              // This operation property is tied to specific resource(s)
+              showResource.forEach((resourceValue: string) => {
+                const existingOps = resourceOperationsMap.get(resourceValue) || [];
+                opProp.options.forEach((op: any) => {
+                  // Avoid duplicates
+                  if (!existingOps.some((existing: any) => existing.operation === op.value)) {
+                    existingOps.push({
+                      resource: resourceValue,
+                      operation: op.value,
+                      name: op.name,
+                      description: op.description,
+                      action: op.action
+                    });
+                  }
+                });
+                resourceOperationsMap.set(resourceValue, existingOps);
+              });
+            } else {
+              // No displayOptions.show.resource - applies to all resources or is the default
+              // Add to all resources that don't already have this operation
+              resourceProp.options.forEach((res: any) => {
+                const existingOps = resourceOperationsMap.get(res.value) || [];
+                opProp.options.forEach((op: any) => {
+                  if (!existingOps.some((existing: any) => existing.operation === op.value)) {
+                    existingOps.push({
+                      resource: res.value,
+                      operation: op.value,
+                      name: op.name,
+                      description: op.description,
+                      action: op.action
+                    });
+                  }
+                });
+                resourceOperationsMap.set(res.value, existingOps);
+              });
+            }
+          });
+
+          // Flatten the map into the operations array
+          resourceOperationsMap.forEach((ops, resource) => {
+            ops.forEach((op: any) => {
+              operations.push(op);
+            });
+          });
+        } else {
+          // Simple node without resources: extract operations from first operation property
+          const operationProp = operationProps[0];
+          if (operationProp?.options) {
+            operationProp.options.forEach((op: any) => {
+              operations.push({
+                operation: op.value,
+                name: op.name,
+                description: op.description
+              });
+            });
+          }
+        }
       }
     }
-    
+
     return operations;
   }
   

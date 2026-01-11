@@ -134,7 +134,9 @@ export class NodeParser {
     }
     
     // Add package prefix if missing
-    const packagePrefix = packageName.replace('@n8n/', '').replace('n8n-', '');
+    // Note: Only strip @n8n/ scope, keep n8n- prefix for correct node types
+    // e.g., n8n-nodes-base.asana (correct) not nodes-base.asana (wrong)
+    const packagePrefix = packageName.replace('@n8n/', '');
     return `${packagePrefix}.${name}`;
   }
   

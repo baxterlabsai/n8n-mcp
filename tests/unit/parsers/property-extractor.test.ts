@@ -284,29 +284,138 @@ describe('PropertyExtractor', () => {
           { name: 'Delete', value: 'delete', action: 'Delete item' }
         ]
       };
-      
+
       const NodeClass = nodeClassFactory.build({
         description: {
           name: 'test',
           properties: [resourceProp, operationProp]
         }
       });
-      
+
       const operations = extractor.extractOperations(NodeClass as any);
-      
-      // PropertyExtractor only extracts operations, not resources
-      // It should find the operation property and extract its options
-      expect(operations).toHaveLength(operationProp.options.length);
-      expect(operations[0]).toMatchObject({
+
+      // Enhanced behavior: extract operations FOR EACH resource they apply to
+      // The operation applies to 'user' and 'post' resources (2 resources × 2 operations = 4 total)
+      expect(operations).toHaveLength(4);
+
+      // Verify user resource operations
+      const userOps = operations.filter((op: any) => op.resource === 'user');
+      expect(userOps).toHaveLength(2);
+      expect(userOps[0]).toMatchObject({
+        resource: 'user',
         operation: 'create',
-        name: 'Create',
-        description: undefined // action field is not mapped to description
+        name: 'Create'
       });
-      expect(operations[1]).toMatchObject({
+      expect(userOps[1]).toMatchObject({
+        resource: 'user',
         operation: 'delete',
-        name: 'Delete',
-        description: undefined
+        name: 'Delete'
       });
+
+      // Verify post resource operations
+      const postOps = operations.filter((op: any) => op.resource === 'post');
+      expect(postOps).toHaveLength(2);
+      expect(postOps[0]).toMatchObject({
+        resource: 'post',
+        operation: 'create',
+        name: 'Create'
+      });
+      expect(postOps[1]).toMatchObject({
+        resource: 'post',
+        operation: 'delete',
+        name: 'Delete'
+      });
+    });
+
+    it('should extract different operations for different resources (Asana-like structure)', () => {
+      // This mimics the Asana node structure where each resource has its own operation set
+      const resourceProp = {
+        displayName: 'Resource',
+        name: 'resource',
+        type: 'options',
+        options: [
+          { name: 'Project', value: 'project' },
+          { name: 'Task', value: 'task' },
+          { name: 'Subtask', value: 'subtask' }
+        ]
+      };
+
+      // Project operations
+      const projectOperationProp = {
+        displayName: 'Operation',
+        name: 'operation',
+        type: 'options',
+        displayOptions: {
+          show: {
+            resource: ['project']
+          }
+        },
+        options: [
+          { name: 'Create', value: 'create' },
+          { name: 'Get Many', value: 'getAll' }
+        ]
+      };
+
+      // Task operations (different from project)
+      const taskOperationProp = {
+        displayName: 'Operation',
+        name: 'operation',
+        type: 'options',
+        displayOptions: {
+          show: {
+            resource: ['task']
+          }
+        },
+        options: [
+          { name: 'Create', value: 'create' },
+          { name: 'Delete', value: 'delete' },
+          { name: 'Get', value: 'get' },
+          { name: 'Update', value: 'update' }
+        ]
+      };
+
+      // Subtask operations
+      const subtaskOperationProp = {
+        displayName: 'Operation',
+        name: 'operation',
+        type: 'options',
+        displayOptions: {
+          show: {
+            resource: ['subtask']
+          }
+        },
+        options: [
+          { name: 'Create', value: 'create' },
+          { name: 'Get Many', value: 'getAll' }
+        ]
+      };
+
+      const NodeClass = nodeClassFactory.build({
+        description: {
+          name: 'asana',
+          properties: [resourceProp, projectOperationProp, taskOperationProp, subtaskOperationProp]
+        }
+      });
+
+      const operations = extractor.extractOperations(NodeClass as any);
+
+      // Should extract ALL operations: 2 project + 4 task + 2 subtask = 8 total
+      expect(operations).toHaveLength(8);
+
+      // Verify project operations
+      const projectOps = operations.filter((op: any) => op.resource === 'project');
+      expect(projectOps).toHaveLength(2);
+      expect(projectOps.map((op: any) => op.operation)).toEqual(['create', 'getAll']);
+
+      // Verify task operations
+      const taskOps = operations.filter((op: any) => op.resource === 'task');
+      expect(taskOps).toHaveLength(4);
+      expect(taskOps.map((op: any) => op.operation)).toEqual(['create', 'delete', 'get', 'update']);
+
+      // Verify subtask operations
+      const subtaskOps = operations.filter((op: any) => op.resource === 'subtask');
+      expect(subtaskOps).toHaveLength(2);
+      expect(subtaskOps.map((op: any) => op.operation)).toEqual(['create', 'getAll']);
     });
 
     it('should return empty array when node has no operations', () => {
@@ -316,9 +425,9 @@ describe('PropertyExtractor', () => {
           properties: [stringPropertyFactory.build()]
         }
       });
-      
+
       const operations = extractor.extractOperations(NodeClass as any);
-      
+
       expect(operations).toEqual([]);
     });
 

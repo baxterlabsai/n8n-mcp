@@ -51,7 +51,7 @@ describe('NodeParser', () => {
       
       expect(result).toMatchObject({
         style: 'programmatic',
-        nodeType: `nodes-base.${nodeDefinition.name}`,
+        nodeType: `n8n-nodes-base.${nodeDefinition.name}`,
         displayName: nodeDefinition.displayName,
         description: nodeDefinition.description,
         category: nodeDefinition.group?.[0] || 'misc',
@@ -73,18 +73,18 @@ describe('NodeParser', () => {
       const result = parser.parse(NodeClass as any, 'n8n-nodes-base');
       
       expect(result.style).toBe('declarative');
-      expect(result.nodeType).toBe(`nodes-base.${nodeDefinition.name}`);
+      expect(result.nodeType).toBe(`n8n-nodes-base.${nodeDefinition.name}`);
     });
 
     it('should preserve type when package prefix is already included', () => {
       const nodeDefinition = programmaticNodeFactory.build({
-        name: 'nodes-base.slack'
+        name: 'n8n-nodes-base.slack'
       });
       const NodeClass = nodeClassFactory.build({ description: nodeDefinition });
-      
+
       const result = parser.parse(NodeClass as any, 'n8n-nodes-base');
-      
-      expect(result.nodeType).toBe('nodes-base.slack');
+
+      expect(result.nodeType).toBe('n8n-nodes-base.slack');
     });
 
     it('should set isTrigger flag when node is a trigger', () => {
@@ -141,7 +141,7 @@ describe('NodeParser', () => {
       
       expect(result.isVersioned).toBe(true);
       expect(result.version).toBe('2');
-      expect(result.nodeType).toBe('nodes-base.versionedNode');
+      expect(result.nodeType).toBe('n8n-nodes-base.versionedNode');
     });
 
     it('should parse correctly when node has nodeVersions property', () => {
@@ -271,13 +271,17 @@ describe('NodeParser', () => {
     it('should handle different package name formats', () => {
       const nodeDefinition = programmaticNodeFactory.build();
       const NodeClass = nodeClassFactory.build({ description: nodeDefinition });
-      
+
       const testCases = [
-        { packageName: '@n8n/n8n-nodes-langchain', expectedPrefix: 'nodes-langchain' },
-        { packageName: 'n8n-nodes-custom', expectedPrefix: 'nodes-custom' },
+        // @n8n/ scoped packages: strip the @n8n/ scope, keep the rest
+        { packageName: '@n8n/n8n-nodes-langchain', expectedPrefix: 'n8n-nodes-langchain' },
+        // n8n- prefixed packages: keep the full name including n8n- prefix
+        { packageName: 'n8n-nodes-base', expectedPrefix: 'n8n-nodes-base' },
+        { packageName: 'n8n-nodes-custom', expectedPrefix: 'n8n-nodes-custom' },
+        // Non-n8n packages: keep unchanged
         { packageName: 'custom-package', expectedPrefix: 'custom-package' }
       ];
-      
+
       testCases.forEach(({ packageName, expectedPrefix }) => {
         const result = parser.parse(NodeClass as any, packageName);
         expect(result.nodeType).toBe(`${expectedPrefix}.${nodeDefinition.name}`);
