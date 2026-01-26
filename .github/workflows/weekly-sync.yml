@@ -82,7 +82,7 @@ jobs:
       - name: Validate database
         run: |
           echo "🔍 Validating database..."
-          TEMPLATE_COUNT=$(sqlite3 data/nodes.db "SELECT COUNT(*) FROM workflow_templates;")
+          TEMPLATE_COUNT=$(sqlite3 data/nodes.db "SELECT COUNT(*) FROM templates;")
           echo "Template count: $TEMPLATE_COUNT"
 
           if [ "$TEMPLATE_COUNT" -lt 100 ]; then
