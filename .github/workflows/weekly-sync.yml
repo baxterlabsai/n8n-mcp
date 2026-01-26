@@ -4,12 +4,6 @@ on:
   schedule:
     - cron: '0 6 * * 0'
   workflow_dispatch:
-    inputs:
-      skip_render_deploy:
-        description: 'Skip Render redeploy (for testing)'
-        required: false
-        default: 'false'
-        type: boolean
 
 permissions:
   contents: write
@@ -113,26 +107,5 @@ jobs:
             echo "✅ Upload successful"
           else
             echo "❌ Upload failed"
-            exit 1
-          fi
-
-      - name: Trigger Render redeploy
-        if: ${{ github.event.inputs.skip_render_deploy != 'true' }}
-        env:
-          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
-          SERVICE_ID: ${{ secrets.SERVICE_ID }}
-        run: |
-          echo "🔄 Triggering Tech Factory redeploy..."
-
-          curl -X POST "https://api.render.com/v1/services/${SERVICE_ID}/deploys" \
-            -H "Authorization: Bearer ${RENDER_API_KEY}" \
-            -H "Content-Type: application/json" \
-            -d '{"clearCache": "do_not_clear"}' \
-            --fail-with-body
-
-          if [ $? -eq 0 ]; then
-            echo "✅ Redeploy triggered successfully"
-          else
-            echo "❌ Redeploy trigger failed"
             exit 1
           fi
