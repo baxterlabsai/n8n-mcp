@@ -72,17 +72,25 @@ export class TemplateFetcher {
   }
 
   /**
-   * Fetch all templates and filter to last 12 months
+   * Fetch all templates and filter by date range
+   * Respects DATE_MONTHS environment variable (0 = all templates, default = 12 months)
    * This fetches ALL pages first, then applies date filter locally
    */
   async fetchTemplates(progressCallback?: (current: number, total: number) => void, sinceDate?: Date): Promise<TemplateWorkflow[]> {
     const allTemplates = await this.fetchAllTemplates(progressCallback);
 
-    // Use provided date or default to 12 months ago
+    // Use provided date or calculate based on DATE_MONTHS environment variable
     const cutoffDate = sinceDate || (() => {
-      const oneYearAgo = new Date();
-      oneYearAgo.setMonth(oneYearAgo.getMonth() - 12);
-      return oneYearAgo;
+      const dateMonths = parseInt(process.env.DATE_MONTHS || '12', 10);
+
+      // If DATE_MONTHS=0, include all templates (no date filter)
+      if (dateMonths === 0) {
+        return new Date(0); // Unix epoch (1970-01-01) - includes all templates
+      }
+
+      const cutoff = new Date();
+      cutoff.setMonth(cutoff.getMonth() - dateMonths);
+      return cutoff;
     })();
 
     const recentTemplates = allTemplates.filter((w: TemplateWorkflow) => {
@@ -90,7 +98,10 @@ export class TemplateFetcher {
       return createdDate >= cutoffDate;
     });
 
-    logger.info(`Filtered to ${recentTemplates.length} templates since ${cutoffDate.toISOString().split('T')[0]} (out of ${allTemplates.length} total)`);
+    const totalFetched = allTemplates.length;
+    const dateMonths = process.env.DATE_MONTHS ? parseInt(process.env.DATE_MONTHS, 10) : 12;
+    const dateInfo = dateMonths === 0 ? 'all time' : `since ${cutoffDate.toISOString().split('T')[0]}`;
+    logger.info(`Filtered to ${recentTemplates.length} templates from ${dateInfo} (out of ${totalFetched} total)`);
     return recentTemplates;
   }
   
