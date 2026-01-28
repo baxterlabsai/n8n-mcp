@@ -37,7 +37,7 @@ jobs:
             echo "⚠️ Merge conflict detected, resolving..."
 
             git checkout --theirs package*.json || true
-            git checkout --theirs src/ || true
+            git checkout --ours src/ || true
             git checkout --theirs tsconfig.json || true
             git checkout --ours dist/ || true
             git checkout --ours patches/ || true
