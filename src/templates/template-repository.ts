@@ -116,7 +116,14 @@ export class TemplateRepository {
       logger.debug(`Skipping template ${workflow.id}: ${workflow.name} (only ${workflow.totalViews} views, minimum: ${minViews})`);
       return;
     }
-    
+
+    // Filter templates based on VERIFIED_ONLY environment variable
+    const verifiedOnly = process.env.VERIFIED_ONLY === 'true';
+    if (verifiedOnly && !workflow.user.verified) {
+      logger.debug(`Skipping non-verified template ${workflow.id}: ${workflow.name}`);
+      return;
+    }
+
     const stmt = this.db.prepare(`
       INSERT OR REPLACE INTO templates (
         id, workflow_id, name, description, author_name, author_username,
@@ -127,7 +134,14 @@ export class TemplateRepository {
     
     // Extract node types from workflow detail
     const nodeTypes = detail.workflow.nodes.map(n => n.type);
-    
+
+    // Filter templates based on REQUIRE_LANGCHAIN environment variable
+    const requireLangchain = process.env.REQUIRE_LANGCHAIN === 'true';
+    if (requireLangchain && !nodeTypes.some(type => type.includes('langchain'))) {
+      logger.debug(`Skipping non-LangChain template ${workflow.id}: ${workflow.name}`);
+      return;
+    }
+
     // Build URL
     const url = `https://n8n.io/workflows/${workflow.id}`;
     

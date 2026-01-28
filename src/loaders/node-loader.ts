@@ -21,6 +21,14 @@ export class N8nNodeLoader {
         // Use the path property to locate the package
         const packageJson = require(`${pkg.path}/package.json`);
         console.log(`  Found ${Object.keys(packageJson.n8n?.nodes || {}).length} nodes in package.json`);
+
+        // Filter to only load official n8n packages
+        const officialOnly = process.env.OFFICIAL_NODES_ONLY === 'true';
+        if (officialOnly && !pkg.name.startsWith('n8n-nodes-') && !pkg.name.startsWith('@n8n/')) {
+          console.log(`  Skipping non-official package: ${pkg.name}`);
+          continue;
+        }
+
         const nodes = await this.loadPackageNodes(pkg.name, pkg.path, packageJson);
         results.push(...nodes);
       } catch (error) {
@@ -48,7 +56,14 @@ export class N8nNodeLoader {
           // Extract node name from path (e.g., "dist/nodes/Slack/Slack.node.js" -> "Slack")
           const nodeNameMatch = nodePath.match(/\/([^\/]+)\.node\.(js|ts)$/);
           const nodeName = nodeNameMatch ? nodeNameMatch[1] : path.basename(nodePath, '.node.js');
-          
+
+          // Blacklist specific nodes by name
+          const blacklist = (process.env.NODE_BLACKLIST || '').split(',').map(s => s.trim()).filter(Boolean);
+          if (blacklist.length > 0 && blacklist.some(bl => nodeName.includes(bl))) {
+            console.log(`  ✗ Blacklisted ${nodeName} from ${packageName}`);
+            continue;
+          }
+
           // Handle default export and various export patterns
           const NodeClass = nodeModule.default || nodeModule[nodeName] || Object.values(nodeModule)[0];
           if (NodeClass) {

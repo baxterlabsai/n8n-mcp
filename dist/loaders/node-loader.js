@@ -19,6 +19,11 @@ class N8nNodeLoader {
                 console.log(`\n📦 Loading package: ${pkg.name} from ${pkg.path}`);
                 const packageJson = require(`${pkg.path}/package.json`);
                 console.log(`  Found ${Object.keys(packageJson.n8n?.nodes || {}).length} nodes in package.json`);
+                const officialOnly = process.env.OFFICIAL_NODES_ONLY === 'true';
+                if (officialOnly && !pkg.name.startsWith('n8n-nodes-') && !pkg.name.startsWith('@n8n/')) {
+                    console.log(`  Skipping non-official package: ${pkg.name}`);
+                    continue;
+                }
                 const nodes = await this.loadPackageNodes(pkg.name, pkg.path, packageJson);
                 results.push(...nodes);
             }
@@ -39,6 +44,11 @@ class N8nNodeLoader {
                     const nodeModule = require(fullPath);
                     const nodeNameMatch = nodePath.match(/\/([^\/]+)\.node\.(js|ts)$/);
                     const nodeName = nodeNameMatch ? nodeNameMatch[1] : path_1.default.basename(nodePath, '.node.js');
+                    const blacklist = (process.env.NODE_BLACKLIST || '').split(',').map(s => s.trim()).filter(Boolean);
+                    if (blacklist.length > 0 && blacklist.some(bl => nodeName.includes(bl))) {
+                        console.log(`  ✗ Blacklisted ${nodeName} from ${packageName}`);
+                        continue;
+                    }
                     const NodeClass = nodeModule.default || nodeModule[nodeName] || Object.values(nodeModule)[0];
                     if (NodeClass) {
                         nodes.push({ packageName, nodeName, NodeClass });

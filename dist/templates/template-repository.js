@@ -106,8 +106,14 @@ class TemplateRepository {
         }
     }
     saveTemplate(workflow, detail, categories = []) {
-        if ((workflow.totalViews || 0) <= 10) {
-            logger_1.logger.debug(`Skipping template ${workflow.id}: ${workflow.name} (only ${workflow.totalViews} views)`);
+        const minViews = parseInt(process.env.MIN_VIEWS || '0', 10);
+        if ((workflow.totalViews || 0) < minViews) {
+            logger_1.logger.debug(`Skipping template ${workflow.id}: ${workflow.name} (only ${workflow.totalViews} views, minimum: ${minViews})`);
+            return;
+        }
+        const verifiedOnly = process.env.VERIFIED_ONLY === 'true';
+        if (verifiedOnly && !workflow.user.verified) {
+            logger_1.logger.debug(`Skipping non-verified template ${workflow.id}: ${workflow.name}`);
             return;
         }
         const stmt = this.db.prepare(`
@@ -118,6 +124,11 @@ class TemplateRepository {
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
         const nodeTypes = detail.workflow.nodes.map(n => n.type);
+        const requireLangchain = process.env.REQUIRE_LANGCHAIN === 'true';
+        if (requireLangchain && !nodeTypes.some(type => type.includes('langchain'))) {
+            logger_1.logger.debug(`Skipping non-LangChain template ${workflow.id}: ${workflow.name}`);
+            return;
+        }
         const url = `https://n8n.io/workflows/${workflow.id}`;
         const { sanitized: sanitizedWorkflow, wasModified } = this.sanitizer.sanitizeWorkflow(detail.workflow);
         if (wasModified) {

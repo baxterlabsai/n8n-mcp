@@ -34,15 +34,22 @@ class TemplateFetcher {
     async fetchTemplates(progressCallback, sinceDate) {
         const allTemplates = await this.fetchAllTemplates(progressCallback);
         const cutoffDate = sinceDate || (() => {
-            const oneYearAgo = new Date();
-            oneYearAgo.setMonth(oneYearAgo.getMonth() - 12);
-            return oneYearAgo;
+            const dateMonths = parseInt(process.env.DATE_MONTHS || '12', 10);
+            if (dateMonths === 0) {
+                return new Date(0);
+            }
+            const cutoff = new Date();
+            cutoff.setMonth(cutoff.getMonth() - dateMonths);
+            return cutoff;
         })();
         const recentTemplates = allTemplates.filter((w) => {
             const createdDate = new Date(w.createdAt);
             return createdDate >= cutoffDate;
         });
-        logger_1.logger.info(`Filtered to ${recentTemplates.length} templates since ${cutoffDate.toISOString().split('T')[0]} (out of ${allTemplates.length} total)`);
+        const totalFetched = allTemplates.length;
+        const dateMonths = process.env.DATE_MONTHS ? parseInt(process.env.DATE_MONTHS, 10) : 12;
+        const dateInfo = dateMonths === 0 ? 'all time' : `since ${cutoffDate.toISOString().split('T')[0]}`;
+        logger_1.logger.info(`Filtered to ${recentTemplates.length} templates from ${dateInfo} (out of ${totalFetched} total)`);
         return recentTemplates;
     }
     async fetchAllTemplates(progressCallback) {
