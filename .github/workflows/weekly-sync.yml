@@ -65,12 +65,17 @@ jobs:
         run: npm run build
 
       - name: Build MCP database
+        env:
+          OFFICIAL_NODES_ONLY: true
+          NODE_BLACKLIST: htmlToPdf
         run: npm run rebuild
 
       - name: Fetch workflow templates
         env:
-          MIN_VIEWS: 0
+          MIN_VIEWS: 100
           DATE_MONTHS: 0
+          VERIFIED_ONLY: true
+          REQUIRE_LANGCHAIN: true
         run: npm run fetch:templates
 
       - name: Validate database
