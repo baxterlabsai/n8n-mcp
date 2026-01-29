@@ -75,7 +75,7 @@ jobs:
           MIN_VIEWS: 100
           DATE_MONTHS: 0
           VERIFIED_ONLY: true
-          REQUIRE_LANGCHAIN: true
+          REQUIRE_LANGCHAIN: false
         run: npm run fetch:templates
 
       - name: Validate database
