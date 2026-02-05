@@ -76,6 +76,7 @@ jobs:
           DATE_MONTHS: 0
           VERIFIED_ONLY: true
           REQUIRE_LANGCHAIN: false
+          NODE_BLACKLIST: htmlToPdf,executeCommand,code,function,functionItem
         run: npm run fetch:templates
 
       - name: Validate database
