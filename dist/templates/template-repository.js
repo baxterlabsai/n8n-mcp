@@ -129,6 +129,11 @@ class TemplateRepository {
             logger_1.logger.debug(`Skipping non-LangChain template ${workflow.id}: ${workflow.name}`);
             return;
         }
+        const blacklist = (process.env.NODE_BLACKLIST || '').split(',').map(s => s.trim()).filter(Boolean);
+        if (blacklist.length > 0 && nodeTypes.some(nodeType => blacklist.some(bl => nodeType.includes(bl)))) {
+            logger_1.logger.debug(`Skipping template ${workflow.id}: ${workflow.name} (contains blacklisted node)`);
+            return;
+        }
         const url = `https://n8n.io/workflows/${workflow.id}`;
         const { sanitized: sanitizedWorkflow, wasModified } = this.sanitizer.sanitizeWorkflow(detail.workflow);
         if (wasModified) {

@@ -142,6 +142,13 @@ export class TemplateRepository {
       return;
     }
 
+    // Filter templates containing blacklisted nodes
+    const blacklist = (process.env.NODE_BLACKLIST || '').split(',').map(s => s.trim()).filter(Boolean);
+    if (blacklist.length > 0 && nodeTypes.some(nodeType => blacklist.some(bl => nodeType.includes(bl)))) {
+      logger.debug(`Skipping template ${workflow.id}: ${workflow.name} (contains blacklisted node)`);
+      return;
+    }
+
     // Build URL
     const url = `https://n8n.io/workflows/${workflow.id}`;
     

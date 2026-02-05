@@ -67,7 +67,7 @@ jobs:
       - name: Build MCP database
         env:
           OFFICIAL_NODES_ONLY: true
-          NODE_BLACKLIST: htmlToPdf
+          NODE_BLACKLIST: htmlToPdf,executeCommand
         run: npm run rebuild
 
       - name: Fetch workflow templates
