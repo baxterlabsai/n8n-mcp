@@ -7,7 +7,6 @@ on:
 
 permissions:
   contents: write
-  workflows: write
 
 jobs:
   sync-build-upload:
@@ -42,7 +41,8 @@ jobs:
             git checkout --theirs tsconfig.json || true
             git checkout --ours dist/ || true
             git checkout --ours patches/ || true
-            git checkout --ours .github/workflows/ || true
+            git checkout --ours .github/workflows/weekly-sync.yml || true
+            git rm -f .github/workflows/release.yml 2>/dev/null || true
 
             git add .
             git commit -m "chore: auto-resolve merge conflicts"
