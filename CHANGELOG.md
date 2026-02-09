@@ -7,6 +7,127 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.35.1] - 2026-02-09
+
+### Fixed
+
+- **MCP Apps: Fix UI not rendering for some tools in Claude**: Added legacy flat `_meta["ui/resourceUri"]` key alongside the nested `_meta.ui.resourceUri` in tool definitions. Claude.ai reads the flat key format; without it, tools like `n8n_health_check` and `n8n_list_workflows` showed as collapsed accordions instead of rendering their rich UI apps. Both key formats are now set by `injectToolMeta()`, matching the behavior of the official `registerAppTool` helper from `@modelcontextprotocol/ext-apps/server`.
+
+Conceived by Romuald Czlonkowski - https://www.aiadvisors.pl/en
+
+## [2.35.0] - 2026-02-09
+
+### Added
+
+- **3 new MCP Apps**: workflow-list (compact table with status/tags), execution-history (status summary bar + execution table), health-dashboard (connection status, versions, performance metrics)
+- **Enhanced operation-result**: operation-aware headers (create/update/delete/test/deploy), detail panels with workflow metadata, copy-to-clipboard for IDs/URLs, autofix diff viewer
+- **CopyButton shared component**: reusable clipboard button with visual feedback
+- **Local preview harness** (`ui-apps/preview.html`): test all 5 apps with mock data, dark/light theme toggle, JSON-RPC protocol simulation
+- **Expanded shared types**: TypeScript types for workflow-list, execution-history, and health-dashboard data
+
+### Fixed
+
+- **React hooks violation**: Fixed `useMemo` called after early returns in `execution-history/App.tsx` and `validation-summary/App.tsx`, causing React error #310 ("Rendered more hooks than during the previous render") and blank iframes
+- **JSON-RPC catch-all handler**: Preview harness responds to unknown SDK requests to prevent hangs
+
+Conceived by Romuald Czlonkowski - https://www.aiadvisors.pl/en
+
+## [2.34.5] - 2026-02-08
+
+### Fixed
+
+- **MCP Apps: Fix blank UI and wrong status badge in Claude**: Rewrote `useToolData` hook to use the official `useApp` hook from `@modelcontextprotocol/ext-apps/react` for proper lifecycle management. Updated UI types and components to match actual server response format (`success: boolean` instead of `status: string`, nested `data` object for workflow details). Validation summary now handles both direct and wrapped (`n8n_validate_workflow`) response shapes.
+
+Conceived by Romuald Czlonkowski - https://www.aiadvisors.pl/en
+
+## [2.34.3] - 2026-02-07
+
+### Fixed
+
+- **MCP Apps: Use correct MIME type for ext-apps spec**: Changed resource MIME type from `text/html` to `text/html;profile=mcp-app` (the `RESOURCE_MIME_TYPE` constant from `@modelcontextprotocol/ext-apps`). Without this profile parameter, Claude Desktop/web fails to recognize resources as MCP Apps and shows "Failed to load MCP App: the resource may exceed the 5 MB size limit."
+
+Conceived by Romuald Czlonkowski - https://www.aiadvisors.pl/en
+
+## [2.34.2] - 2026-02-07
+
+### Fixed
+
+- **CI: UI apps missing from npm package**: Release pipeline only ran `npm run build` (TypeScript), so `ui-apps/dist/` was never built and excluded from published packages
+  - Changed build step to `npm run build:all` in `build-and-verify` and `publish-npm` jobs
+  - Added `ui-apps/dist/` to npm publish staging directory
+  - Added `ui-apps/dist/**/*` to published package files list
+
+Conceived by Romuald Czlonkowski - https://www.aiadvisors.pl/en
+
+## [2.34.1] - 2026-02-07
+
+### Changed
+
+- **MCP Apps: Align with official ext-apps spec** for Claude Desktop/web compatibility
+  - URI scheme changed from `n8n-mcp://ui/{id}` to `ui://n8n-mcp/{id}` per MCP ext-apps spec
+  - `_meta.ui.resourceUri` now set on tool definitions (`tools/list`) instead of tool call responses
+  - `UIMetadata.ui.app` renamed to `UIMetadata.ui.resourceUri`
+  - Added `_meta` field to `ToolDefinition` type
+  - Added `UIAppRegistry.injectToolMeta()` method for enriching tool definitions
+  - UI apps now use `@modelcontextprotocol/ext-apps` `App` class instead of `window.__MCP_DATA__`
+  - Updated `ReadResource` URI parser to match new `ui://` scheme
+
+Conceived by Romuald Czlonkowski - https://www.aiadvisors.pl/en
+
+## [2.34.0] - 2026-02-07
+
+### Added
+
+- **MCP Apps**: Rich HTML UIs rendered by MCP hosts alongside tool results via `_meta.ui` and the MCP resources protocol
+  - Server-side UI module (`src/mcp/ui/`) with tool-to-UI mapping and `_meta.ui` injection
+  - `UIAppRegistry` static class for loading and serving self-contained HTML apps
+  - `UI_APP_CONFIGS` mapping tools to their corresponding UI apps
+
+- **Operation Result UI**: Visual summary for workflow operation tools
+  - Status badge, operation type, workflow details card
+  - Expandable sections for nodes added, modified, and removed
+  - Mapped to: `n8n_create_workflow`, `n8n_update_full_workflow`, `n8n_update_partial_workflow`, `n8n_delete_workflow`, `n8n_test_workflow`, `n8n_autofix_workflow`, `n8n_deploy_template`
+
+- **Validation Summary UI**: Visual summary for validation tools
+  - Valid/invalid badge with error and warning counts
+  - Expandable error list with type, property, message, and fix
+  - Expandable warning list and suggestions
+  - Mapped to: `validate_node`, `validate_workflow`, `n8n_validate_workflow`
+
+- **React + Vite Build Pipeline** (`ui-apps/`):
+  - React 19, Vite 6, vite-plugin-singlefile for self-contained HTML output
+  - Shared component library: Card, Badge, Expandable
+  - `useToolData` hook for reading data from `window.__MCP_DATA__` or embedded JSON
+  - n8n-branded dark theme with CSS custom properties
+  - Per-app builds via `APP_NAME` environment variable
+
+- **MCP Resources Protocol**: Server now exposes `resources` capability
+  - `ListResources` handler returns available UI apps
+  - `ReadResource` handler serves self-contained HTML via `n8n-mcp://ui/{id}` URIs
+
+- **New Scripts**:
+  - `build:ui`: Build UI apps (`cd ui-apps && npm install && npm run build`)
+  - `build:all`: Build UI apps then server (`npm run build:ui && npm run build`)
+
+### Changed
+
+- **MCP Server**: Added `resources: {}` to server capabilities alongside existing `tools: {}`
+- **Tool Responses**: Tools with matching UI apps now include `_meta.ui.app` URI pointing to their visual representation
+- **Graceful Degradation**: Server starts and operates normally without `ui-apps/dist/`; UI metadata is only injected when HTML is available
+
+Conceived by Romuald Czlonkowski - https://www.aiadvisors.pl/en
+
+## [2.33.6] - 2026-02-06
+
+### Changed
+
+- Updated n8n from 2.4.4 to 2.6.3
+- Updated n8n-core from 2.4.2 to 2.6.1
+- Updated n8n-workflow from 2.4.2 to 2.6.0
+- Updated @n8n/n8n-nodes-langchain from 2.4.3 to 2.6.2
+- Rebuilt node database with 806 nodes (544 from n8n-nodes-base, 262 from @n8n/n8n-nodes-langchain)
+- Updated README badge with new n8n version
+
 ## [2.33.5] - 2026-01-23
 
 ### Fixed
