@@ -233,7 +233,7 @@ function checkIfStreamingTarget(node, workflow, reverseConnections) {
         if (!sourceNode)
             continue;
         const normalizedType = node_type_normalizer_1.NodeTypeNormalizer.normalizeToFullForm(sourceNode.type);
-        if (normalizedType === 'nodes-langchain.chatTrigger') {
+        if (normalizedType === '@n8n/n8n-nodes-langchain.chatTrigger') {
             const responseMode = sourceNode.parameters?.options?.responseMode || 'lastNode';
             if (responseMode === 'streaming') {
                 return true;
@@ -273,7 +273,7 @@ function validateChatTrigger(node, workflow, reverseConnections) {
     }
     const targetType = node_type_normalizer_1.NodeTypeNormalizer.normalizeToFullForm(targetNode.type);
     if (responseMode === 'streaming') {
-        if (targetType !== 'nodes-langchain.agent') {
+        if (targetType !== '@n8n/n8n-nodes-langchain.agent') {
             issues.push({
                 severity: 'error',
                 nodeId: node.id,
@@ -296,7 +296,7 @@ function validateChatTrigger(node, workflow, reverseConnections) {
         }
     }
     if (responseMode === 'lastNode') {
-        if (targetType === 'nodes-langchain.agent') {
+        if (targetType === '@n8n/n8n-nodes-langchain.agent') {
             issues.push({
                 severity: 'info',
                 nodeId: node.id,
@@ -369,15 +369,15 @@ function validateAISpecificNodes(workflow) {
         if (node.disabled)
             continue;
         const normalizedType = node_type_normalizer_1.NodeTypeNormalizer.normalizeToFullForm(node.type);
-        if (normalizedType === 'nodes-langchain.agent') {
+        if (normalizedType === '@n8n/n8n-nodes-langchain.agent') {
             const nodeIssues = validateAIAgent(node, reverseConnectionMap, workflow);
             issues.push(...nodeIssues);
         }
-        if (normalizedType === 'nodes-langchain.chatTrigger') {
+        if (normalizedType === '@n8n/n8n-nodes-langchain.chatTrigger') {
             const nodeIssues = validateChatTrigger(node, workflow, reverseConnectionMap);
             issues.push(...nodeIssues);
         }
-        if (normalizedType === 'nodes-langchain.chainLlm') {
+        if (normalizedType === '@n8n/n8n-nodes-langchain.chainLlm') {
             const nodeIssues = validateBasicLLMChain(node, reverseConnectionMap);
             issues.push(...nodeIssues);
         }
@@ -390,9 +390,9 @@ function validateAISpecificNodes(workflow) {
 }
 function hasAINodes(workflow) {
     const aiNodeTypes = [
-        'nodes-langchain.agent',
-        'nodes-langchain.chatTrigger',
-        'nodes-langchain.chainLlm',
+        '@n8n/n8n-nodes-langchain.agent',
+        '@n8n/n8n-nodes-langchain.chatTrigger',
+        '@n8n/n8n-nodes-langchain.chainLlm',
     ];
     return workflow.nodes.some(node => {
         const normalized = node_type_normalizer_1.NodeTypeNormalizer.normalizeToFullForm(node.type);
@@ -401,15 +401,15 @@ function hasAINodes(workflow) {
 }
 function getAINodeCategory(nodeType) {
     const normalized = node_type_normalizer_1.NodeTypeNormalizer.normalizeToFullForm(nodeType);
-    if (normalized === 'nodes-langchain.agent')
+    if (normalized === '@n8n/n8n-nodes-langchain.agent')
         return 'AI Agent';
-    if (normalized === 'nodes-langchain.chatTrigger')
+    if (normalized === '@n8n/n8n-nodes-langchain.chatTrigger')
         return 'Chat Trigger';
-    if (normalized === 'nodes-langchain.chainLlm')
+    if (normalized === '@n8n/n8n-nodes-langchain.chainLlm')
         return 'Basic LLM Chain';
     if ((0, ai_tool_validators_1.isAIToolSubNode)(normalized))
         return 'AI Tool';
-    if (normalized.startsWith('nodes-langchain.')) {
+    if (normalized.startsWith('@n8n/n8n-nodes-langchain.')) {
         if (normalized.includes('openAi') || normalized.includes('anthropic') || normalized.includes('googleGemini')) {
             return 'Language Model';
         }

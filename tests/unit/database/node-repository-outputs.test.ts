@@ -36,7 +36,7 @@ describe('NodeRepository - Outputs Handling', () => {
 
       const node: ParsedNode = {
         style: 'programmatic',
-        nodeType: 'nodes-base.splitInBatches',
+        nodeType: 'n8n-nodes-base.splitInBatches',
         displayName: 'Split In Batches',
         description: 'Split data into batches',
         category: 'transform',
@@ -69,7 +69,7 @@ describe('NodeRepository - Outputs Handling', () => {
     `);
 
       expect(mockStatement.run).toHaveBeenCalledWith(
-        'nodes-base.splitInBatches',
+        'n8n-nodes-base.splitInBatches',
         'n8n-nodes-base',
         'Split In Batches',
         'Split data into batches',
@@ -108,7 +108,7 @@ describe('NodeRepository - Outputs Handling', () => {
 
       const node: ParsedNode = {
         style: 'programmatic',
-        nodeType: 'nodes-base.if',
+        nodeType: 'n8n-nodes-base.if',
         displayName: 'IF',
         description: 'Route items based on conditions',
         category: 'transform',
@@ -137,7 +137,7 @@ describe('NodeRepository - Outputs Handling', () => {
 
       const node: ParsedNode = {
         style: 'programmatic',
-        nodeType: 'nodes-base.customNode',
+        nodeType: 'n8n-nodes-base.customNode',
         displayName: 'Custom Node',
         description: 'Custom node with output names only',
         category: 'transform',
@@ -164,7 +164,7 @@ describe('NodeRepository - Outputs Handling', () => {
     it('should save node without outputs or outputNames', () => {
       const node: ParsedNode = {
         style: 'programmatic',
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         displayName: 'HTTP Request',
         description: 'Make HTTP requests',
         category: 'input',
@@ -190,7 +190,7 @@ describe('NodeRepository - Outputs Handling', () => {
     it('should handle empty outputs and outputNames arrays', () => {
       const node: ParsedNode = {
         style: 'programmatic',
-        nodeType: 'nodes-base.emptyNode',
+        nodeType: 'n8n-nodes-base.emptyNode',
         displayName: 'Empty Node',
         description: 'Node with empty outputs',
         category: 'misc',
@@ -224,7 +224,7 @@ describe('NodeRepository - Outputs Handling', () => {
       const outputNames = ['done', 'loop'];
 
       const mockRow = {
-        node_type: 'nodes-base.splitInBatches',
+        node_type: 'n8n-nodes-base.splitInBatches',
         display_name: 'Split In Batches',
         description: 'Split data into batches',
         category: 'transform',
@@ -259,10 +259,10 @@ describe('NodeRepository - Outputs Handling', () => {
 
       mockStatement.get.mockReturnValue(mockRow);
 
-      const result = repository.getNode('nodes-base.splitInBatches');
+      const result = repository.getNode('n8n-nodes-base.splitInBatches');
 
       expect(result).toEqual({
-        nodeType: 'nodes-base.splitInBatches',
+        nodeType: 'n8n-nodes-base.splitInBatches',
         displayName: 'Split In Batches',
         description: 'Split data into batches',
         category: 'transform',
@@ -302,7 +302,7 @@ describe('NodeRepository - Outputs Handling', () => {
       ];
 
       const mockRow = {
-        node_type: 'nodes-base.if',
+        node_type: 'n8n-nodes-base.if',
         display_name: 'IF',
         description: 'Route items',
         category: 'transform',
@@ -334,7 +334,7 @@ describe('NodeRepository - Outputs Handling', () => {
 
       mockStatement.get.mockReturnValue(mockRow);
 
-      const result = repository.getNode('nodes-base.if');
+      const result = repository.getNode('n8n-nodes-base.if');
 
       expect(result.outputs).toEqual(outputs);
       expect(result.outputNames).toBe(null);
@@ -344,7 +344,7 @@ describe('NodeRepository - Outputs Handling', () => {
       const outputNames = ['main'];
 
       const mockRow = {
-        node_type: 'nodes-base.customNode',
+        node_type: 'n8n-nodes-base.customNode',
         display_name: 'Custom Node',
         description: 'Custom node',
         category: 'misc',
@@ -376,7 +376,7 @@ describe('NodeRepository - Outputs Handling', () => {
 
       mockStatement.get.mockReturnValue(mockRow);
 
-      const result = repository.getNode('nodes-base.customNode');
+      const result = repository.getNode('n8n-nodes-base.customNode');
 
       expect(result.outputs).toBe(null);
       expect(result.outputNames).toEqual(outputNames);
@@ -384,7 +384,7 @@ describe('NodeRepository - Outputs Handling', () => {
 
     it('should retrieve node without outputs or outputNames', () => {
       const mockRow = {
-        node_type: 'nodes-base.httpRequest',
+        node_type: 'n8n-nodes-base.httpRequest',
         display_name: 'HTTP Request',
         description: 'Make HTTP requests',
         category: 'input',
@@ -416,7 +416,7 @@ describe('NodeRepository - Outputs Handling', () => {
 
       mockStatement.get.mockReturnValue(mockRow);
 
-      const result = repository.getNode('nodes-base.httpRequest');
+      const result = repository.getNode('n8n-nodes-base.httpRequest');
 
       expect(result.outputs).toBe(null);
       expect(result.outputNames).toBe(null);
@@ -424,7 +424,7 @@ describe('NodeRepository - Outputs Handling', () => {
 
     it('should handle malformed JSON gracefully', () => {
       const mockRow = {
-        node_type: 'nodes-base.malformed',
+        node_type: 'n8n-nodes-base.malformed',
         display_name: 'Malformed Node',
         description: 'Node with malformed JSON',
         category: 'misc',
@@ -456,7 +456,7 @@ describe('NodeRepository - Outputs Handling', () => {
 
       mockStatement.get.mockReturnValue(mockRow);
 
-      const result = repository.getNode('nodes-base.malformed');
+      const result = repository.getNode('n8n-nodes-base.malformed');
 
       // Should use default values when JSON parsing fails
       expect(result.outputs).toBe(null);
@@ -466,7 +466,7 @@ describe('NodeRepository - Outputs Handling', () => {
     it('should return null for non-existent node', () => {
       mockStatement.get.mockReturnValue(null);
 
-      const result = repository.getNode('nodes-base.nonExistent');
+      const result = repository.getNode('n8n-nodes-base.nonExistent');
 
       expect(result).toBe(null);
     });
@@ -480,7 +480,7 @@ describe('NodeRepository - Outputs Handling', () => {
       const outputNames = ['done', 'loop'];
 
       const mockRow = {
-        node_type: 'nodes-base.splitInBatches',
+        node_type: 'n8n-nodes-base.splitInBatches',
         display_name: 'Split In Batches',
         description: 'Split data into batches',
         category: 'transform',
@@ -512,7 +512,7 @@ describe('NodeRepository - Outputs Handling', () => {
 
       mockStatement.get.mockReturnValue(mockRow);
 
-      const result = repository.getNode('nodes-base.splitInBatches');
+      const result = repository.getNode('n8n-nodes-base.splitInBatches');
 
       // Verify order is preserved
       expect(result.outputs[0].displayName).toBe('Done');
@@ -528,7 +528,7 @@ describe('NodeRepository - Outputs Handling', () => {
       const outputNames = ['main'];
 
       const mockRow = {
-        node_type: 'nodes-base.test',
+        node_type: 'n8n-nodes-base.test',
         display_name: 'Test',
         description: 'Test node',
         category: 'misc',
@@ -568,7 +568,7 @@ describe('NodeRepository - Outputs Handling', () => {
 
     it('should handle empty string as null for outputs', () => {
       const mockRow = {
-        node_type: 'nodes-base.empty',
+        node_type: 'n8n-nodes-base.empty',
         display_name: 'Empty',
         description: 'Empty node',
         category: 'misc',
@@ -631,7 +631,7 @@ describe('NodeRepository - Outputs Handling', () => {
 
       const node: ParsedNode = {
         style: 'programmatic',
-        nodeType: 'nodes-base.splitInBatches',
+        nodeType: 'n8n-nodes-base.splitInBatches',
         displayName: 'Split In Batches',
         description: 'Split data into batches',
         category: 'transform',
@@ -652,7 +652,7 @@ describe('NodeRepository - Outputs Handling', () => {
 
       // Simulate retrieval
       const mockRow = {
-        node_type: 'nodes-base.splitInBatches',
+        node_type: 'n8n-nodes-base.splitInBatches',
         display_name: 'Split In Batches',
         description: 'Split data into batches',
         category: 'transform',
@@ -684,7 +684,7 @@ describe('NodeRepository - Outputs Handling', () => {
 
       mockStatement.get.mockReturnValue(mockRow);
 
-      const result = repository.getNode('nodes-base.splitInBatches');
+      const result = repository.getNode('n8n-nodes-base.splitInBatches');
 
       expect(result.outputs).toEqual(complexOutputs);
       expect(result.outputs[0]).toMatchObject({

@@ -6,14 +6,17 @@ class NodeTypeNormalizer {
         if (!type || typeof type !== 'string') {
             return type;
         }
-        if (type.startsWith('n8n-nodes-base.')) {
-            return type.replace(/^n8n-nodes-base\./, 'nodes-base.');
+        if (type.startsWith('n8n-nodes-base.'))
+            return type;
+        if (type.startsWith('@n8n/n8n-nodes-langchain.'))
+            return type;
+        if (type.startsWith('n8n-nodes-langchain.'))
+            return type;
+        if (type.startsWith('nodes-base.')) {
+            return type.replace(/^nodes-base\./, 'n8n-nodes-base.');
         }
-        if (type.startsWith('@n8n/n8n-nodes-langchain.')) {
-            return type.replace(/^@n8n\/n8n-nodes-langchain\./, 'nodes-langchain.');
-        }
-        if (type.startsWith('n8n-nodes-langchain.')) {
-            return type.replace(/^n8n-nodes-langchain\./, 'nodes-langchain.');
+        if (type.startsWith('nodes-langchain.')) {
+            return type.replace(/^nodes-langchain\./, '@n8n/n8n-nodes-langchain.');
         }
         return type;
     }

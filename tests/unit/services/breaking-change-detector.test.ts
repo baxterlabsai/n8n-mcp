@@ -11,7 +11,7 @@ describe('BreakingChangeDetector', () => {
   let mockRepository: NodeRepository;
 
   const createMockVersionData = (version: string, properties: any[] = []) => ({
-    nodeType: 'nodes-base.httpRequest',
+    nodeType: 'n8n-nodes-base.httpRequest',
     version,
     packageName: 'n8n-nodes-base',
     displayName: 'HTTP Request',
@@ -39,7 +39,7 @@ describe('BreakingChangeDetector', () => {
   describe('analyzeVersionUpgrade', () => {
     it('should combine registry and dynamic changes', async () => {
       const registryChange: BreakingChangesRegistry.BreakingChange = {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         fromVersion: '1.0',
         toVersion: '2.0',
         propertyName: 'registryProp',
@@ -60,7 +60,7 @@ describe('BreakingChangeDetector', () => {
         .mockReturnValueOnce(v1)
         .mockReturnValueOnce(v2);
 
-      const result = await detector.analyzeVersionUpgrade('nodes-base.httpRequest', '1.0', '2.0');
+      const result = await detector.analyzeVersionUpgrade('n8n-nodes-base.httpRequest', '1.0', '2.0');
 
       expect(result.changes.length).toBeGreaterThan(0);
       expect(result.changes.some(c => c.source === 'registry')).toBe(true);
@@ -69,7 +69,7 @@ describe('BreakingChangeDetector', () => {
 
     it('should detect breaking changes', async () => {
       const breakingChange: BreakingChangesRegistry.BreakingChange = {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         fromVersion: '1.0',
         toVersion: '2.0',
         propertyName: 'criticalProp',
@@ -84,7 +84,7 @@ describe('BreakingChangeDetector', () => {
       vi.spyOn(BreakingChangesRegistry, 'getAllChangesForNode').mockReturnValue([breakingChange]);
       vi.spyOn(mockRepository, 'getNodeVersion').mockReturnValue(null);
 
-      const result = await detector.analyzeVersionUpgrade('nodes-base.httpRequest', '1.0', '2.0');
+      const result = await detector.analyzeVersionUpgrade('n8n-nodes-base.httpRequest', '1.0', '2.0');
 
       expect(result.hasBreakingChanges).toBe(true);
     });
@@ -92,7 +92,7 @@ describe('BreakingChangeDetector', () => {
     it('should calculate auto-migratable and manual counts', async () => {
       const changes: BreakingChangesRegistry.BreakingChange[] = [
         {
-          nodeType: 'nodes-base.httpRequest',
+          nodeType: 'n8n-nodes-base.httpRequest',
           fromVersion: '1.0',
           toVersion: '2.0',
           propertyName: 'autoProp',
@@ -104,7 +104,7 @@ describe('BreakingChangeDetector', () => {
           migrationStrategy: { type: 'add_property', defaultValue: null }
         },
         {
-          nodeType: 'nodes-base.httpRequest',
+          nodeType: 'n8n-nodes-base.httpRequest',
           fromVersion: '1.0',
           toVersion: '2.0',
           propertyName: 'manualProp',
@@ -120,7 +120,7 @@ describe('BreakingChangeDetector', () => {
       vi.spyOn(BreakingChangesRegistry, 'getAllChangesForNode').mockReturnValue(changes);
       vi.spyOn(mockRepository, 'getNodeVersion').mockReturnValue(null);
 
-      const result = await detector.analyzeVersionUpgrade('nodes-base.httpRequest', '1.0', '2.0');
+      const result = await detector.analyzeVersionUpgrade('n8n-nodes-base.httpRequest', '1.0', '2.0');
 
       expect(result.autoMigratableCount).toBe(1);
       expect(result.manualRequiredCount).toBe(1);
@@ -128,7 +128,7 @@ describe('BreakingChangeDetector', () => {
 
     it('should determine overall severity', async () => {
       const highSeverityChange: BreakingChangesRegistry.BreakingChange = {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         fromVersion: '1.0',
         toVersion: '2.0',
         propertyName: 'criticalProp',
@@ -143,7 +143,7 @@ describe('BreakingChangeDetector', () => {
       vi.spyOn(BreakingChangesRegistry, 'getAllChangesForNode').mockReturnValue([highSeverityChange]);
       vi.spyOn(mockRepository, 'getNodeVersion').mockReturnValue(null);
 
-      const result = await detector.analyzeVersionUpgrade('nodes-base.httpRequest', '1.0', '2.0');
+      const result = await detector.analyzeVersionUpgrade('n8n-nodes-base.httpRequest', '1.0', '2.0');
 
       expect(result.overallSeverity).toBe('HIGH');
     });
@@ -151,7 +151,7 @@ describe('BreakingChangeDetector', () => {
     it('should generate recommendations', async () => {
       const changes: BreakingChangesRegistry.BreakingChange[] = [
         {
-          nodeType: 'nodes-base.httpRequest',
+          nodeType: 'n8n-nodes-base.httpRequest',
           fromVersion: '1.0',
           toVersion: '2.0',
           propertyName: 'prop1',
@@ -163,7 +163,7 @@ describe('BreakingChangeDetector', () => {
           migrationStrategy: { type: 'remove_property' }
         },
         {
-          nodeType: 'nodes-base.httpRequest',
+          nodeType: 'n8n-nodes-base.httpRequest',
           fromVersion: '1.0',
           toVersion: '2.0',
           propertyName: 'prop2',
@@ -179,7 +179,7 @@ describe('BreakingChangeDetector', () => {
       vi.spyOn(BreakingChangesRegistry, 'getAllChangesForNode').mockReturnValue(changes);
       vi.spyOn(mockRepository, 'getNodeVersion').mockReturnValue(null);
 
-      const result = await detector.analyzeVersionUpgrade('nodes-base.httpRequest', '1.0', '2.0');
+      const result = await detector.analyzeVersionUpgrade('n8n-nodes-base.httpRequest', '1.0', '2.0');
 
       expect(result.recommendations.length).toBeGreaterThan(0);
       expect(result.recommendations.some(r => r.includes('breaking change'))).toBe(true);
@@ -199,7 +199,7 @@ describe('BreakingChangeDetector', () => {
         .mockReturnValueOnce(v1)
         .mockReturnValueOnce(v2);
 
-      const result = await detector.analyzeVersionUpgrade('nodes-base.httpRequest', '1.0', '2.0');
+      const result = await detector.analyzeVersionUpgrade('n8n-nodes-base.httpRequest', '1.0', '2.0');
 
       const addedChange = result.changes.find(c => c.changeType === 'added');
       expect(addedChange).toBeDefined();
@@ -217,7 +217,7 @@ describe('BreakingChangeDetector', () => {
         .mockReturnValueOnce(v1)
         .mockReturnValueOnce(v2);
 
-      const result = await detector.analyzeVersionUpgrade('nodes-base.httpRequest', '1.0', '2.0');
+      const result = await detector.analyzeVersionUpgrade('n8n-nodes-base.httpRequest', '1.0', '2.0');
 
       const addedChange = result.changes.find(c => c.changeType === 'added');
       expect(addedChange?.isBreaking).toBe(true);
@@ -235,7 +235,7 @@ describe('BreakingChangeDetector', () => {
         .mockReturnValueOnce(v1)
         .mockReturnValueOnce(v2);
 
-      const result = await detector.analyzeVersionUpgrade('nodes-base.httpRequest', '1.0', '2.0');
+      const result = await detector.analyzeVersionUpgrade('n8n-nodes-base.httpRequest', '1.0', '2.0');
 
       const addedChange = result.changes.find(c => c.changeType === 'added');
       expect(addedChange?.isBreaking).toBe(false);
@@ -253,7 +253,7 @@ describe('BreakingChangeDetector', () => {
         .mockReturnValueOnce(v1)
         .mockReturnValueOnce(v2);
 
-      const result = await detector.analyzeVersionUpgrade('nodes-base.httpRequest', '1.0', '2.0');
+      const result = await detector.analyzeVersionUpgrade('n8n-nodes-base.httpRequest', '1.0', '2.0');
 
       const removedChange = result.changes.find(c => c.changeType === 'removed');
       expect(removedChange).toBeDefined();
@@ -272,7 +272,7 @@ describe('BreakingChangeDetector', () => {
         .mockReturnValueOnce(v1)
         .mockReturnValueOnce(v2);
 
-      const result = await detector.analyzeVersionUpgrade('nodes-base.httpRequest', '1.0', '2.0');
+      const result = await detector.analyzeVersionUpgrade('n8n-nodes-base.httpRequest', '1.0', '2.0');
 
       const requirementChange = result.changes.find(c => c.changeType === 'requirement_changed');
       expect(requirementChange).toBeDefined();
@@ -291,7 +291,7 @@ describe('BreakingChangeDetector', () => {
         .mockReturnValueOnce(v1)
         .mockReturnValueOnce(v2);
 
-      const result = await detector.analyzeVersionUpgrade('nodes-base.httpRequest', '1.0', '2.0');
+      const result = await detector.analyzeVersionUpgrade('n8n-nodes-base.httpRequest', '1.0', '2.0');
 
       const requirementChange = result.changes.find(c => c.changeType === 'requirement_changed');
       expect(requirementChange).toBeDefined();
@@ -303,7 +303,7 @@ describe('BreakingChangeDetector', () => {
       vi.spyOn(BreakingChangesRegistry, 'getAllChangesForNode').mockReturnValue([]);
       vi.spyOn(mockRepository, 'getNodeVersion').mockReturnValue(null);
 
-      const result = await detector.analyzeVersionUpgrade('nodes-base.httpRequest', '1.0', '2.0');
+      const result = await detector.analyzeVersionUpgrade('n8n-nodes-base.httpRequest', '1.0', '2.0');
 
       expect(result.changes.filter(c => c.source === 'dynamic')).toHaveLength(0);
     });
@@ -318,7 +318,7 @@ describe('BreakingChangeDetector', () => {
         .mockReturnValueOnce(v1 as any)
         .mockReturnValueOnce(v2 as any);
 
-      const result = await detector.analyzeVersionUpgrade('nodes-base.httpRequest', '1.0', '2.0');
+      const result = await detector.analyzeVersionUpgrade('n8n-nodes-base.httpRequest', '1.0', '2.0');
 
       expect(result.changes.filter(c => c.source === 'dynamic')).toHaveLength(0);
     });
@@ -327,7 +327,7 @@ describe('BreakingChangeDetector', () => {
   describe('change merging and deduplication', () => {
     it('should prioritize registry changes over dynamic', async () => {
       const registryChange: BreakingChangesRegistry.BreakingChange = {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         fromVersion: '1.0',
         toVersion: '2.0',
         propertyName: 'sharedProp',
@@ -348,7 +348,7 @@ describe('BreakingChangeDetector', () => {
         .mockReturnValueOnce(v1)
         .mockReturnValueOnce(v2);
 
-      const result = await detector.analyzeVersionUpgrade('nodes-base.httpRequest', '1.0', '2.0');
+      const result = await detector.analyzeVersionUpgrade('n8n-nodes-base.httpRequest', '1.0', '2.0');
 
       const sharedChanges = result.changes.filter(c => c.propertyName === 'sharedProp');
       expect(sharedChanges).toHaveLength(1);
@@ -358,7 +358,7 @@ describe('BreakingChangeDetector', () => {
     it('should sort changes by severity', async () => {
       const changes: BreakingChangesRegistry.BreakingChange[] = [
         {
-          nodeType: 'nodes-base.httpRequest',
+          nodeType: 'n8n-nodes-base.httpRequest',
           fromVersion: '1.0',
           toVersion: '2.0',
           propertyName: 'lowProp',
@@ -370,7 +370,7 @@ describe('BreakingChangeDetector', () => {
           migrationStrategy: { type: 'add_property', defaultValue: null }
         },
         {
-          nodeType: 'nodes-base.httpRequest',
+          nodeType: 'n8n-nodes-base.httpRequest',
           fromVersion: '1.0',
           toVersion: '2.0',
           propertyName: 'highProp',
@@ -382,7 +382,7 @@ describe('BreakingChangeDetector', () => {
           migrationStrategy: undefined
         },
         {
-          nodeType: 'nodes-base.httpRequest',
+          nodeType: 'n8n-nodes-base.httpRequest',
           fromVersion: '1.0',
           toVersion: '2.0',
           propertyName: 'medProp',
@@ -398,7 +398,7 @@ describe('BreakingChangeDetector', () => {
       vi.spyOn(BreakingChangesRegistry, 'getAllChangesForNode').mockReturnValue(changes);
       vi.spyOn(mockRepository, 'getNodeVersion').mockReturnValue(null);
 
-      const result = await detector.analyzeVersionUpgrade('nodes-base.httpRequest', '1.0', '2.0');
+      const result = await detector.analyzeVersionUpgrade('n8n-nodes-base.httpRequest', '1.0', '2.0');
 
       expect(result.changes[0].severity).toBe('HIGH');
       expect(result.changes[result.changes.length - 1].severity).toBe('LOW');
@@ -408,7 +408,7 @@ describe('BreakingChangeDetector', () => {
   describe('hasBreakingChanges', () => {
     it('should return true when breaking changes exist', () => {
       const breakingChange: BreakingChangesRegistry.BreakingChange = {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         fromVersion: '1.0',
         toVersion: '2.0',
         propertyName: 'prop',
@@ -422,7 +422,7 @@ describe('BreakingChangeDetector', () => {
 
       vi.spyOn(BreakingChangesRegistry, 'getBreakingChangesForNode').mockReturnValue([breakingChange]);
 
-      const result = detector.hasBreakingChanges('nodes-base.httpRequest', '1.0', '2.0');
+      const result = detector.hasBreakingChanges('n8n-nodes-base.httpRequest', '1.0', '2.0');
 
       expect(result).toBe(true);
     });
@@ -430,7 +430,7 @@ describe('BreakingChangeDetector', () => {
     it('should return false when no breaking changes', () => {
       vi.spyOn(BreakingChangesRegistry, 'getBreakingChangesForNode').mockReturnValue([]);
 
-      const result = detector.hasBreakingChanges('nodes-base.httpRequest', '1.0', '2.0');
+      const result = detector.hasBreakingChanges('n8n-nodes-base.httpRequest', '1.0', '2.0');
 
       expect(result).toBe(false);
     });
@@ -440,7 +440,7 @@ describe('BreakingChangeDetector', () => {
     it('should return list of changed property names', () => {
       const changes: BreakingChangesRegistry.BreakingChange[] = [
         {
-          nodeType: 'nodes-base.httpRequest',
+          nodeType: 'n8n-nodes-base.httpRequest',
           fromVersion: '1.0',
           toVersion: '2.0',
           propertyName: 'prop1',
@@ -452,7 +452,7 @@ describe('BreakingChangeDetector', () => {
           migrationStrategy: undefined
         },
         {
-          nodeType: 'nodes-base.httpRequest',
+          nodeType: 'n8n-nodes-base.httpRequest',
           fromVersion: '1.0',
           toVersion: '2.0',
           propertyName: 'prop2',
@@ -467,7 +467,7 @@ describe('BreakingChangeDetector', () => {
 
       vi.spyOn(BreakingChangesRegistry, 'getAllChangesForNode').mockReturnValue(changes);
 
-      const result = detector.getChangedProperties('nodes-base.httpRequest', '1.0', '2.0');
+      const result = detector.getChangedProperties('n8n-nodes-base.httpRequest', '1.0', '2.0');
 
       expect(result).toEqual(['prop1', 'prop2']);
     });
@@ -475,7 +475,7 @@ describe('BreakingChangeDetector', () => {
     it('should return empty array when no changes', () => {
       vi.spyOn(BreakingChangesRegistry, 'getAllChangesForNode').mockReturnValue([]);
 
-      const result = detector.getChangedProperties('nodes-base.httpRequest', '1.0', '2.0');
+      const result = detector.getChangedProperties('n8n-nodes-base.httpRequest', '1.0', '2.0');
 
       expect(result).toEqual([]);
     });
@@ -485,7 +485,7 @@ describe('BreakingChangeDetector', () => {
     it('should recommend safe upgrade when no breaking changes', async () => {
       const changes: BreakingChangesRegistry.BreakingChange[] = [
         {
-          nodeType: 'nodes-base.httpRequest',
+          nodeType: 'n8n-nodes-base.httpRequest',
           fromVersion: '1.0',
           toVersion: '2.0',
           propertyName: 'prop',
@@ -501,7 +501,7 @@ describe('BreakingChangeDetector', () => {
       vi.spyOn(BreakingChangesRegistry, 'getAllChangesForNode').mockReturnValue(changes);
       vi.spyOn(mockRepository, 'getNodeVersion').mockReturnValue(null);
 
-      const result = await detector.analyzeVersionUpgrade('nodes-base.httpRequest', '1.0', '2.0');
+      const result = await detector.analyzeVersionUpgrade('n8n-nodes-base.httpRequest', '1.0', '2.0');
 
       expect(result.recommendations.some(r => r.includes('No breaking changes'))).toBe(true);
       expect(result.recommendations.some(r => r.includes('safe'))).toBe(true);
@@ -510,7 +510,7 @@ describe('BreakingChangeDetector', () => {
     it('should warn about breaking changes', async () => {
       const changes: BreakingChangesRegistry.BreakingChange[] = [
         {
-          nodeType: 'nodes-base.httpRequest',
+          nodeType: 'n8n-nodes-base.httpRequest',
           fromVersion: '1.0',
           toVersion: '2.0',
           propertyName: 'prop',
@@ -526,7 +526,7 @@ describe('BreakingChangeDetector', () => {
       vi.spyOn(BreakingChangesRegistry, 'getAllChangesForNode').mockReturnValue(changes);
       vi.spyOn(mockRepository, 'getNodeVersion').mockReturnValue(null);
 
-      const result = await detector.analyzeVersionUpgrade('nodes-base.httpRequest', '1.0', '2.0');
+      const result = await detector.analyzeVersionUpgrade('n8n-nodes-base.httpRequest', '1.0', '2.0');
 
       expect(result.recommendations.some(r => r.includes('breaking change'))).toBe(true);
     });
@@ -534,7 +534,7 @@ describe('BreakingChangeDetector', () => {
     it('should list manual changes required', async () => {
       const changes: BreakingChangesRegistry.BreakingChange[] = [
         {
-          nodeType: 'nodes-base.httpRequest',
+          nodeType: 'n8n-nodes-base.httpRequest',
           fromVersion: '1.0',
           toVersion: '2.0',
           propertyName: 'manualProp',
@@ -550,7 +550,7 @@ describe('BreakingChangeDetector', () => {
       vi.spyOn(BreakingChangesRegistry, 'getAllChangesForNode').mockReturnValue(changes);
       vi.spyOn(mockRepository, 'getNodeVersion').mockReturnValue(null);
 
-      const result = await detector.analyzeVersionUpgrade('nodes-base.httpRequest', '1.0', '2.0');
+      const result = await detector.analyzeVersionUpgrade('n8n-nodes-base.httpRequest', '1.0', '2.0');
 
       expect(result.recommendations.some(r => r.includes('manual intervention'))).toBe(true);
       expect(result.recommendations.some(r => r.includes('manualProp'))).toBe(true);
@@ -578,7 +578,7 @@ describe('BreakingChangeDetector', () => {
         .mockReturnValueOnce(v1)
         .mockReturnValueOnce(v2);
 
-      const result = await detector.analyzeVersionUpgrade('nodes-base.httpRequest', '1.0', '2.0');
+      const result = await detector.analyzeVersionUpgrade('n8n-nodes-base.httpRequest', '1.0', '2.0');
 
       // Should detect removal of parent and nested properties
       expect(result.changes.some(c => c.propertyName.includes('parent'))).toBe(true);
@@ -589,7 +589,7 @@ describe('BreakingChangeDetector', () => {
     it('should return HIGH when any change is HIGH severity', async () => {
       const changes: BreakingChangesRegistry.BreakingChange[] = [
         {
-          nodeType: 'nodes-base.httpRequest',
+          nodeType: 'n8n-nodes-base.httpRequest',
           fromVersion: '1.0',
           toVersion: '2.0',
           propertyName: 'lowProp',
@@ -601,7 +601,7 @@ describe('BreakingChangeDetector', () => {
           migrationStrategy: undefined
         },
         {
-          nodeType: 'nodes-base.httpRequest',
+          nodeType: 'n8n-nodes-base.httpRequest',
           fromVersion: '1.0',
           toVersion: '2.0',
           propertyName: 'highProp',
@@ -617,7 +617,7 @@ describe('BreakingChangeDetector', () => {
       vi.spyOn(BreakingChangesRegistry, 'getAllChangesForNode').mockReturnValue(changes);
       vi.spyOn(mockRepository, 'getNodeVersion').mockReturnValue(null);
 
-      const result = await detector.analyzeVersionUpgrade('nodes-base.httpRequest', '1.0', '2.0');
+      const result = await detector.analyzeVersionUpgrade('n8n-nodes-base.httpRequest', '1.0', '2.0');
 
       expect(result.overallSeverity).toBe('HIGH');
     });
@@ -625,7 +625,7 @@ describe('BreakingChangeDetector', () => {
     it('should return MEDIUM when no HIGH but has MEDIUM', async () => {
       const changes: BreakingChangesRegistry.BreakingChange[] = [
         {
-          nodeType: 'nodes-base.httpRequest',
+          nodeType: 'n8n-nodes-base.httpRequest',
           fromVersion: '1.0',
           toVersion: '2.0',
           propertyName: 'lowProp',
@@ -637,7 +637,7 @@ describe('BreakingChangeDetector', () => {
           migrationStrategy: undefined
         },
         {
-          nodeType: 'nodes-base.httpRequest',
+          nodeType: 'n8n-nodes-base.httpRequest',
           fromVersion: '1.0',
           toVersion: '2.0',
           propertyName: 'medProp',
@@ -653,7 +653,7 @@ describe('BreakingChangeDetector', () => {
       vi.spyOn(BreakingChangesRegistry, 'getAllChangesForNode').mockReturnValue(changes);
       vi.spyOn(mockRepository, 'getNodeVersion').mockReturnValue(null);
 
-      const result = await detector.analyzeVersionUpgrade('nodes-base.httpRequest', '1.0', '2.0');
+      const result = await detector.analyzeVersionUpgrade('n8n-nodes-base.httpRequest', '1.0', '2.0');
 
       expect(result.overallSeverity).toBe('MEDIUM');
     });
@@ -661,7 +661,7 @@ describe('BreakingChangeDetector', () => {
     it('should return LOW when all changes are LOW severity', async () => {
       const changes: BreakingChangesRegistry.BreakingChange[] = [
         {
-          nodeType: 'nodes-base.httpRequest',
+          nodeType: 'n8n-nodes-base.httpRequest',
           fromVersion: '1.0',
           toVersion: '2.0',
           propertyName: 'prop',
@@ -677,7 +677,7 @@ describe('BreakingChangeDetector', () => {
       vi.spyOn(BreakingChangesRegistry, 'getAllChangesForNode').mockReturnValue(changes);
       vi.spyOn(mockRepository, 'getNodeVersion').mockReturnValue(null);
 
-      const result = await detector.analyzeVersionUpgrade('nodes-base.httpRequest', '1.0', '2.0');
+      const result = await detector.analyzeVersionUpgrade('n8n-nodes-base.httpRequest', '1.0', '2.0');
 
       expect(result.overallSeverity).toBe('LOW');
     });

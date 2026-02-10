@@ -32,10 +32,10 @@ describe('Debug Validator Tests', () => {
     mockNodeRepository = {
       getNode: (nodeType: string) => {
         // Handle both n8n-nodes-base.set and nodes-base.set (normalized)
-        if (nodeType === 'n8n-nodes-base.set' || nodeType === 'nodes-base.set') {
+        if (nodeType === 'n8n-nodes-base.set' || nodeType === 'n8n-nodes-base.set') {
           return {
             name: 'Set',
-            type: 'nodes-base.set',
+            type: 'n8n-nodes-base.set',
             typeVersion: 1,
             properties: [],
             package: 'n8n-nodes-base',

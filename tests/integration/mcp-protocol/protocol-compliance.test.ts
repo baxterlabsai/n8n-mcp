@@ -133,7 +133,7 @@ describe('MCP Protocol Compliance', () => {
       try {
         // Invalid nodeType format (missing prefix)
         const response = await client.callTool({ name: 'get_node', arguments: {
-          nodeType: 'httpRequest' // Should be 'nodes-base.httpRequest'
+          nodeType: 'httpRequest' // Should be 'n8n-nodes-base.httpRequest'
         } });
         // Check if the response indicates an error
         const text = (response as any).content[0].text;
@@ -158,7 +158,7 @@ describe('MCP Protocol Compliance', () => {
     it('should handle large text responses', async () => {
       // Get a large node info response
       const response = await client.callTool({ name: 'get_node', arguments: {
-        nodeType: 'nodes-base.httpRequest'
+        nodeType: 'n8n-nodes-base.httpRequest'
       } });
 
       expect((response as any).content).toHaveLength(1);
@@ -182,9 +182,9 @@ describe('MCP Protocol Compliance', () => {
   describe('Request/Response Correlation', () => {
     it('should correlate concurrent requests correctly', async () => {
       const requests = [
-        client.callTool({ name: 'get_node', arguments: { nodeType: 'nodes-base.httpRequest' } }),
-        client.callTool({ name: 'get_node', arguments: { nodeType: 'nodes-base.webhook' } }),
-        client.callTool({ name: 'get_node', arguments: { nodeType: 'nodes-base.slack' } })
+        client.callTool({ name: 'get_node', arguments: { nodeType: 'n8n-nodes-base.httpRequest' } }),
+        client.callTool({ name: 'get_node', arguments: { nodeType: 'n8n-nodes-base.webhook' } }),
+        client.callTool({ name: 'get_node', arguments: { nodeType: 'n8n-nodes-base.slack' } })
       ];
 
       const responses = await Promise.all(requests);
@@ -219,7 +219,7 @@ describe('MCP Protocol Compliance', () => {
     it('should handle tool-specific extensions', async () => {
       // Test tool with complex params (using consolidated validate_node from v2.26.0)
       const response = await client.callTool({ name: 'validate_node', arguments: {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         config: {
           method: 'GET',
           url: 'https://api.example.com'

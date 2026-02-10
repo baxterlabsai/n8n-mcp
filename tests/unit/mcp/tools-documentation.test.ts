@@ -90,7 +90,7 @@ vi.mock('@/mcp/tool-docs', () => ({
       essentials: {
         description: 'Get essential node properties only',
         keyParameters: ['nodeType'],
-        example: 'get_node_essentials("nodes-base.slack")',
+        example: 'get_node_essentials("n8n-nodes-base.slack")',
         performance: 'Fast (<100ms)',
         tips: ['Use this before get_node_info', 'Returns 95% smaller payload']
       },
@@ -104,7 +104,7 @@ vi.mock('@/mcp/tool-docs', () => ({
           }
         },
         returns: 'Essential properties with examples',
-        examples: ['get_node_essentials("nodes-base.httpRequest")'],
+        examples: ['get_node_essentials("n8n-nodes-base.httpRequest")'],
         useCases: ['Quick configuration', 'Property discovery'],
         performance: 'Fast - pre-filtered data',
         bestPractices: ['Always try essentials first'],

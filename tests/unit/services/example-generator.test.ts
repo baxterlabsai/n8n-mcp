@@ -81,7 +81,7 @@ describe('ExampleGenerator', () => {
         ]
       };
 
-      const examples = ExampleGenerator.getExamples('nodes-base.unknownNode', essentials);
+      const examples = ExampleGenerator.getExamples('n8n-nodes-base.unknownNode', essentials);
 
       expect(examples.minimal).toEqual({
         url: 'https://api.example.com',
@@ -100,7 +100,7 @@ describe('ExampleGenerator', () => {
         ]
       };
 
-      const examples = ExampleGenerator.getExamples('nodes-base.unknownNode', essentials);
+      const examples = ExampleGenerator.getExamples('n8n-nodes-base.unknownNode', essentials);
 
       expect(examples.minimal).toEqual({
         name: 'John Doe'
@@ -108,7 +108,7 @@ describe('ExampleGenerator', () => {
     });
 
     it('should return empty minimal object if no essentials provided', () => {
-      const examples = ExampleGenerator.getExamples('nodes-base.unknownNode');
+      const examples = ExampleGenerator.getExamples('n8n-nodes-base.unknownNode');
 
       expect(examples.minimal).toEqual({});
     });
@@ -320,7 +320,7 @@ describe('ExampleGenerator', () => {
     });
 
     it('should return undefined for unknown node type', () => {
-      const example = ExampleGenerator.getTaskExample('nodes-base.unknownNode', 'basic');
+      const example = ExampleGenerator.getTaskExample('n8n-nodes-base.unknownNode', 'basic');
 
       expect(example).toBeUndefined();
     });
@@ -339,7 +339,7 @@ describe('ExampleGenerator', () => {
         common: []
       };
 
-      const examples = ExampleGenerator.getExamples('nodes-base.unknownNode', essentials);
+      const examples = ExampleGenerator.getExamples('n8n-nodes-base.unknownNode', essentials);
 
       expect(examples.minimal).toEqual({
         url: 'https://api.example.com',
@@ -359,7 +359,7 @@ describe('ExampleGenerator', () => {
         common: []
       };
 
-      const examples = ExampleGenerator.getExamples('nodes-base.unknownNode', essentials);
+      const examples = ExampleGenerator.getExamples('n8n-nodes-base.unknownNode', essentials);
 
       expect(examples.minimal).toEqual({
         timeout: 5000,
@@ -381,7 +381,7 @@ describe('ExampleGenerator', () => {
         common: []
       };
 
-      const examples = ExampleGenerator.getExamples('nodes-base.unknownNode', essentials);
+      const examples = ExampleGenerator.getExamples('n8n-nodes-base.unknownNode', essentials);
 
       expect(examples.minimal).toEqual({
         fromEmail: 'sender@example.com',
@@ -402,7 +402,7 @@ describe('ExampleGenerator', () => {
         common: []
       };
 
-      const examples = ExampleGenerator.getExamples('nodes-base.unknownNode', essentials);
+      const examples = ExampleGenerator.getExamples('n8n-nodes-base.unknownNode', essentials);
 
       expect(examples.minimal).toEqual({
         customField: 'Enter custom value'
@@ -417,7 +417,7 @@ describe('ExampleGenerator', () => {
         common: []
       };
 
-      const examples = ExampleGenerator.getExamples('nodes-base.unknownNode', essentials);
+      const examples = ExampleGenerator.getExamples('n8n-nodes-base.unknownNode', essentials);
 
       expect(examples.minimal).toEqual({});
     });
@@ -430,7 +430,7 @@ describe('ExampleGenerator', () => {
         common: []
       };
 
-      const examples = ExampleGenerator.getExamples('nodes-base.unknownNode', essentials);
+      const examples = ExampleGenerator.getExamples('n8n-nodes-base.unknownNode', essentials);
 
       expect(examples.minimal).toEqual({
         choice: ''
@@ -446,7 +446,7 @@ describe('ExampleGenerator', () => {
         common: []
       };
 
-      const examples = ExampleGenerator.getExamples('nodes-base.unknownNode', essentials);
+      const examples = ExampleGenerator.getExamples('n8n-nodes-base.unknownNode', essentials);
 
       expect(examples.minimal).toEqual({
         headers: {},

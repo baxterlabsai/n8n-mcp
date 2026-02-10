@@ -67,7 +67,7 @@ describe('Workflow Creation Node Type Format (Integration)', () => {
           {
             id: 'manual-1',
             name: 'Manual Trigger',
-            type: 'nodes-base.manualTrigger', // SHORT form - should be rejected
+            type: 'n8n-nodes-base.manualTrigger', // SHORT form - should be rejected
             typeVersion: 1,
             position: [250, 300] as [number, number],
             parameters: {}
@@ -80,7 +80,7 @@ describe('Workflow Creation Node Type Format (Integration)', () => {
 
       expect(errors.length).toBeGreaterThan(0);
       expect(errors.some(e =>
-        e.includes('Invalid node type "nodes-base.manualTrigger"') &&
+        e.includes('Invalid node type "n8n-nodes-base.manualTrigger"') &&
         e.includes('Use "n8n-nodes-base.manualTrigger" instead')
       )).toBe(true);
     });
@@ -297,7 +297,7 @@ describe('Workflow Creation Node Type Format (Integration)', () => {
         ...fullFormWorkflow,
         nodes: fullFormWorkflow.nodes.map(node => ({
           ...node,
-          type: node.type.replace('n8n-nodes-base.', 'nodes-base.') // Convert to SHORT form
+          type: node.type.replace('n8n-nodes-base.', 'n8n-nodes-base.') // Convert to SHORT form
         }))
       };
 
@@ -306,7 +306,7 @@ describe('Workflow Creation Node Type Format (Integration)', () => {
       expect(shortFormErrors.length).toBeGreaterThan(0);
       expect(shortFormErrors.some(e =>
         e.includes('Invalid node type') &&
-        e.includes('nodes-base.')
+        e.includes('n8n-nodes-base.')
       )).toBe(true);
     });
   });

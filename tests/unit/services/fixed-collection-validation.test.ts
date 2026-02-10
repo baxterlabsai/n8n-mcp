@@ -26,7 +26,7 @@ describe('FixedCollection Validation', () => {
       };
 
       const result = EnhancedConfigValidator.validateWithMode(
-        'nodes-base.switch',
+        'n8n-nodes-base.switch',
         invalidConfig,
         [],
         'operation',
@@ -53,7 +53,7 @@ describe('FixedCollection Validation', () => {
       };
 
       const result = EnhancedConfigValidator.validateWithMode(
-        'nodes-base.switch',
+        'n8n-nodes-base.switch',
         invalidConfig,
         [],
         'operation',
@@ -81,7 +81,7 @@ describe('FixedCollection Validation', () => {
       };
 
       const result = EnhancedConfigValidator.validateWithMode(
-        'nodes-base.switch',
+        'n8n-nodes-base.switch',
         invalidConfig,
         [],
         'operation',
@@ -113,7 +113,7 @@ describe('FixedCollection Validation', () => {
       };
 
       const result = EnhancedConfigValidator.validateWithMode(
-        'nodes-base.switch',
+        'n8n-nodes-base.switch',
         validConfig,
         [],
         'operation',
@@ -144,7 +144,7 @@ describe('FixedCollection Validation', () => {
       };
 
       const result = EnhancedConfigValidator.validateWithMode(
-        'nodes-base.switch',
+        'n8n-nodes-base.switch',
         configMissingOutputKey,
         [],
         'operation',
@@ -173,7 +173,7 @@ describe('FixedCollection Validation', () => {
       };
 
       const result = EnhancedConfigValidator.validateWithMode(
-        'nodes-base.if',
+        'n8n-nodes-base.if',
         invalidConfig,
         [],
         'operation',
@@ -202,7 +202,7 @@ describe('FixedCollection Validation', () => {
       };
 
       const result = EnhancedConfigValidator.validateWithMode(
-        'nodes-base.if',
+        'n8n-nodes-base.if',
         invalidConfig,
         [],
         'operation',
@@ -223,7 +223,7 @@ describe('FixedCollection Validation', () => {
       };
 
       const result = EnhancedConfigValidator.validateWithMode(
-        'nodes-base.if',
+        'n8n-nodes-base.if',
         validConfig,
         [],
         'operation',
@@ -253,7 +253,7 @@ describe('FixedCollection Validation', () => {
       };
 
       const result = EnhancedConfigValidator.validateWithMode(
-        'nodes-base.filter',
+        'n8n-nodes-base.filter',
         invalidConfig,
         [],
         'operation',
@@ -277,7 +277,7 @@ describe('FixedCollection Validation', () => {
       };
 
       const result = EnhancedConfigValidator.validateWithMode(
-        'nodes-base.filter',
+        'n8n-nodes-base.filter',
         validConfig,
         [],
         'operation',
@@ -303,7 +303,7 @@ describe('FixedCollection Validation', () => {
       };
 
       const result = EnhancedConfigValidator.validateWithMode(
-        'nodes-base.httpRequest',
+        'n8n-nodes-base.httpRequest',
         config,
         [],
         'operation',
@@ -319,7 +319,7 @@ describe('FixedCollection Validation', () => {
 
     test('should handle empty config gracefully', () => {
       const result = EnhancedConfigValidator.validateWithMode(
-        'nodes-base.switch',
+        'n8n-nodes-base.switch',
         {},
         [],
         'operation',
@@ -337,7 +337,7 @@ describe('FixedCollection Validation', () => {
       };
 
       const result = EnhancedConfigValidator.validateWithMode(
-        'nodes-base.switch',
+        'n8n-nodes-base.switch',
         config,
         [],
         'operation',
@@ -373,7 +373,7 @@ describe('FixedCollection Validation', () => {
       };
 
       const result = EnhancedConfigValidator.validateWithMode(
-        'nodes-base.switch',
+        'n8n-nodes-base.switch',
         aiGeneratedConfig,
         [],
         'operation',
@@ -404,7 +404,7 @@ describe('FixedCollection Validation', () => {
       };
 
       const result = EnhancedConfigValidator.validateWithMode(
-        'nodes-base.if',
+        'n8n-nodes-base.if',
         aiGeneratedIfConfig,
         [],
         'operation',
@@ -431,7 +431,7 @@ describe('FixedCollection Validation', () => {
 
       profiles.forEach(profile => {
         const result = EnhancedConfigValidator.validateWithMode(
-          'nodes-base.switch',
+          'n8n-nodes-base.switch',
           invalidConfig,
           [],
           'operation',

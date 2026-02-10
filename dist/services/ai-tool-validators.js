@@ -387,18 +387,18 @@ function validateWolframAlphaTool(node) {
     return issues;
 }
 exports.AI_TOOL_VALIDATORS = {
-    'nodes-langchain.toolHttpRequest': validateHTTPRequestTool,
-    'nodes-langchain.toolCode': validateCodeTool,
-    'nodes-langchain.toolVectorStore': validateVectorStoreTool,
-    'nodes-langchain.toolWorkflow': validateWorkflowTool,
-    'nodes-langchain.agentTool': validateAIAgentTool,
-    'nodes-langchain.mcpClientTool': validateMCPClientTool,
-    'nodes-langchain.toolCalculator': validateCalculatorTool,
-    'nodes-langchain.toolThink': validateThinkTool,
-    'nodes-langchain.toolSerpApi': validateSerpApiTool,
-    'nodes-langchain.toolWikipedia': validateWikipediaTool,
-    'nodes-langchain.toolSearXng': validateSearXngTool,
-    'nodes-langchain.toolWolframAlpha': validateWolframAlphaTool,
+    '@n8n/n8n-nodes-langchain.toolHttpRequest': validateHTTPRequestTool,
+    '@n8n/n8n-nodes-langchain.toolCode': validateCodeTool,
+    '@n8n/n8n-nodes-langchain.toolVectorStore': validateVectorStoreTool,
+    '@n8n/n8n-nodes-langchain.toolWorkflow': validateWorkflowTool,
+    '@n8n/n8n-nodes-langchain.agentTool': validateAIAgentTool,
+    '@n8n/n8n-nodes-langchain.mcpClientTool': validateMCPClientTool,
+    '@n8n/n8n-nodes-langchain.toolCalculator': validateCalculatorTool,
+    '@n8n/n8n-nodes-langchain.toolThink': validateThinkTool,
+    '@n8n/n8n-nodes-langchain.toolSerpApi': validateSerpApiTool,
+    '@n8n/n8n-nodes-langchain.toolWikipedia': validateWikipediaTool,
+    '@n8n/n8n-nodes-langchain.toolSearXng': validateSearXngTool,
+    '@n8n/n8n-nodes-langchain.toolWolframAlpha': validateWolframAlphaTool,
 };
 function isAIToolSubNode(nodeType) {
     const normalized = node_type_normalizer_1.NodeTypeNormalizer.normalizeToFullForm(nodeType);
@@ -407,29 +407,29 @@ function isAIToolSubNode(nodeType) {
 function validateAIToolSubNode(node, nodeType, reverseConnections, workflow) {
     const normalized = node_type_normalizer_1.NodeTypeNormalizer.normalizeToFullForm(nodeType);
     switch (normalized) {
-        case 'nodes-langchain.toolHttpRequest':
+        case '@n8n/n8n-nodes-langchain.toolHttpRequest':
             return validateHTTPRequestTool(node);
-        case 'nodes-langchain.toolCode':
+        case '@n8n/n8n-nodes-langchain.toolCode':
             return validateCodeTool(node);
-        case 'nodes-langchain.toolVectorStore':
+        case '@n8n/n8n-nodes-langchain.toolVectorStore':
             return validateVectorStoreTool(node, reverseConnections, workflow);
-        case 'nodes-langchain.toolWorkflow':
+        case '@n8n/n8n-nodes-langchain.toolWorkflow':
             return validateWorkflowTool(node);
-        case 'nodes-langchain.agentTool':
+        case '@n8n/n8n-nodes-langchain.agentTool':
             return validateAIAgentTool(node, reverseConnections);
-        case 'nodes-langchain.mcpClientTool':
+        case '@n8n/n8n-nodes-langchain.mcpClientTool':
             return validateMCPClientTool(node);
-        case 'nodes-langchain.toolCalculator':
+        case '@n8n/n8n-nodes-langchain.toolCalculator':
             return validateCalculatorTool(node);
-        case 'nodes-langchain.toolThink':
+        case '@n8n/n8n-nodes-langchain.toolThink':
             return validateThinkTool(node);
-        case 'nodes-langchain.toolSerpApi':
+        case '@n8n/n8n-nodes-langchain.toolSerpApi':
             return validateSerpApiTool(node);
-        case 'nodes-langchain.toolWikipedia':
+        case '@n8n/n8n-nodes-langchain.toolWikipedia':
             return validateWikipediaTool(node);
-        case 'nodes-langchain.toolSearXng':
+        case '@n8n/n8n-nodes-langchain.toolSearXng':
             return validateSearXngTool(node);
-        case 'nodes-langchain.toolWolframAlpha':
+        case '@n8n/n8n-nodes-langchain.toolWolframAlpha':
             return validateWolframAlphaTool(node);
         default:
             return [];

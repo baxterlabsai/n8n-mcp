@@ -35,11 +35,11 @@ describe('Example: Using Database Utils in Tests', () => {
       
       // Seed some test data
       await seedTestNodes(testDb.nodeRepository, [
-        { nodeType: 'nodes-base.myCustomNode', displayName: 'My Custom Node' }
+        { nodeType: 'n8n-nodes-base.myCustomNode', displayName: 'My Custom Node' }
       ]);
       
       // Use the repository to test your logic
-      const node = testDb.nodeRepository.getNode('nodes-base.myCustomNode');
+      const node = testDb.nodeRepository.getNode('n8n-nodes-base.myCustomNode');
       expect(node).toBeDefined();
       expect(node.displayName).toBe('My Custom Node');
     });
@@ -72,7 +72,7 @@ describe('Example: Using Database Utils in Tests', () => {
       expect(dbHelpers.countRows(testDb.adapter, 'templates')).toBe(1);
       
       // Test your business logic with the fixture data
-      const slackNode = testDb.nodeRepository.getNode('nodes-base.slack');
+      const slackNode = testDb.nodeRepository.getNode('n8n-nodes-base.slack');
       expect(slackNode.isAITool).toBe(true);
       expect(slackNode.category).toBe('Communication');
     });
@@ -86,9 +86,9 @@ describe('Example: Using Database Utils in Tests', () => {
     it('should test custom repository queries', async () => {
       // Seed nodes with specific properties
       await seedTestNodes(testDb.nodeRepository, [
-        { nodeType: 'nodes-base.ai1', isAITool: true },
-        { nodeType: 'nodes-base.ai2', isAITool: true },
-        { nodeType: 'nodes-base.regular', isAITool: false }
+        { nodeType: 'n8n-nodes-base.ai1', isAITool: true },
+        { nodeType: 'n8n-nodes-base.ai2', isAITool: true },
+        { nodeType: 'n8n-nodes-base.regular', isAITool: false }
       ]);
       
       // Test custom queries
@@ -97,8 +97,8 @@ describe('Example: Using Database Utils in Tests', () => {
       
       // Use dbHelpers for quick checks
       const allNodeTypes = dbHelpers.getAllNodeTypes(testDb.adapter);
-      expect(allNodeTypes).toContain('nodes-base.ai1');
-      expect(allNodeTypes).toContain('nodes-base.ai2');
+      expect(allNodeTypes).toContain('n8n-nodes-base.ai1');
+      expect(allNodeTypes).toContain('n8n-nodes-base.ai2');
     });
   });
   
@@ -117,7 +117,7 @@ describe('Example: Using Database Utils in Tests', () => {
       try {
         // Simulate a complex operation
         await testDb.nodeRepository.saveNode(createTestNode({
-          nodeType: 'nodes-base.problematic',
+          nodeType: 'n8n-nodes-base.problematic',
           displayName: 'This might cause issues'
         }));
         
@@ -130,7 +130,7 @@ describe('Example: Using Database Utils in Tests', () => {
       
       // Verify we're back to the original state
       expect(dbHelpers.countRows(testDb.adapter, 'nodes')).toBe(snapshot.metadata.nodeCount);
-      expect(dbHelpers.nodeExists(testDb.adapter, 'nodes-base.problematic')).toBe(false);
+      expect(dbHelpers.nodeExists(testDb.adapter, 'n8n-nodes-base.problematic')).toBe(false);
     });
   });
   
@@ -171,7 +171,7 @@ describe('Example: Using Database Utils in Tests', () => {
       // Test with empty database
       expect(dbHelpers.countRows(testDb.adapter, 'nodes')).toBe(0);
       
-      const nonExistentNode = testDb.nodeRepository.getNode('nodes-base.doesnotexist');
+      const nonExistentNode = testDb.nodeRepository.getNode('n8n-nodes-base.doesnotexist');
       expect(nonExistentNode).toBeNull();
     });
     
@@ -235,8 +235,8 @@ describe('Example: Using Database Utils in Tests', () => {
       try {
         testDb.adapter.transaction(() => {
           // Add multiple nodes atomically
-          testDb.nodeRepository.saveNode(createTestNode({ nodeType: 'nodes-base.tx1' }));
-          testDb.nodeRepository.saveNode(createTestNode({ nodeType: 'nodes-base.tx2' }));
+          testDb.nodeRepository.saveNode(createTestNode({ nodeType: 'n8n-nodes-base.tx1' }));
+          testDb.nodeRepository.saveNode(createTestNode({ nodeType: 'n8n-nodes-base.tx2' }));
           
           // Simulate error in transaction
           throw new Error('Transaction failed');
@@ -248,8 +248,8 @@ describe('Example: Using Database Utils in Tests', () => {
       // Verify no nodes were added
       const finalCount = dbHelpers.countRows(testDb.adapter, 'nodes');
       expect(finalCount).toBe(initialCount);
-      expect(dbHelpers.nodeExists(testDb.adapter, 'nodes-base.tx1')).toBe(false);
-      expect(dbHelpers.nodeExists(testDb.adapter, 'nodes-base.tx2')).toBe(false);
+      expect(dbHelpers.nodeExists(testDb.adapter, 'n8n-nodes-base.tx1')).toBe(false);
+      expect(dbHelpers.nodeExists(testDb.adapter, 'n8n-nodes-base.tx2')).toBe(false);
     });
   });
 });

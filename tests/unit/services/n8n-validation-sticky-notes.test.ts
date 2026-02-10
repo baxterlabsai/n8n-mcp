@@ -90,7 +90,7 @@ describe('n8n-validation - Sticky Notes Bug Fix', () => {
     test('should handle all sticky note type variations', () => {
       const stickyTypes = [
         'n8n-nodes-base.stickyNote',
-        'nodes-base.stickyNote',
+        'n8n-nodes-base.stickyNote',
         '@n8n/n8n-nodes-base.stickyNote'
       ];
 

@@ -124,7 +124,7 @@ describe('MCP Error Handling', () => {
       it('should handle non-existent node types', async () => {
         try {
           await client.callTool({ name: 'get_node', arguments: {
-            nodeType: 'nodes-base.thisDoesNotExist'
+            nodeType: 'n8n-nodes-base.thisDoesNotExist'
           } });
           expect.fail('Should have thrown an error');
         } catch (error: any) {
@@ -139,7 +139,7 @@ describe('MCP Error Handling', () => {
       it('should handle invalid validation profile', async () => {
         try {
           await client.callTool({ name: 'validate_node', arguments: {
-            nodeType: 'nodes-base.httpRequest',
+            nodeType: 'n8n-nodes-base.httpRequest',
             config: { method: 'GET', url: 'https://api.example.com' },
             mode: 'full',
             profile: 'invalid_profile' as any
@@ -172,7 +172,7 @@ describe('MCP Error Handling', () => {
             {
               id: '1',
               name: 'Node1',
-              type: 'nodes-base.noOp',
+              type: 'n8n-nodes-base.noOp',
               typeVersion: 1,
               position: [0, 0],
               parameters: {}
@@ -180,7 +180,7 @@ describe('MCP Error Handling', () => {
             {
               id: '2',
               name: 'Node2',
-              type: 'nodes-base.noOp',
+              type: 'n8n-nodes-base.noOp',
               typeVersion: 1,
               position: [250, 0],
               parameters: {}
@@ -231,7 +231,7 @@ describe('MCP Error Handling', () => {
     it('should handle large node info requests', async () => {
       // HTTP Request node has extensive properties
       const response = await client.callTool({ name: 'get_node', arguments: {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         detail: 'full'
       } });
 
@@ -253,7 +253,7 @@ describe('MCP Error Handling', () => {
         nodes.push({
           id: String(i),
           name: nodeName,
-          type: 'nodes-base.noOp',
+          type: 'n8n-nodes-base.noOp',
           typeVersion: 1,
           position: [i * 100, 0],
           parameters: {}
@@ -299,7 +299,7 @@ describe('MCP Error Handling', () => {
       try {
         // Config should be an object, not a string
         await client.callTool({ name: 'validate_node', arguments: {
-          nodeType: 'nodes-base.httpRequest',
+          nodeType: 'n8n-nodes-base.httpRequest',
           config: 'invalid json string' as any,
           mode: 'full'
         } });
@@ -352,11 +352,11 @@ describe('MCP Error Handling', () => {
 
       // Request multiple large node infos
       const largeNodes = [
-        'nodes-base.httpRequest',
-        'nodes-base.postgres',
-        'nodes-base.googleSheets',
-        'nodes-base.slack',
-        'nodes-base.gmail'
+        'n8n-nodes-base.httpRequest',
+        'n8n-nodes-base.postgres',
+        'n8n-nodes-base.googleSheets',
+        'n8n-nodes-base.slack',
+        'n8n-nodes-base.gmail'
       ];
 
       for (const nodeType of largeNodes) {
@@ -380,7 +380,7 @@ describe('MCP Error Handling', () => {
         nodes.push({
           id: String(i),
           name: `Node${i}`,
-          type: 'nodes-base.noOp',
+          type: 'n8n-nodes-base.noOp',
           typeVersion: 1,
           position: [i * 50, Math.floor(i / 10) * 100],
           parameters: {
@@ -424,7 +424,7 @@ describe('MCP Error Handling', () => {
         client.callTool({ name: 'get_node', arguments: { nodeType: 'invalid' } }).catch(e => ({ error: e })),
         client.callTool({ name: 'tools_documentation', arguments: {} }),
         client.callTool({ name: 'search_nodes', arguments: { query: '' } }).catch(e => ({ error: e })),
-        client.callTool({ name: 'get_node', arguments: { nodeType: 'nodes-base.httpRequest' } })
+        client.callTool({ name: 'get_node', arguments: { nodeType: 'n8n-nodes-base.httpRequest' } })
       ];
 
       const results = await Promise.all(promises);
@@ -516,7 +516,7 @@ describe('MCP Error Handling', () => {
     // v2.26.0: validate_node_operation consolidated into validate_node
     it('should provide context for validation errors', async () => {
       const response = await client.callTool({ name: 'validate_node', arguments: {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         config: {
           // Missing required fields
           method: 'INVALID_METHOD'

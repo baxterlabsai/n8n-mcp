@@ -35,7 +35,7 @@ describe('Parameter Validation', () => {
   describe('validateToolParams', () => {
     describe('Basic Parameter Validation', () => {
       it('should pass validation when all required parameters are provided', () => {
-        const args = { nodeType: 'nodes-base.httpRequest', config: {} };
+        const args = { nodeType: 'n8n-nodes-base.httpRequest', config: {} };
         
         expect(() => {
           server.testValidateToolParams('test_tool', args, ['nodeType', 'config']);
@@ -166,7 +166,7 @@ describe('Parameter Validation', () => {
 
       it('should succeed with valid nodeType', async () => {
         const result = await server.testExecuteTool('get_node', {
-          nodeType: 'nodes-base.httpRequest'
+          nodeType: 'n8n-nodes-base.httpRequest'
         });
         expect(result).toEqual({ mockResult: true });
       });
@@ -213,13 +213,13 @@ describe('Parameter Validation', () => {
       });
 
       it('should require config parameter when nodeType is provided', async () => {
-        await expect(server.testExecuteTool('validate_node', { nodeType: 'nodes-base.httpRequest' }))
+        await expect(server.testExecuteTool('validate_node', { nodeType: 'n8n-nodes-base.httpRequest' }))
           .rejects.toThrow('validate_node: Validation failed:\n  • config: config is required');
       });
 
       it('should succeed with valid parameters (full mode)', async () => {
         const result = await server.testExecuteTool('validate_node', {
-          nodeType: 'nodes-base.httpRequest',
+          nodeType: 'n8n-nodes-base.httpRequest',
           config: { method: 'GET', url: 'https://api.example.com' },
           mode: 'full'
         });
@@ -228,7 +228,7 @@ describe('Parameter Validation', () => {
 
       it('should succeed with valid parameters (minimal mode)', async () => {
         const result = await server.testExecuteTool('validate_node', {
-          nodeType: 'nodes-base.httpRequest',
+          nodeType: 'n8n-nodes-base.httpRequest',
           config: {},
           mode: 'minimal'
         });
@@ -244,7 +244,7 @@ describe('Parameter Validation', () => {
 
       it('should succeed with valid parameters', async () => {
         const result = await server.testExecuteTool('get_node', {
-          nodeType: 'nodes-base.httpRequest',
+          nodeType: 'n8n-nodes-base.httpRequest',
           mode: 'search_properties',
           propertyQuery: 'auth'
         });
@@ -253,7 +253,7 @@ describe('Parameter Validation', () => {
 
       it('should handle optional maxPropertyResults parameter', async () => {
         const result = await server.testExecuteTool('get_node', {
-          nodeType: 'nodes-base.httpRequest',
+          nodeType: 'n8n-nodes-base.httpRequest',
           mode: 'search_properties',
           propertyQuery: 'auth',
           maxPropertyResults: 5
@@ -271,7 +271,7 @@ describe('Parameter Validation', () => {
       it('should succeed with valid nodeTypes array', async () => {
         const result = await server.testExecuteTool('search_templates', {
           searchMode: 'by_nodes',
-          nodeTypes: ['nodes-base.httpRequest', 'nodes-base.slack']
+          nodeTypes: ['n8n-nodes-base.httpRequest', 'n8n-nodes-base.slack']
         });
         expect(result).toEqual({ templates: [] });
       });
@@ -339,13 +339,13 @@ describe('Parameter Validation', () => {
 
         // v2.26.0: search_node_properties consolidated into get_node with mode='search_properties'
         await server.testExecuteTool('get_node', {
-          nodeType: 'nodes-base.httpRequest',
+          nodeType: 'n8n-nodes-base.httpRequest',
           mode: 'search_properties',
           propertyQuery: 'auth',
           maxPropertyResults: 5
         });
 
-        expect(mockSearchNodeProperties).toHaveBeenCalledWith('nodes-base.httpRequest', 'auth', 5);
+        expect(mockSearchNodeProperties).toHaveBeenCalledWith('n8n-nodes-base.httpRequest', 'auth', 5);
       });
 
       it('should use default maxPropertyResults when not provided', async () => {
@@ -353,12 +353,12 @@ describe('Parameter Validation', () => {
 
         // v2.26.0: search_node_properties consolidated into get_node with mode='search_properties'
         await server.testExecuteTool('get_node', {
-          nodeType: 'nodes-base.httpRequest',
+          nodeType: 'n8n-nodes-base.httpRequest',
           mode: 'search_properties',
           propertyQuery: 'auth'
         });
 
-        expect(mockSearchNodeProperties).toHaveBeenCalledWith('nodes-base.httpRequest', 'auth', 20);
+        expect(mockSearchNodeProperties).toHaveBeenCalledWith('n8n-nodes-base.httpRequest', 'auth', 20);
       });
     });
 
@@ -367,7 +367,7 @@ describe('Parameter Validation', () => {
         // search_templates now handles list_node_templates functionality via searchMode='by_nodes'
         await expect(server.testExecuteTool('search_templates', {
           searchMode: 'by_nodes',
-          nodeTypes: ['nodes-base.httpRequest'],
+          nodeTypes: ['n8n-nodes-base.httpRequest'],
           limit: 5
         })).resolves.toEqual({ templates: [] });
       });

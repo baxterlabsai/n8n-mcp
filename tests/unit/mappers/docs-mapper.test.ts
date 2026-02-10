@@ -360,7 +360,7 @@ This node splits data into batches.
       const testCases = [
         'splitInBatches',
         'n8n-nodes-base.splitInBatches',
-        'nodes-base.splitInBatches'
+        'n8n-nodes-base.splitInBatches'
       ];
 
       for (const nodeType of testCases) {
@@ -458,7 +458,7 @@ Use this node to route data.
       const testCases = [
         'if',
         'n8n-nodes-base.if',
-        'nodes-base.if'
+        'n8n-nodes-base.if'
       ];
 
       for (const nodeType of testCases) {

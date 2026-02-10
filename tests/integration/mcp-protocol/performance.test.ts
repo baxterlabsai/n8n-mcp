@@ -104,11 +104,11 @@ describe('MCP Performance Tests', () => {
 
     it('should retrieve node info quickly', async () => {
       const nodeTypes = [
-        'nodes-base.httpRequest',
-        'nodes-base.webhook',
-        'nodes-base.set',
-        'nodes-base.if',
-        'nodes-base.switch'
+        'n8n-nodes-base.httpRequest',
+        'n8n-nodes-base.webhook',
+        'n8n-nodes-base.set',
+        'n8n-nodes-base.if',
+        'n8n-nodes-base.switch'
       ];
 
       const start = performance.now();
@@ -159,8 +159,8 @@ describe('MCP Performance Tests', () => {
         { tool: 'search_nodes', params: { query: 'http', limit: 10 } },
         { tool: 'search_nodes', params: { query: 'webhook' } },
         { tool: 'tools_documentation', params: {} },
-        { tool: 'get_node', params: { nodeType: 'nodes-base.httpRequest' } },
-        { tool: 'get_node', params: { nodeType: 'nodes-base.webhook' } }
+        { tool: 'get_node', params: { nodeType: 'n8n-nodes-base.httpRequest' } },
+        { tool: 'get_node', params: { nodeType: 'n8n-nodes-base.webhook' } }
       ];
 
       const rounds = 10;
@@ -246,7 +246,7 @@ describe('MCP Performance Tests', () => {
         nodes.push({
           id: String(i),
           name: `Node${i}`,
-          type: i % 3 === 0 ? 'nodes-base.httpRequest' : 'nodes-base.set',
+          type: i % 3 === 0 ? 'n8n-nodes-base.httpRequest' : 'n8n-nodes-base.set',
           typeVersion: 1,
           position: [i * 100, 0],
           parameters: i % 3 === 0 ? 
@@ -333,7 +333,7 @@ describe('MCP Performance Tests', () => {
       for (let i = 0; i < 10; i++) {
         await client.callTool({ name: 'search_nodes', arguments: { query: 'n8n', limit: 200 } });
         await client.callTool({ name: 'get_node', arguments: {
-          nodeType: 'nodes-base.httpRequest'
+          nodeType: 'n8n-nodes-base.httpRequest'
         } });
       }
 
@@ -413,7 +413,7 @@ describe('MCP Performance Tests', () => {
             promises.push(client.callTool({ name: 'tools_documentation', arguments: {} }));
             break;
           case 3:
-            promises.push(client.callTool({ name: 'get_node', arguments: { nodeType: 'nodes-base.set' } }));
+            promises.push(client.callTool({ name: 'get_node', arguments: { nodeType: 'n8n-nodes-base.set' } }));
             break;
         }
       }
@@ -500,7 +500,7 @@ describe('MCP Performance Tests', () => {
     });
 
     it('should cache effectively for repeated queries', async () => {
-      const nodeType = 'nodes-base.httpRequest';
+      const nodeType = 'n8n-nodes-base.httpRequest';
 
       // First call (cold)
       const coldStart = performance.now();
@@ -575,7 +575,7 @@ describe('MCP Performance Tests', () => {
               nodes: Array(20).fill(null).map((_, idx) => ({
                 id: String(idx),
                 name: `Node${idx}`,
-                type: 'nodes-base.set',
+                type: 'n8n-nodes-base.set',
                 typeVersion: 1,
                 position: [idx * 100, 0],
                 parameters: {}

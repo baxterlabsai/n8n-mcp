@@ -25,14 +25,14 @@ describe('Template Node Resolver', () => {
     
     it('should handle partial prefix formats', () => {
       const result = resolveTemplateNodeTypes(['nodes-base.webhook']);
-      
+
       expect(result).toContain('n8n-nodes-base.webhook');
       expect(result).not.toContain('nodes-base.webhook');
     });
     
     it('should handle langchain nodes', () => {
       const result = resolveTemplateNodeTypes(['nodes-langchain.agent']);
-      
+
       expect(result).toContain('@n8n/n8n-nodes-langchain.agent');
       expect(result).not.toContain('nodes-langchain.agent');
     });

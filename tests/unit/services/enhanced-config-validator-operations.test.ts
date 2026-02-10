@@ -20,7 +20,7 @@ describe('EnhancedConfigValidator - Operation and Resource Validation', () => {
 
     // Add Google Drive test node
     const googleDriveNode = {
-      nodeType: 'nodes-base.googleDrive',
+      nodeType: 'n8n-nodes-base.googleDrive',
       packageName: 'n8n-nodes-base',
       displayName: 'Google Drive',
       description: 'Access Google Drive',
@@ -98,7 +98,7 @@ describe('EnhancedConfigValidator - Operation and Resource Validation', () => {
 
     // Add Slack test node
     const slackNode = {
-      nodeType: 'nodes-base.slack',
+      nodeType: 'n8n-nodes-base.slack',
       packageName: 'n8n-nodes-base',
       displayName: 'Slack',
       description: 'Send messages to Slack',
@@ -157,9 +157,9 @@ describe('EnhancedConfigValidator - Operation and Resource Validation', () => {
         operation: 'listFiles'
       };
 
-      const node = repository.getNode('nodes-base.googleDrive');
+      const node = repository.getNode('n8n-nodes-base.googleDrive');
       const result = EnhancedConfigValidator.validateWithMode(
-        'nodes-base.googleDrive',
+        'n8n-nodes-base.googleDrive',
         config,
         node.properties,
         'operation',
@@ -182,9 +182,9 @@ describe('EnhancedConfigValidator - Operation and Resource Validation', () => {
         operation: 'downlod' // Typo: missing 'a'
       };
 
-      const node = repository.getNode('nodes-base.googleDrive');
+      const node = repository.getNode('n8n-nodes-base.googleDrive');
       const result = EnhancedConfigValidator.validateWithMode(
-        'nodes-base.googleDrive',
+        'n8n-nodes-base.googleDrive',
         config,
         node.properties,
         'operation',
@@ -204,9 +204,9 @@ describe('EnhancedConfigValidator - Operation and Resource Validation', () => {
         operation: 'upload' // Invalid for folder resource
       };
 
-      const node = repository.getNode('nodes-base.googleDrive');
+      const node = repository.getNode('n8n-nodes-base.googleDrive');
       const result = EnhancedConfigValidator.validateWithMode(
-        'nodes-base.googleDrive',
+        'n8n-nodes-base.googleDrive',
         config,
         node.properties,
         'operation',
@@ -231,9 +231,9 @@ describe('EnhancedConfigValidator - Operation and Resource Validation', () => {
         operation: 'list'
       };
 
-      const node = repository.getNode('nodes-base.googleDrive');
+      const node = repository.getNode('n8n-nodes-base.googleDrive');
       const result = EnhancedConfigValidator.validateWithMode(
-        'nodes-base.googleDrive',
+        'n8n-nodes-base.googleDrive',
         config,
         node.properties,
         'operation',
@@ -255,9 +255,9 @@ describe('EnhancedConfigValidator - Operation and Resource Validation', () => {
         operation: 'download'
       };
 
-      const node = repository.getNode('nodes-base.googleDrive');
+      const node = repository.getNode('n8n-nodes-base.googleDrive');
       const result = EnhancedConfigValidator.validateWithMode(
-        'nodes-base.googleDrive',
+        'n8n-nodes-base.googleDrive',
         config,
         node.properties,
         'operation',
@@ -277,9 +277,9 @@ describe('EnhancedConfigValidator - Operation and Resource Validation', () => {
         operation: 'create'
       };
 
-      const node = repository.getNode('nodes-base.googleDrive');
+      const node = repository.getNode('n8n-nodes-base.googleDrive');
       const result = EnhancedConfigValidator.validateWithMode(
-        'nodes-base.googleDrive',
+        'n8n-nodes-base.googleDrive',
         config,
         node.properties,
         'operation',
@@ -303,9 +303,9 @@ describe('EnhancedConfigValidator - Operation and Resource Validation', () => {
         operation: 'listFiles' // Invalid: should be 'list' or 'search'
       };
 
-      const node = repository.getNode('nodes-base.googleDrive');
+      const node = repository.getNode('n8n-nodes-base.googleDrive');
       const result = EnhancedConfigValidator.validateWithMode(
-        'nodes-base.googleDrive',
+        'n8n-nodes-base.googleDrive',
         config,
         node.properties,
         'operation',
@@ -334,9 +334,9 @@ describe('EnhancedConfigValidator - Operation and Resource Validation', () => {
         operation: 'sendMessage' // Common mistake
       };
 
-      const node = repository.getNode('nodes-base.slack');
+      const node = repository.getNode('n8n-nodes-base.slack');
       const result = EnhancedConfigValidator.validateWithMode(
-        'nodes-base.slack',
+        'n8n-nodes-base.slack',
         config,
         node.properties,
         'operation',
@@ -356,9 +356,9 @@ describe('EnhancedConfigValidator - Operation and Resource Validation', () => {
         operation: 'create'
       };
 
-      const node = repository.getNode('nodes-base.slack');
+      const node = repository.getNode('n8n-nodes-base.slack');
       const result = EnhancedConfigValidator.validateWithMode(
-        'nodes-base.slack',
+        'n8n-nodes-base.slack',
         config,
         node.properties,
         'operation',
@@ -380,9 +380,9 @@ describe('EnhancedConfigValidator - Operation and Resource Validation', () => {
         operation: 'download'
       };
 
-      const node = repository.getNode('nodes-base.googleDrive');
+      const node = repository.getNode('n8n-nodes-base.googleDrive');
       const result = EnhancedConfigValidator.validateWithMode(
-        'nodes-base.googleDrive',
+        'n8n-nodes-base.googleDrive',
         config,
         node.properties,
         'operation',
@@ -402,9 +402,9 @@ describe('EnhancedConfigValidator - Operation and Resource Validation', () => {
         operation: 'send'
       };
 
-      const node = repository.getNode('nodes-base.slack');
+      const node = repository.getNode('n8n-nodes-base.slack');
       const result = EnhancedConfigValidator.validateWithMode(
-        'nodes-base.slack',
+        'n8n-nodes-base.slack',
         config,
         node.properties,
         'operation',

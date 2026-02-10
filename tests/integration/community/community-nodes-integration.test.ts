@@ -239,7 +239,7 @@ describe('Community Nodes Integration', () => {
   };
 
   const coreNode: ParsedNode = {
-    nodeType: 'nodes-base.httpRequest',
+    nodeType: 'n8n-nodes-base.httpRequest',
     packageName: 'n8n-nodes-base',
     displayName: 'HTTP Request',
     description: 'Makes HTTP requests',
@@ -316,7 +316,7 @@ describe('Community Nodes Integration', () => {
       expect(deleted).toBe(2);
       expect(repository.getCommunityNodes()).toHaveLength(0);
       // Core node should still exist
-      expect(adapter.getNode('nodes-base.httpRequest')).toBeDefined();
+      expect(adapter.getNode('n8n-nodes-base.httpRequest')).toBeDefined();
     });
   });
 

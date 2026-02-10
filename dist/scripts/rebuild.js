@@ -194,7 +194,7 @@ function validateDatabase(repository) {
         if (nodeCount.count < 500) {
             issues.push(`WARNING: Only ${nodeCount.count} nodes found - expected at least 500 (both n8n packages)`);
         }
-        const criticalNodes = ['nodes-base.httpRequest', 'nodes-base.code', 'nodes-base.webhook', 'nodes-base.slack'];
+        const criticalNodes = ['n8n-nodes-base.httpRequest', 'n8n-nodes-base.code', 'n8n-nodes-base.webhook', 'n8n-nodes-base.slack'];
         for (const nodeType of criticalNodes) {
             const node = repository.getNode(nodeType);
             if (!node) {

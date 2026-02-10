@@ -12,7 +12,7 @@ describe('ConfigValidator - Security Validation', () => {
 
   describe('Credential security', () => {
     it('should perform security checks for hardcoded credentials', () => {
-      const nodeType = 'nodes-base.test';
+      const nodeType = 'n8n-nodes-base.test';
       const config = {
         api_key: 'sk-1234567890abcdef',
         password: 'my-secret-password',

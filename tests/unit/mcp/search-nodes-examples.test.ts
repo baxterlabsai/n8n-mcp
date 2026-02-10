@@ -20,10 +20,10 @@ describe('search_nodes with includeExamples', () => {
     await (server as any).initialized;
 
     // Populate in-memory database with test nodes
-    // NOTE: Database stores nodes in SHORT form (nodes-base.xxx, not n8n-nodes-base.xxx)
+    // NOTE: Database stores nodes in FULL form (n8n-nodes-base.xxx)
     const testNodes = [
       {
-        node_type: 'nodes-base.webhook',
+        node_type: 'n8n-nodes-base.webhook',
         package_name: 'n8n-nodes-base',
         display_name: 'Webhook',
         description: 'Starts workflow on webhook call',
@@ -37,7 +37,7 @@ describe('search_nodes with includeExamples', () => {
         operations: JSON.stringify([])
       },
       {
-        node_type: 'nodes-base.httpRequest',
+        node_type: 'n8n-nodes-base.httpRequest',
         package_name: 'n8n-nodes-base',
         display_name: 'HTTP Request',
         description: 'Makes an HTTP request',
@@ -285,7 +285,7 @@ describe('searchNodesLIKE with includeExamples', () => {
     // Populate in-memory database with test nodes
     const testNodes = [
       {
-        node_type: 'nodes-base.webhook',
+        node_type: 'n8n-nodes-base.webhook',
         package_name: 'n8n-nodes-base',
         display_name: 'Webhook',
         description: 'Starts workflow on webhook call',

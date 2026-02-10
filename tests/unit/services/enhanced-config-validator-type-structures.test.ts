@@ -39,7 +39,7 @@ describe('EnhancedConfigValidator - Type Structure Validation', () => {
 			];
 
 			const result = EnhancedConfigValidator.validateWithMode(
-				'nodes-base.filter',
+				'n8n-nodes-base.filter',
 				config,
 				properties,
 				'operation',
@@ -75,7 +75,7 @@ describe('EnhancedConfigValidator - Type Structure Validation', () => {
 			];
 
 			const result = EnhancedConfigValidator.validateWithMode(
-				'nodes-base.filter',
+				'n8n-nodes-base.filter',
 				config,
 				properties,
 				'operation',
@@ -102,7 +102,7 @@ describe('EnhancedConfigValidator - Type Structure Validation', () => {
 			const properties = [{ name: 'conditions', type: 'filter', required: true }];
 
 			const result = EnhancedConfigValidator.validateWithMode(
-				'nodes-base.filter',
+				'n8n-nodes-base.filter',
 				config,
 				properties,
 				'operation',
@@ -135,7 +135,7 @@ describe('EnhancedConfigValidator - Type Structure Validation', () => {
 			const properties = [{ name: 'conditions', type: 'filter', required: true }];
 
 			const result = EnhancedConfigValidator.validateWithMode(
-				'nodes-base.filter',
+				'n8n-nodes-base.filter',
 				config,
 				properties,
 				'operation',
@@ -175,7 +175,7 @@ describe('EnhancedConfigValidator - Type Structure Validation', () => {
 				const properties = [{ name: 'conditions', type: 'filter', required: true }];
 
 				const result = EnhancedConfigValidator.validateWithMode(
-					'nodes-base.filter',
+					'n8n-nodes-base.filter',
 					config,
 					properties,
 					'operation',
@@ -203,7 +203,7 @@ describe('EnhancedConfigValidator - Type Structure Validation', () => {
 			const properties = [{ name: 'conditions', type: 'filter', required: true }];
 
 			const result = EnhancedConfigValidator.validateWithMode(
-				'nodes-base.filter',
+				'n8n-nodes-base.filter',
 				config,
 				properties,
 				'operation',
@@ -239,7 +239,7 @@ describe('EnhancedConfigValidator - Type Structure Validation', () => {
 				const properties = [{ name: 'conditions', type: 'filter', required: true }];
 
 				const result = EnhancedConfigValidator.validateWithMode(
-					'nodes-base.filter',
+					'n8n-nodes-base.filter',
 					config,
 					properties,
 					'operation',
@@ -267,7 +267,7 @@ describe('EnhancedConfigValidator - Type Structure Validation', () => {
 			const properties = [{ name: 'conditions', type: 'filter', required: true }];
 
 			const result = EnhancedConfigValidator.validateWithMode(
-				'nodes-base.filter',
+				'n8n-nodes-base.filter',
 				config,
 				properties,
 				'operation',
@@ -293,7 +293,7 @@ describe('EnhancedConfigValidator - Type Structure Validation', () => {
 			const properties = [{ name: 'conditions', type: 'filter', required: true }];
 
 			const result = EnhancedConfigValidator.validateWithMode(
-				'nodes-base.filter',
+				'n8n-nodes-base.filter',
 				config,
 				properties,
 				'operation',
@@ -320,7 +320,7 @@ describe('EnhancedConfigValidator - Type Structure Validation', () => {
 			const properties = [{ name: 'conditions', type: 'filter', required: true }];
 
 			const result = EnhancedConfigValidator.validateWithMode(
-				'nodes-base.filter',
+				'n8n-nodes-base.filter',
 				config,
 				properties,
 				'operation',
@@ -347,7 +347,7 @@ describe('EnhancedConfigValidator - Type Structure Validation', () => {
 			const properties = [{ name: 'conditions', type: 'filter', required: true }];
 
 			const result = EnhancedConfigValidator.validateWithMode(
-				'nodes-base.filter',
+				'n8n-nodes-base.filter',
 				config,
 				properties,
 				'operation',
@@ -375,7 +375,7 @@ describe('EnhancedConfigValidator - Type Structure Validation', () => {
 			];
 
 			const result = EnhancedConfigValidator.validateWithMode(
-				'nodes-base.httpRequest',
+				'n8n-nodes-base.httpRequest',
 				config,
 				properties,
 				'operation',
@@ -397,7 +397,7 @@ describe('EnhancedConfigValidator - Type Structure Validation', () => {
 			];
 
 			const result = EnhancedConfigValidator.validateWithMode(
-				'nodes-base.httpRequest',
+				'n8n-nodes-base.httpRequest',
 				config,
 				properties,
 				'operation',
@@ -433,7 +433,7 @@ describe('EnhancedConfigValidator - Type Structure Validation', () => {
 			];
 
 			const result = EnhancedConfigValidator.validateWithMode(
-				'nodes-base.set',
+				'n8n-nodes-base.set',
 				config,
 				properties,
 				'operation',
@@ -454,7 +454,7 @@ describe('EnhancedConfigValidator - Type Structure Validation', () => {
 			];
 
 			const result = EnhancedConfigValidator.validateWithMode(
-				'nodes-base.set',
+				'n8n-nodes-base.set',
 				config,
 				properties,
 				'operation',
@@ -485,7 +485,7 @@ describe('EnhancedConfigValidator - Type Structure Validation', () => {
 			];
 
 			const result = EnhancedConfigValidator.validateWithMode(
-				'nodes-base.googleSheets',
+				'n8n-nodes-base.googleSheets',
 				config,
 				properties,
 				'operation',
@@ -518,7 +518,7 @@ describe('EnhancedConfigValidator - Type Structure Validation', () => {
 			];
 
 			const result = EnhancedConfigValidator.validateWithMode(
-				'nodes-base.googleSheets',
+				'n8n-nodes-base.googleSheets',
 				config,
 				properties,
 				'operation',
@@ -546,7 +546,7 @@ describe('EnhancedConfigValidator - Type Structure Validation', () => {
 			];
 
 			const result = EnhancedConfigValidator.validateWithMode(
-				'nodes-base.googleSheets',
+				'n8n-nodes-base.googleSheets',
 				config,
 				properties,
 				'operation',
@@ -565,7 +565,7 @@ describe('EnhancedConfigValidator - Type Structure Validation', () => {
 			const properties = [{ name: 'conditions', type: 'filter', required: false }];
 
 			const result = EnhancedConfigValidator.validateWithMode(
-				'nodes-base.filter',
+				'n8n-nodes-base.filter',
 				config,
 				properties,
 				'operation',
@@ -581,7 +581,7 @@ describe('EnhancedConfigValidator - Type Structure Validation', () => {
 			const properties = [{ name: 'conditions', type: 'filter', required: false }];
 
 			const result = EnhancedConfigValidator.validateWithMode(
-				'nodes-base.filter',
+				'n8n-nodes-base.filter',
 				config,
 				properties,
 				'operation',
@@ -621,7 +621,7 @@ describe('EnhancedConfigValidator - Type Structure Validation', () => {
 			];
 
 			const result = EnhancedConfigValidator.validateWithMode(
-				'nodes-base.custom',
+				'n8n-nodes-base.custom',
 				config,
 				properties,
 				'operation',
@@ -650,7 +650,7 @@ describe('EnhancedConfigValidator - Type Structure Validation', () => {
 			const properties = [{ name: 'conditions', type: 'filter', required: true }];
 
 			const result = EnhancedConfigValidator.validateWithMode(
-				'nodes-base.filter',
+				'n8n-nodes-base.filter',
 				config,
 				properties,
 				'operation',
@@ -671,7 +671,7 @@ describe('EnhancedConfigValidator - Type Structure Validation', () => {
 			const properties = [{ name: 'conditions', type: 'filter', required: true }];
 
 			const result = EnhancedConfigValidator.validateWithMode(
-				'nodes-base.filter',
+				'n8n-nodes-base.filter',
 				config,
 				properties,
 				'operation',

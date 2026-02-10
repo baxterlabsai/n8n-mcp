@@ -101,7 +101,7 @@ describe('ResourceSimilarityService - Comprehensive Coverage', () => {
       const originalRandom = Math.random;
       Math.random = vi.fn(() => 0.05); // Less than 0.1
 
-      service.findSimilarResources('nodes-base.test', 'invalid');
+      service.findSimilarResources('n8n-nodes-base.test', 'invalid');
 
       expect(cleanupSpy).toHaveBeenCalled();
 
@@ -143,7 +143,7 @@ describe('ResourceSimilarityService - Comprehensive Coverage', () => {
     it('should return empty array when node not found', () => {
       mockRepository.getNode.mockReturnValue(null);
 
-      const resources = (service as any).getNodeResources('nodes-base.nonexistent');
+      const resources = (service as any).getNodeResources('n8n-nodes-base.nonexistent');
       expect(resources).toEqual([]);
     });
 
@@ -157,7 +157,7 @@ describe('ResourceSimilarityService - Comprehensive Coverage', () => {
 
       mockRepository.getNode.mockReturnValue(errorThrowingProperties);
 
-      const resources = (service as any).getNodeResources('nodes-base.broken');
+      const resources = (service as any).getNodeResources('n8n-nodes-base.broken');
       expect(resources).toEqual([]);
       expect(logger.warn).toHaveBeenCalled();
     });
@@ -167,7 +167,7 @@ describe('ResourceSimilarityService - Comprehensive Coverage', () => {
         properties: null // No properties array
       });
 
-      const resources = (service as any).getNodeResources('nodes-base.no-props');
+      const resources = (service as any).getNodeResources('n8n-nodes-base.no-props');
       expect(resources).toEqual([]);
     });
 
@@ -184,7 +184,7 @@ describe('ResourceSimilarityService - Comprehensive Coverage', () => {
         ]
       });
 
-      const resources = (service as any).getNodeResources('nodes-base.implicit');
+      const resources = (service as any).getNodeResources('n8n-nodes-base.implicit');
       expect(resources.length).toBeGreaterThan(0);
       expect(resources[0].value).toBe('file');
     });
@@ -275,7 +275,7 @@ describe('ResourceSimilarityService - Comprehensive Coverage', () => {
 
   describe('getNodePatterns', () => {
     it('should return Google Drive patterns for googleDrive nodes', () => {
-      const patterns = (service as any).getNodePatterns('nodes-base.googleDrive');
+      const patterns = (service as any).getNodePatterns('n8n-nodes-base.googleDrive');
 
       const hasGoogleDrivePattern = patterns.some((p: any) => p.pattern === 'files');
       const hasGenericPattern = patterns.some((p: any) => p.pattern === 'items');
@@ -285,16 +285,16 @@ describe('ResourceSimilarityService - Comprehensive Coverage', () => {
     });
 
     it('should return Slack patterns for slack nodes', () => {
-      const patterns = (service as any).getNodePatterns('nodes-base.slack');
+      const patterns = (service as any).getNodePatterns('n8n-nodes-base.slack');
 
       const hasSlackPattern = patterns.some((p: any) => p.pattern === 'messages');
       expect(hasSlackPattern).toBe(true);
     });
 
     it('should return database patterns for database nodes', () => {
-      const postgresPatterns = (service as any).getNodePatterns('nodes-base.postgres');
-      const mysqlPatterns = (service as any).getNodePatterns('nodes-base.mysql');
-      const mongoPatterns = (service as any).getNodePatterns('nodes-base.mongodb');
+      const postgresPatterns = (service as any).getNodePatterns('n8n-nodes-base.postgres');
+      const mysqlPatterns = (service as any).getNodePatterns('n8n-nodes-base.mysql');
+      const mongoPatterns = (service as any).getNodePatterns('n8n-nodes-base.mongodb');
 
       expect(postgresPatterns.some((p: any) => p.pattern === 'tables')).toBe(true);
       expect(mysqlPatterns.some((p: any) => p.pattern === 'tables')).toBe(true);
@@ -302,22 +302,22 @@ describe('ResourceSimilarityService - Comprehensive Coverage', () => {
     });
 
     it('should return Google Sheets patterns for googleSheets nodes', () => {
-      const patterns = (service as any).getNodePatterns('nodes-base.googleSheets');
+      const patterns = (service as any).getNodePatterns('n8n-nodes-base.googleSheets');
 
       const hasSheetsPattern = patterns.some((p: any) => p.pattern === 'sheets');
       expect(hasSheetsPattern).toBe(true);
     });
 
     it('should return email patterns for email nodes', () => {
-      const gmailPatterns = (service as any).getNodePatterns('nodes-base.gmail');
-      const emailPatterns = (service as any).getNodePatterns('nodes-base.emailSend');
+      const gmailPatterns = (service as any).getNodePatterns('n8n-nodes-base.gmail');
+      const emailPatterns = (service as any).getNodePatterns('n8n-nodes-base.emailSend');
 
       expect(gmailPatterns.some((p: any) => p.pattern === 'emails')).toBe(true);
       expect(emailPatterns.some((p: any) => p.pattern === 'emails')).toBe(true);
     });
 
     it('should always include generic patterns', () => {
-      const patterns = (service as any).getNodePatterns('nodes-base.unknown');
+      const patterns = (service as any).getNodePatterns('n8n-nodes-base.unknown');
 
       const hasGenericPattern = patterns.some((p: any) => p.pattern === 'items');
       expect(hasGenericPattern).toBe(true);
@@ -514,7 +514,7 @@ describe('ResourceSimilarityService - Comprehensive Coverage', () => {
         ]
       });
 
-      const suggestions = service.findSimilarResources('nodes-base.googleDrive', 'files');
+      const suggestions = service.findSimilarResources('n8n-nodes-base.googleDrive', 'files');
 
       // Should find pattern match for 'files' -> 'file'
       expect(suggestions.length).toBeGreaterThan(0);
@@ -532,7 +532,7 @@ describe('ResourceSimilarityService - Comprehensive Coverage', () => {
         ]
       });
 
-      const suggestions = service.findSimilarResources('nodes-base.googleDrive', 'files');
+      const suggestions = service.findSimilarResources('n8n-nodes-base.googleDrive', 'files');
 
       // Pattern suggests 'file' but it doesn't exist in the node, so no pattern suggestion
       const fileSuggestion = suggestions.find(s => s.value === 'file');
@@ -565,7 +565,7 @@ describe('ResourceSimilarityService - Comprehensive Coverage', () => {
         ]
       });
 
-      const resources = (service as any).getNodeResources('nodes-base.slack');
+      const resources = (service as any).getNodeResources('n8n-nodes-base.slack');
 
       expect(resources.length).toBe(1);
       expect(resources[0].value).toBe('message');
@@ -596,7 +596,7 @@ describe('ResourceSimilarityService - Comprehensive Coverage', () => {
         ]
       });
 
-      const resources = (service as any).getNodeResources('nodes-base.test');
+      const resources = (service as any).getNodeResources('n8n-nodes-base.test');
 
       expect(resources.length).toBe(2);
       expect(resources[0].operations).toEqual(['list']);
@@ -615,7 +615,7 @@ describe('ResourceSimilarityService - Comprehensive Coverage', () => {
         properties: []
       });
 
-      (service as any).getNodeResources('nodes-base.test');
+      (service as any).getNodeResources('n8n-nodes-base.test');
 
       expect(cleanupSpy).toHaveBeenCalled();
 
@@ -626,12 +626,12 @@ describe('ResourceSimilarityService - Comprehensive Coverage', () => {
       const resourceCache = (service as any).resourceCache;
       const testResources = [{ value: 'cached', name: 'Cached Resource' }];
 
-      resourceCache.set('nodes-base.test', {
+      resourceCache.set('n8n-nodes-base.test', {
         resources: testResources,
         timestamp: Date.now() - 1000 // 1 second ago, fresh
       });
 
-      const resources = (service as any).getNodeResources('nodes-base.test');
+      const resources = (service as any).getNodeResources('n8n-nodes-base.test');
 
       expect(resources).toEqual(testResources);
       expect(mockRepository.getNode).not.toHaveBeenCalled();
@@ -643,7 +643,7 @@ describe('ResourceSimilarityService - Comprehensive Coverage', () => {
       const newResources = [{ value: 'new', name: 'New Resource' }];
 
       // Set expired cache entry
-      resourceCache.set('nodes-base.test', {
+      resourceCache.set('n8n-nodes-base.test', {
         resources: oldResources,
         timestamp: Date.now() - (6 * 60 * 1000) // 6 minutes ago, expired
       });
@@ -657,7 +657,7 @@ describe('ResourceSimilarityService - Comprehensive Coverage', () => {
         ]
       });
 
-      const resources = (service as any).getNodeResources('nodes-base.test');
+      const resources = (service as any).getNodeResources('n8n-nodes-base.test');
 
       expect(mockRepository.getNode).toHaveBeenCalled();
       expect(resources[0].value).toBe('new');
@@ -669,9 +669,9 @@ describe('ResourceSimilarityService - Comprehensive Coverage', () => {
       const suggestionCache = (service as any).suggestionCache;
       const cachedSuggestions = [{ value: 'cached', confidence: 0.9, reason: 'Cached' }];
 
-      suggestionCache.set('nodes-base.test:invalid', cachedSuggestions);
+      suggestionCache.set('n8n-nodes-base.test:invalid', cachedSuggestions);
 
-      const suggestions = service.findSimilarResources('nodes-base.test', 'invalid');
+      const suggestions = service.findSimilarResources('n8n-nodes-base.test', 'invalid');
 
       expect(suggestions).toEqual(cachedSuggestions);
       expect(mockRepository.getNode).not.toHaveBeenCalled();
@@ -682,7 +682,7 @@ describe('ResourceSimilarityService - Comprehensive Coverage', () => {
         properties: null
       });
 
-      const suggestions = service.findSimilarResources('nodes-base.empty', 'resource');
+      const suggestions = service.findSimilarResources('n8n-nodes-base.empty', 'resource');
 
       expect(suggestions).toEqual([]);
     });
@@ -700,7 +700,7 @@ describe('ResourceSimilarityService - Comprehensive Coverage', () => {
       });
 
       // This should find both pattern match and similarity match for the same resource
-      const suggestions = service.findSimilarResources('nodes-base.googleDrive', 'files');
+      const suggestions = service.findSimilarResources('n8n-nodes-base.googleDrive', 'files');
 
       const fileCount = suggestions.filter(s => s.value === 'file').length;
       expect(fileCount).toBe(1); // Should be deduplicated
@@ -723,7 +723,7 @@ describe('ResourceSimilarityService - Comprehensive Coverage', () => {
         ]
       });
 
-      const suggestions = service.findSimilarResources('nodes-base.test', 'resourc', 3);
+      const suggestions = service.findSimilarResources('n8n-nodes-base.test', 'resourc', 3);
 
       expect(suggestions.length).toBeLessThanOrEqual(3);
     });
@@ -752,7 +752,7 @@ describe('ResourceSimilarityService - Comprehensive Coverage', () => {
         ]
       });
 
-      const suggestions = service.findSimilarResources('nodes-base.test', 'files');
+      const suggestions = service.findSimilarResources('n8n-nodes-base.test', 'files');
 
       const fileSuggestion = suggestions.find(s => s.value === 'file');
       expect(fileSuggestion?.availableOperations).toEqual(['upload', 'download']);

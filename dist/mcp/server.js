@@ -1112,10 +1112,13 @@ class N8NDocumentationMCPServer {
         if (!this.db)
             throw new Error('Database not initialized');
         let normalizedQuery = query;
-        if (query.includes('n8n-nodes-base.') || query.includes('@n8n/n8n-nodes-langchain.')) {
+        if (query.includes('nodes-base.') && !query.includes('n8n-nodes-base.')) {
             normalizedQuery = query
-                .replace(/n8n-nodes-base\./g, 'nodes-base.')
-                .replace(/@n8n\/n8n-nodes-langchain\./g, 'nodes-langchain.');
+                .replace(/nodes-base\./g, 'n8n-nodes-base.');
+        }
+        if (normalizedQuery.includes('nodes-langchain.') && !normalizedQuery.includes('n8n-nodes-langchain.')) {
+            normalizedQuery = normalizedQuery
+                .replace(/nodes-langchain\./g, '@n8n/n8n-nodes-langchain.');
         }
         const searchMode = options?.mode || 'OR';
         const ftsExists = this.db.prepare(`
@@ -1324,7 +1327,7 @@ class N8NDocumentationMCPServer {
         const queryLower = query.toLowerCase();
         const displayNameLower = node.display_name.toLowerCase();
         const nodeTypeLower = node.node_type.toLowerCase();
-        const nodeTypeClean = nodeTypeLower.replace(/^nodes-base\./, '').replace(/^nodes-langchain\./, '');
+        const nodeTypeClean = nodeTypeLower.replace(/^n8n-nodes-base\./, '').replace(/^@n8n\/n8n-nodes-langchain\./, '').replace(/^n8n-nodes-langchain\./, '').replace(/^nodes-base\./, '').replace(/^nodes-langchain\./, '');
         if (displayNameLower === queryLower || nodeTypeClean === queryLower) {
             return 1000;
         }
@@ -1550,7 +1553,7 @@ class N8NDocumentationMCPServer {
         const query_lower = query.toLowerCase();
         const name_lower = node.display_name.toLowerCase();
         const type_lower = node.node_type.toLowerCase();
-        const type_without_prefix = type_lower.replace(/^nodes-base\./, '').replace(/^nodes-langchain\./, '');
+        const type_without_prefix = type_lower.replace(/^n8n-nodes-base\./, '').replace(/^@n8n\/n8n-nodes-langchain\./, '').replace(/^n8n-nodes-langchain\./, '').replace(/^nodes-base\./, '').replace(/^nodes-langchain\./, '');
         let score = 0;
         if (name_lower === query_lower) {
             score = 1000;
@@ -1595,7 +1598,7 @@ class N8NDocumentationMCPServer {
         const scoredNodes = nodes.map(node => {
             const name_lower = node.display_name.toLowerCase();
             const type_lower = node.node_type.toLowerCase();
-            const type_without_prefix = type_lower.replace(/^nodes-base\./, '').replace(/^nodes-langchain\./, '');
+            const type_without_prefix = type_lower.replace(/^n8n-nodes-base\./, '').replace(/^@n8n\/n8n-nodes-langchain\./, '').replace(/^n8n-nodes-langchain\./, '').replace(/^nodes-base\./, '').replace(/^nodes-langchain\./, '');
             let score = 0;
             if (name_lower === query_lower) {
                 score = 1000;

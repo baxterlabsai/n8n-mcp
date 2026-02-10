@@ -1,44 +1,21 @@
 /**
- * Universal Node Type Normalizer - FOR DATABASE OPERATIONS ONLY
+ * Universal Node Type Normalizer
  *
- * ⚠️ WARNING: Do NOT use before n8n API calls!
+ * This class converts node types to FULL form (n8n-nodes-base.*) which is
+ * the canonical format used in both the database and the n8n API.
  *
- * This class converts node types to SHORT form (database format).
- * The n8n API requires FULL form (n8n-nodes-base.*).
+ * Both the database and n8n API use FULL form:
+ * - n8n-nodes-base.webhook
+ * - @n8n/n8n-nodes-langchain.agent
  *
- * **Use this ONLY when:**
- * - Querying the node database
- * - Searching for node information
- * - Looking up node metadata
+ * normalizeToFullForm() accepts any format and returns FULL form:
+ * - 'nodes-base.webhook' → 'n8n-nodes-base.webhook'
+ * - 'n8n-nodes-base.webhook' → 'n8n-nodes-base.webhook' (unchanged)
  *
- * **Do NOT use before:**
- * - Creating workflows (n8n_create_workflow)
- * - Updating workflows (n8n_update_workflow)
- * - Any n8n API calls
- *
- * **IMPORTANT:** The n8n-mcp database stores nodes in SHORT form:
- * - n8n-nodes-base → nodes-base
- * - @n8n/n8n-nodes-langchain → nodes-langchain
- *
- * But the n8n API requires FULL form:
- * - nodes-base → n8n-nodes-base
- * - nodes-langchain → @n8n/n8n-nodes-langchain
- *
- * @example Database Lookup (CORRECT usage)
- * const dbType = NodeTypeNormalizer.normalizeToFullForm('n8n-nodes-base.webhook')
- * // → 'nodes-base.webhook'
+ * @example Database Lookup
+ * const dbType = NodeTypeNormalizer.normalizeToFullForm('nodes-base.webhook')
+ * // → 'n8n-nodes-base.webhook'
  * const node = await repository.getNode(dbType)
- *
- * @example API Call (INCORRECT - Do NOT do this!)
- * const workflow = { nodes: [{ type: 'n8n-nodes-base.webhook' }] }
- * const normalized = NodeTypeNormalizer.normalizeWorkflowNodeTypes(workflow)
- * // ❌ WRONG! normalized has SHORT form, API needs FULL form
- * await client.createWorkflow(normalized) // FAILS!
- *
- * @example API Call (CORRECT)
- * const workflow = { nodes: [{ type: 'n8n-nodes-base.webhook' }] }
- * // ✅ Send as-is to API (FULL form required)
- * await client.createWorkflow(workflow) // WORKS!
  */
 
 export interface NodeTypeNormalizationResult {
@@ -50,47 +27,43 @@ export interface NodeTypeNormalizationResult {
 
 export class NodeTypeNormalizer {
   /**
-   * Normalize node type to canonical SHORT form (database format)
-   *
-   * This is the PRIMARY method to use throughout the codebase.
-   * It converts any node type variation to the SHORT form that the database uses.
-   *
-   * **NOTE:** Method name says "ToFullForm" for backward compatibility,
-   * but actually normalizes TO SHORT form to match database storage.
+   * Normalize node type to FULL form (n8n-nodes-base.*).
+   * Database stores FULL form, so this converts SHORT→FULL for backward compatibility.
    *
    * @param type - Node type in any format
-   * @returns Normalized node type in short form (database format)
-   *
-   * @example
-   * normalizeToFullForm('n8n-nodes-base.webhook')
-   * // → 'nodes-base.webhook'
+   * @returns Normalized node type in full form (database format)
    *
    * @example
    * normalizeToFullForm('nodes-base.webhook')
-   * // → 'nodes-base.webhook' (unchanged)
+   * // → 'n8n-nodes-base.webhook'
    *
    * @example
-   * normalizeToFullForm('@n8n/n8n-nodes-langchain.agent')
-   * // → 'nodes-langchain.agent'
+   * normalizeToFullForm('n8n-nodes-base.webhook')
+   * // → 'n8n-nodes-base.webhook' (unchanged)
+   *
+   * @example
+   * normalizeToFullForm('nodes-langchain.agent')
+   * // → '@n8n/n8n-nodes-langchain.agent'
    */
   static normalizeToFullForm(type: string): string {
     if (!type || typeof type !== 'string') {
       return type;
     }
 
-    // Normalize full forms to short form (database format)
-    if (type.startsWith('n8n-nodes-base.')) {
-      return type.replace(/^n8n-nodes-base\./, 'nodes-base.');
+    // Already in full form — pass through
+    if (type.startsWith('n8n-nodes-base.')) return type;
+    if (type.startsWith('@n8n/n8n-nodes-langchain.')) return type;
+    if (type.startsWith('n8n-nodes-langchain.')) return type;
+
+    // Convert SHORT form → FULL form
+    if (type.startsWith('nodes-base.')) {
+      return type.replace(/^nodes-base\./, 'n8n-nodes-base.');
     }
-    if (type.startsWith('@n8n/n8n-nodes-langchain.')) {
-      return type.replace(/^@n8n\/n8n-nodes-langchain\./, 'nodes-langchain.');
-    }
-    // Handle n8n-nodes-langchain without @n8n/ prefix
-    if (type.startsWith('n8n-nodes-langchain.')) {
-      return type.replace(/^n8n-nodes-langchain\./, 'nodes-langchain.');
+    if (type.startsWith('nodes-langchain.')) {
+      return type.replace(/^nodes-langchain\./, '@n8n/n8n-nodes-langchain.');
     }
 
-    // Already in short form or community node - return unchanged
+    // Community nodes or unknown — unchanged
     return type;
   }
 
@@ -198,10 +171,10 @@ export class NodeTypeNormalizer {
   }
 
   /**
-   * Check if a node type is in full form (needs normalization)
+   * Check if a node type is in full form (n8n-nodes-base.*, @n8n/n8n-nodes-langchain.*)
    *
    * @param type - Node type to check
-   * @returns True if in full form (will be normalized to short)
+   * @returns True if in full form
    */
   static isFullForm(type: string): boolean {
     if (!type || typeof type !== 'string') {
@@ -216,10 +189,10 @@ export class NodeTypeNormalizer {
   }
 
   /**
-   * Check if a node type is in short form (database format)
+   * Check if a node type is in short form (nodes-base.*, nodes-langchain.*)
    *
    * @param type - Node type to check
-   * @returns True if in short form (already in database format)
+   * @returns True if in short form (legacy format, needs normalization)
    */
   static isShortForm(type: string): boolean {
     if (!type || typeof type !== 'string') {
@@ -233,10 +206,10 @@ export class NodeTypeNormalizer {
   }
 
   /**
-   * Convert short database format to full n8n workflow format.
+   * Convert short form to full n8n workflow format.
    *
-   * This method converts node types from the SHORT form used in the database
-   * to the FULL form required by the n8n API.
+   * This method converts node types from SHORT form to FULL form.
+   * Now equivalent to normalizeToFullForm(), kept for semantic clarity.
    *
    * @param type - Node type in short database format (e.g., 'nodes-base.webhook')
    * @returns Node type in full workflow format (e.g., 'n8n-nodes-base.webhook')

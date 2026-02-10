@@ -94,7 +94,7 @@ describe('OperationSimilarityService - Comprehensive Coverage', () => {
       const originalRandom = Math.random;
       Math.random = vi.fn(() => 0.05); // Less than 0.1
 
-      service.findSimilarOperations('nodes-base.test', 'invalid');
+      service.findSimilarOperations('n8n-nodes-base.test', 'invalid');
 
       expect(cleanupSpy).toHaveBeenCalled();
 
@@ -163,7 +163,7 @@ describe('OperationSimilarityService - Comprehensive Coverage', () => {
     it('should return empty array when node not found', () => {
       mockRepository.getNode.mockReturnValue(null);
 
-      const operations = (service as any).getNodeOperations('nodes-base.nonexistent');
+      const operations = (service as any).getNodeOperations('n8n-nodes-base.nonexistent');
       expect(operations).toEqual([]);
     });
 
@@ -174,7 +174,7 @@ describe('OperationSimilarityService - Comprehensive Coverage', () => {
       });
 
       expect(() => {
-        (service as any).getNodeOperations('nodes-base.broken');
+        (service as any).getNodeOperations('n8n-nodes-base.broken');
       }).toThrow(ValidationServiceError);
 
       expect(logger.error).toHaveBeenCalled();
@@ -187,7 +187,7 @@ describe('OperationSimilarityService - Comprehensive Coverage', () => {
       });
 
       // The public API should handle the error gracefully
-      const result = service.findSimilarOperations('nodes-base.error', 'invalidOp');
+      const result = service.findSimilarOperations('n8n-nodes-base.error', 'invalidOp');
       expect(result).toEqual([]);
     });
 
@@ -195,7 +195,7 @@ describe('OperationSimilarityService - Comprehensive Coverage', () => {
       // Mock repository to return null to trigger error path
       mockRepository.getNode.mockReturnValue(null);
 
-      const result = service.findSimilarOperations('nodes-base.props-error', 'invalidOp');
+      const result = service.findSimilarOperations('n8n-nodes-base.props-error', 'invalidOp');
       expect(result).toEqual([]);
     });
 
@@ -208,7 +208,7 @@ describe('OperationSimilarityService - Comprehensive Coverage', () => {
         properties: []
       });
 
-      const operations = (service as any).getNodeOperations('nodes-base.string-ops');
+      const operations = (service as any).getNodeOperations('n8n-nodes-base.string-ops');
       expect(operations).toHaveLength(2);
       expect(operations[0].operation).toBe('send');
     });
@@ -222,7 +222,7 @@ describe('OperationSimilarityService - Comprehensive Coverage', () => {
         properties: []
       });
 
-      const operations = (service as any).getNodeOperations('nodes-base.array-ops');
+      const operations = (service as any).getNodeOperations('n8n-nodes-base.array-ops');
       expect(operations).toHaveLength(2);
       expect(operations[1].operation).toBe('delete');
     });
@@ -236,7 +236,7 @@ describe('OperationSimilarityService - Comprehensive Coverage', () => {
         properties: []
       });
 
-      const operations = (service as any).getNodeOperations('nodes-base.object-ops');
+      const operations = (service as any).getNodeOperations('n8n-nodes-base.object-ops');
       expect(operations).toHaveLength(2);
     });
 
@@ -260,8 +260,8 @@ describe('OperationSimilarityService - Comprehensive Coverage', () => {
       });
 
       // Test through public API instead of private method
-      const messageOpsSuggestions = service.findSimilarOperations('nodes-base.slack', 'messageOp', 'message');
-      const allOpsSuggestions = service.findSimilarOperations('nodes-base.slack', 'nonExistentOp');
+      const messageOpsSuggestions = service.findSimilarOperations('n8n-nodes-base.slack', 'messageOp', 'message');
+      const allOpsSuggestions = service.findSimilarOperations('n8n-nodes-base.slack', 'nonExistentOp');
 
       // Should find similarity-based suggestions, not exact match
       expect(messageOpsSuggestions.length).toBeGreaterThanOrEqual(0);
@@ -298,9 +298,9 @@ describe('OperationSimilarityService - Comprehensive Coverage', () => {
       });
 
       // Test resource filtering through public API with similar operations
-      const messageSuggestions = service.findSimilarOperations('nodes-base.slack', 'sendMsg', 'message');
-      const channelSuggestions = service.findSimilarOperations('nodes-base.slack', 'createChannel', 'channel');
-      const wrongResourceSuggestions = service.findSimilarOperations('nodes-base.slack', 'sendMsg', 'nonexistent');
+      const messageSuggestions = service.findSimilarOperations('n8n-nodes-base.slack', 'sendMsg', 'message');
+      const channelSuggestions = service.findSimilarOperations('n8n-nodes-base.slack', 'createChannel', 'channel');
+      const wrongResourceSuggestions = service.findSimilarOperations('n8n-nodes-base.slack', 'sendMsg', 'nonexistent');
 
       // Should find send operation when resource is message
       const sendSuggestion = messageSuggestions.find(s => s.value === 'send');
@@ -336,9 +336,9 @@ describe('OperationSimilarityService - Comprehensive Coverage', () => {
       });
 
       // Test array resource filtering through public API
-      const messageSuggestions = service.findSimilarOperations('nodes-base.multi', 'listItems', 'message');
-      const channelSuggestions = service.findSimilarOperations('nodes-base.multi', 'listItems', 'channel');
-      const otherSuggestions = service.findSimilarOperations('nodes-base.multi', 'listItems', 'other');
+      const messageSuggestions = service.findSimilarOperations('n8n-nodes-base.multi', 'listItems', 'message');
+      const channelSuggestions = service.findSimilarOperations('n8n-nodes-base.multi', 'listItems', 'channel');
+      const otherSuggestions = service.findSimilarOperations('n8n-nodes-base.multi', 'listItems', 'other');
 
       // Should find list operation for both message and channel resources
       const messageListSuggestion = messageSuggestions.find(s => s.value === 'list');
@@ -353,7 +353,7 @@ describe('OperationSimilarityService - Comprehensive Coverage', () => {
 
   describe('getNodePatterns', () => {
     it('should return Google Drive patterns for googleDrive nodes', () => {
-      const patterns = (service as any).getNodePatterns('nodes-base.googleDrive');
+      const patterns = (service as any).getNodePatterns('n8n-nodes-base.googleDrive');
 
       const hasGoogleDrivePattern = patterns.some((p: any) => p.pattern === 'listFiles');
       const hasGenericPattern = patterns.some((p: any) => p.pattern === 'list');
@@ -363,16 +363,16 @@ describe('OperationSimilarityService - Comprehensive Coverage', () => {
     });
 
     it('should return Slack patterns for slack nodes', () => {
-      const patterns = (service as any).getNodePatterns('nodes-base.slack');
+      const patterns = (service as any).getNodePatterns('n8n-nodes-base.slack');
 
       const hasSlackPattern = patterns.some((p: any) => p.pattern === 'sendMessage');
       expect(hasSlackPattern).toBe(true);
     });
 
     it('should return database patterns for database nodes', () => {
-      const postgresPatterns = (service as any).getNodePatterns('nodes-base.postgres');
-      const mysqlPatterns = (service as any).getNodePatterns('nodes-base.mysql');
-      const mongoPatterns = (service as any).getNodePatterns('nodes-base.mongodb');
+      const postgresPatterns = (service as any).getNodePatterns('n8n-nodes-base.postgres');
+      const mysqlPatterns = (service as any).getNodePatterns('n8n-nodes-base.mysql');
+      const mongoPatterns = (service as any).getNodePatterns('n8n-nodes-base.mongodb');
 
       expect(postgresPatterns.some((p: any) => p.pattern === 'selectData')).toBe(true);
       expect(mysqlPatterns.some((p: any) => p.pattern === 'insertData')).toBe(true);
@@ -380,14 +380,14 @@ describe('OperationSimilarityService - Comprehensive Coverage', () => {
     });
 
     it('should return HTTP patterns for httpRequest nodes', () => {
-      const patterns = (service as any).getNodePatterns('nodes-base.httpRequest');
+      const patterns = (service as any).getNodePatterns('n8n-nodes-base.httpRequest');
 
       const hasHttpPattern = patterns.some((p: any) => p.pattern === 'fetch');
       expect(hasHttpPattern).toBe(true);
     });
 
     it('should always include generic patterns', () => {
-      const patterns = (service as any).getNodePatterns('nodes-base.unknown');
+      const patterns = (service as any).getNodePatterns('n8n-nodes-base.unknown');
 
       const hasGenericPattern = patterns.some((p: any) => p.pattern === 'list');
       expect(hasGenericPattern).toBe(true);
@@ -536,7 +536,7 @@ describe('OperationSimilarityService - Comprehensive Coverage', () => {
     it('should return empty array for non-existent node', () => {
       mockRepository.getNode.mockReturnValue(null);
 
-      const suggestions = service.findSimilarOperations('nodes-base.nonexistent', 'operation');
+      const suggestions = service.findSimilarOperations('n8n-nodes-base.nonexistent', 'operation');
       expect(suggestions).toEqual([]);
     });
 
@@ -546,7 +546,7 @@ describe('OperationSimilarityService - Comprehensive Coverage', () => {
         properties: []
       });
 
-      const suggestions = service.findSimilarOperations('nodes-base.test', 'send');
+      const suggestions = service.findSimilarOperations('n8n-nodes-base.test', 'send');
       expect(suggestions).toEqual([]);
     });
 
@@ -563,7 +563,7 @@ describe('OperationSimilarityService - Comprehensive Coverage', () => {
         ]
       });
 
-      const suggestions = service.findSimilarOperations('nodes-base.googleDrive', 'listFiles');
+      const suggestions = service.findSimilarOperations('n8n-nodes-base.googleDrive', 'listFiles');
 
       expect(suggestions.length).toBeGreaterThan(0);
       const searchSuggestion = suggestions.find(s => s.value === 'search');
@@ -584,7 +584,7 @@ describe('OperationSimilarityService - Comprehensive Coverage', () => {
         ]
       });
 
-      const suggestions = service.findSimilarOperations('nodes-base.googleDrive', 'listFiles');
+      const suggestions = service.findSimilarOperations('n8n-nodes-base.googleDrive', 'listFiles');
 
       // Pattern suggests 'search' but it doesn't exist in the node
       const searchSuggestion = suggestions.find(s => s.value === 'search');
@@ -606,7 +606,7 @@ describe('OperationSimilarityService - Comprehensive Coverage', () => {
         ]
       });
 
-      const suggestions = service.findSimilarOperations('nodes-base.test', 'sned');
+      const suggestions = service.findSimilarOperations('n8n-nodes-base.test', 'sned');
 
       expect(suggestions.length).toBeGreaterThan(0);
       const sendSuggestion = suggestions.find(s => s.value === 'send');
@@ -627,7 +627,7 @@ describe('OperationSimilarityService - Comprehensive Coverage', () => {
         ]
       });
 
-      const suggestions = service.findSimilarOperations('nodes-base.test', 'sned');
+      const suggestions = service.findSimilarOperations('n8n-nodes-base.test', 'sned');
 
       const sendSuggestion = suggestions.find(s => s.value === 'send');
       expect(sendSuggestion!.description).toBe('Send a message to a channel');
@@ -651,7 +651,7 @@ describe('OperationSimilarityService - Comprehensive Coverage', () => {
         ]
       });
 
-      const suggestions = service.findSimilarOperations('nodes-base.test', 'sned', 'message');
+      const suggestions = service.findSimilarOperations('n8n-nodes-base.test', 'sned', 'message');
 
       const sendSuggestion = suggestions.find(s => s.value === 'send');
       expect(sendSuggestion!.resource).toBe('message');
@@ -671,7 +671,7 @@ describe('OperationSimilarityService - Comprehensive Coverage', () => {
       });
 
       // This should find both pattern match and similarity match for the same operation
-      const suggestions = service.findSimilarOperations('nodes-base.slack', 'sendMessage');
+      const suggestions = service.findSimilarOperations('n8n-nodes-base.slack', 'sendMessage');
 
       const sendCount = suggestions.filter(s => s.value === 'send').length;
       expect(sendCount).toBe(1); // Should be deduplicated
@@ -695,7 +695,7 @@ describe('OperationSimilarityService - Comprehensive Coverage', () => {
         ]
       });
 
-      const suggestions = service.findSimilarOperations('nodes-base.test', 'operatio', undefined, 3);
+      const suggestions = service.findSimilarOperations('n8n-nodes-base.test', 'operatio', undefined, 3);
 
       expect(suggestions.length).toBeLessThanOrEqual(3);
     });
@@ -715,7 +715,7 @@ describe('OperationSimilarityService - Comprehensive Coverage', () => {
         ]
       });
 
-      const suggestions = service.findSimilarOperations('nodes-base.test', 'sned');
+      const suggestions = service.findSimilarOperations('n8n-nodes-base.test', 'sned');
 
       // Should be sorted by confidence
       for (let i = 0; i < suggestions.length - 1; i++) {
@@ -727,9 +727,9 @@ describe('OperationSimilarityService - Comprehensive Coverage', () => {
       const suggestionCache = (service as any).suggestionCache;
       const cachedSuggestions = [{ value: 'cached', confidence: 0.9, reason: 'Cached' }];
 
-      suggestionCache.set('nodes-base.test:invalid:', cachedSuggestions);
+      suggestionCache.set('n8n-nodes-base.test:invalid:', cachedSuggestions);
 
-      const suggestions = service.findSimilarOperations('nodes-base.test', 'invalid');
+      const suggestions = service.findSimilarOperations('n8n-nodes-base.test', 'invalid');
 
       expect(suggestions).toEqual(cachedSuggestions);
       expect(mockRepository.getNode).not.toHaveBeenCalled();
@@ -746,8 +746,8 @@ describe('OperationSimilarityService - Comprehensive Coverage', () => {
         ]
       });
 
-      const suggestions1 = service.findSimilarOperations('nodes-base.test', 'invalid');
-      const suggestions2 = service.findSimilarOperations('nodes-base.test', 'invalid');
+      const suggestions1 = service.findSimilarOperations('n8n-nodes-base.test', 'invalid');
+      const suggestions2 = service.findSimilarOperations('n8n-nodes-base.test', 'invalid');
 
       expect(suggestions1).toEqual(suggestions2);
       // The suggestion cache should prevent any calls on the second invocation
@@ -773,7 +773,7 @@ describe('OperationSimilarityService - Comprehensive Coverage', () => {
         properties: []
       });
 
-      (service as any).getNodeOperations('nodes-base.test');
+      (service as any).getNodeOperations('n8n-nodes-base.test');
 
       expect(cleanupSpy).toHaveBeenCalled();
 
@@ -784,12 +784,12 @@ describe('OperationSimilarityService - Comprehensive Coverage', () => {
       const operationCache = (service as any).operationCache;
       const testOperations = [{ operation: 'cached', name: 'Cached Operation' }];
 
-      operationCache.set('nodes-base.test:all', {
+      operationCache.set('n8n-nodes-base.test:all', {
         operations: testOperations,
         timestamp: Date.now() - 1000 // 1 second ago, fresh
       });
 
-      const operations = (service as any).getNodeOperations('nodes-base.test');
+      const operations = (service as any).getNodeOperations('n8n-nodes-base.test');
 
       expect(operations).toEqual(testOperations);
       expect(mockRepository.getNode).not.toHaveBeenCalled();
@@ -801,7 +801,7 @@ describe('OperationSimilarityService - Comprehensive Coverage', () => {
       const newOperations = [{ value: 'new', name: 'New Operation' }];
 
       // Set expired cache entry
-      operationCache.set('nodes-base.test:all', {
+      operationCache.set('n8n-nodes-base.test:all', {
         operations: oldOperations,
         timestamp: Date.now() - (6 * 60 * 1000) // 6 minutes ago, expired
       });
@@ -816,7 +816,7 @@ describe('OperationSimilarityService - Comprehensive Coverage', () => {
         ]
       });
 
-      const operations = (service as any).getNodeOperations('nodes-base.test');
+      const operations = (service as any).getNodeOperations('n8n-nodes-base.test');
 
       expect(mockRepository.getNode).toHaveBeenCalled();
       expect(operations[0].operation).toBe('new');
@@ -841,16 +841,16 @@ describe('OperationSimilarityService - Comprehensive Coverage', () => {
       });
 
       // First call should cache
-      const messageOps1 = (service as any).getNodeOperations('nodes-base.test', 'message');
-      expect(operationCache.has('nodes-base.test:message')).toBe(true);
+      const messageOps1 = (service as any).getNodeOperations('n8n-nodes-base.test', 'message');
+      expect(operationCache.has('n8n-nodes-base.test:message')).toBe(true);
 
       // Second call should use cache
-      const messageOps2 = (service as any).getNodeOperations('nodes-base.test', 'message');
+      const messageOps2 = (service as any).getNodeOperations('n8n-nodes-base.test', 'message');
       expect(messageOps1).toEqual(messageOps2);
 
       // Different resource should have separate cache
-      const allOps = (service as any).getNodeOperations('nodes-base.test');
-      expect(operationCache.has('nodes-base.test:all')).toBe(true);
+      const allOps = (service as any).getNodeOperations('n8n-nodes-base.test');
+      expect(operationCache.has('n8n-nodes-base.test:all')).toBe(true);
     });
   });
 

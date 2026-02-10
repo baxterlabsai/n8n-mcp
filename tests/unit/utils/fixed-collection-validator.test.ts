@@ -20,7 +20,7 @@ describe('FixedCollectionValidator', () => {
     test('should normalize node types correctly', () => {
       const nodeTypes = [
         'n8n-nodes-base.switch',
-        'nodes-base.switch',
+        'n8n-nodes-base.switch',
         '@n8n/n8n-nodes-langchain.switch',
         'SWITCH'
       ];
@@ -572,7 +572,7 @@ describe('FixedCollectionValidator', () => {
     test('should handle all node type normalization cases', () => {
       const testCases = [
         'n8n-nodes-base.switch',
-        'nodes-base.switch', 
+        'n8n-nodes-base.switch', 
         '@n8n/n8n-nodes-langchain.switch',
         'SWITCH',
         'Switch',

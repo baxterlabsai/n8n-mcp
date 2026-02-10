@@ -15,10 +15,10 @@ describe('get_node_essentials with includeExamples', () => {
     await (server as any).initialized;
 
     // Populate in-memory database with test nodes
-    // NOTE: Database stores nodes in SHORT form (nodes-base.xxx, not n8n-nodes-base.xxx)
+    // NOTE: Database stores nodes in FULL form (n8n-nodes-base.xxx)
     const testNodes = [
       {
-        node_type: 'nodes-base.httpRequest',
+        node_type: 'n8n-nodes-base.httpRequest',
         package_name: 'n8n-nodes-base',
         display_name: 'HTTP Request',
         description: 'Makes an HTTP request',
@@ -32,7 +32,7 @@ describe('get_node_essentials with includeExamples', () => {
         operations: JSON.stringify([])
       },
       {
-        node_type: 'nodes-base.webhook',
+        node_type: 'n8n-nodes-base.webhook',
         package_name: 'n8n-nodes-base',
         display_name: 'Webhook',
         description: 'Starts workflow on webhook call',
@@ -46,7 +46,7 @@ describe('get_node_essentials with includeExamples', () => {
         operations: JSON.stringify([])
       },
       {
-        node_type: 'nodes-base.test',
+        node_type: 'n8n-nodes-base.test',
         package_name: 'n8n-nodes-base',
         display_name: 'Test Node',
         description: 'Test node for examples',
@@ -97,21 +97,21 @@ describe('get_node_essentials with includeExamples', () => {
 
   describe('includeExamples parameter', () => {
     it('should not include examples when includeExamples is false', async () => {
-      const result = await (server as any).getNodeEssentials('nodes-base.httpRequest', false);
+      const result = await (server as any).getNodeEssentials('n8n-nodes-base.httpRequest', false);
 
       expect(result).toBeDefined();
       expect(result.examples).toBeUndefined();
     });
 
     it('should not include examples when includeExamples is undefined', async () => {
-      const result = await (server as any).getNodeEssentials('nodes-base.httpRequest', undefined);
+      const result = await (server as any).getNodeEssentials('n8n-nodes-base.httpRequest', undefined);
 
       expect(result).toBeDefined();
       expect(result.examples).toBeUndefined();
     });
 
     it('should include examples when includeExamples is true', async () => {
-      const result = await (server as any).getNodeEssentials('nodes-base.httpRequest', true);
+      const result = await (server as any).getNodeEssentials('n8n-nodes-base.httpRequest', true);
 
       expect(result).toBeDefined();
       // Note: In-memory test database may not have template configs
@@ -119,7 +119,7 @@ describe('get_node_essentials with includeExamples', () => {
     });
 
     it('should limit examples to top 3 per node', async () => {
-      const result = await (server as any).getNodeEssentials('nodes-base.webhook', true);
+      const result = await (server as any).getNodeEssentials('n8n-nodes-base.webhook', true);
 
       expect(result).toBeDefined();
       if (result.examples) {
@@ -157,7 +157,7 @@ describe('get_node_essentials with includeExamples', () => {
           return originalPrepare(query);
         });
 
-        const result = await (server as any).getNodeEssentials('nodes-base.webhook', true);
+        const result = await (server as any).getNodeEssentials('n8n-nodes-base.webhook', true);
 
         if (result.examples && result.examples.length > 0) {
           const example = result.examples[0];
@@ -224,7 +224,7 @@ describe('get_node_essentials with includeExamples', () => {
           return originalPrepare(query);
         });
 
-        const result = await (server as any).getNodeEssentials('nodes-base.httpRequest', true);
+        const result = await (server as any).getNodeEssentials('n8n-nodes-base.httpRequest', true);
 
         if (result.examples && result.examples.length >= 2) {
           expect(result.examples[0].source.complexity).toBe('simple');
@@ -261,7 +261,7 @@ describe('get_node_essentials with includeExamples', () => {
           return originalPrepare(query);
         });
 
-        const result = await (server as any).getNodeEssentials('nodes-base.test', true);
+        const result = await (server as any).getNodeEssentials('n8n-nodes-base.test', true);
 
         if (result.examples && result.examples.length > 0) {
           expect(result.examples[0].useCases.length).toBeLessThanOrEqual(2);
@@ -292,7 +292,7 @@ describe('get_node_essentials with includeExamples', () => {
           return originalPrepare(query);
         });
 
-        const result = await (server as any).getNodeEssentials('nodes-base.test', true);
+        const result = await (server as any).getNodeEssentials('n8n-nodes-base.test', true);
 
         if (result.examples && result.examples.length > 0) {
           expect(result.examples[0].useCases).toEqual([]);
@@ -307,23 +307,23 @@ describe('get_node_essentials with includeExamples', () => {
       const cacheGetSpy = vi.spyOn(cache, 'get');
 
       // First call without examples
-      await (server as any).getNodeEssentials('nodes-base.httpRequest', false);
+      await (server as any).getNodeEssentials('n8n-nodes-base.httpRequest', false);
       expect(cacheGetSpy).toHaveBeenCalledWith(expect.stringContaining('basic'));
 
       // Second call with examples
-      await (server as any).getNodeEssentials('nodes-base.httpRequest', true);
+      await (server as any).getNodeEssentials('n8n-nodes-base.httpRequest', true);
       expect(cacheGetSpy).toHaveBeenCalledWith(expect.stringContaining('withExamples'));
     });
 
     it('should cache results separately for different includeExamples values', async () => {
       // Call with examples
-      const resultWithExamples1 = await (server as any).getNodeEssentials('nodes-base.httpRequest', true);
+      const resultWithExamples1 = await (server as any).getNodeEssentials('n8n-nodes-base.httpRequest', true);
 
       // Call without examples
-      const resultWithoutExamples = await (server as any).getNodeEssentials('nodes-base.httpRequest', false);
+      const resultWithoutExamples = await (server as any).getNodeEssentials('n8n-nodes-base.httpRequest', false);
 
       // Call with examples again (should be cached)
-      const resultWithExamples2 = await (server as any).getNodeEssentials('nodes-base.httpRequest', true);
+      const resultWithExamples2 = await (server as any).getNodeEssentials('n8n-nodes-base.httpRequest', true);
 
       // Results with examples should match
       expect(resultWithExamples1).toEqual(resultWithExamples2);
@@ -335,7 +335,7 @@ describe('get_node_essentials with includeExamples', () => {
 
   describe('backward compatibility', () => {
     it('should maintain backward compatibility when includeExamples not specified', async () => {
-      const result = await (server as any).getNodeEssentials('nodes-base.httpRequest');
+      const result = await (server as any).getNodeEssentials('n8n-nodes-base.httpRequest');
 
       expect(result).toBeDefined();
       expect(result.nodeType).toBeDefined();
@@ -344,8 +344,8 @@ describe('get_node_essentials with includeExamples', () => {
     });
 
     it('should return same core data regardless of includeExamples value', async () => {
-      const resultWithout = await (server as any).getNodeEssentials('nodes-base.httpRequest', false);
-      const resultWith = await (server as any).getNodeEssentials('nodes-base.httpRequest', true);
+      const resultWithout = await (server as any).getNodeEssentials('n8n-nodes-base.httpRequest', false);
+      const resultWith = await (server as any).getNodeEssentials('n8n-nodes-base.httpRequest', true);
 
       // Core fields should be identical
       expect(resultWithout.nodeType).toBe(resultWith.nodeType);
@@ -367,7 +367,7 @@ describe('get_node_essentials with includeExamples', () => {
         });
 
         // Should not throw
-        const result = await (server as any).getNodeEssentials('nodes-base.webhook', true);
+        const result = await (server as any).getNodeEssentials('n8n-nodes-base.webhook', true);
 
         expect(result).toBeDefined();
         expect(result.nodeType).toBeDefined();
@@ -401,7 +401,7 @@ describe('get_node_essentials with includeExamples', () => {
         });
 
         // Should not throw
-        const result = await (server as any).getNodeEssentials('nodes-base.test', true);
+        const result = await (server as any).getNodeEssentials('n8n-nodes-base.test', true);
         expect(result).toBeDefined();
       }
     });
@@ -410,7 +410,7 @@ describe('get_node_essentials with includeExamples', () => {
   describe('performance', () => {
     it('should complete in reasonable time with examples', async () => {
       const start = Date.now();
-      await (server as any).getNodeEssentials('nodes-base.httpRequest', true);
+      await (server as any).getNodeEssentials('n8n-nodes-base.httpRequest', true);
       const duration = Date.now() - start;
 
       // Should complete under 100ms
@@ -419,11 +419,11 @@ describe('get_node_essentials with includeExamples', () => {
 
     it('should not add significant overhead when includeExamples is false', async () => {
       const startWithout = Date.now();
-      await (server as any).getNodeEssentials('nodes-base.httpRequest', false);
+      await (server as any).getNodeEssentials('n8n-nodes-base.httpRequest', false);
       const durationWithout = Date.now() - startWithout;
 
       const startWith = Date.now();
-      await (server as any).getNodeEssentials('nodes-base.httpRequest', true);
+      await (server as any).getNodeEssentials('n8n-nodes-base.httpRequest', true);
       const durationWith = Date.now() - startWith;
 
       // Both should be fast

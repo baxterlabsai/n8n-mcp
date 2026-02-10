@@ -264,7 +264,7 @@ describe('N8NDocumentationMCPServer - getNodeDocumentation', () => {
             properties_schema, operations, documentation
           ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `).run(
-          'nodes-base.httpRequest',
+          'n8n-nodes-base.httpRequest',
           'n8n-nodes-base',
           'HTTP Request',
           'Makes HTTP requests',
@@ -280,9 +280,9 @@ describe('N8NDocumentationMCPServer - getNodeDocumentation', () => {
         );
       }
 
-      const result = await (server as any).getNodeDocumentation('nodes-base.httpRequest');
+      const result = await (server as any).getNodeDocumentation('n8n-nodes-base.httpRequest');
 
-      expect(result.nodeType).toBe('nodes-base.httpRequest');
+      expect(result.nodeType).toBe('n8n-nodes-base.httpRequest');
       expect(result.displayName).toBe('HTTP Request');
     });
 
@@ -298,7 +298,7 @@ describe('N8NDocumentationMCPServer - getNodeDocumentation', () => {
             properties_schema, operations, documentation
           ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `).run(
-          'nodes-base.webhook',
+          'n8n-nodes-base.webhook',
           'n8n-nodes-base',
           'Webhook',
           'Starts workflow on webhook call',
@@ -314,9 +314,9 @@ describe('N8NDocumentationMCPServer - getNodeDocumentation', () => {
         );
       }
 
-      const result = await (server as any).getNodeDocumentation('nodes-base.webhook');
+      const result = await (server as any).getNodeDocumentation('n8n-nodes-base.webhook');
 
-      expect(result.nodeType).toBe('nodes-base.webhook');
+      expect(result.nodeType).toBe('n8n-nodes-base.webhook');
     });
   });
 

@@ -465,7 +465,7 @@ describe('NodeRepository - Community Node Methods', () => {
 
     it('should save a core node without community fields', () => {
       const coreNode: ParsedNode = {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         packageName: 'n8n-nodes-base',
         displayName: 'HTTP Request',
         description: 'Makes an HTTP request',

@@ -34,8 +34,8 @@ describe('WorkflowValidator - Comprehensive Tests', () => {
 
     // Mock common node types data
     const nodeTypes: Record<string, any> = {
-      'nodes-base.webhook': {
-        type: 'nodes-base.webhook',
+      'n8n-nodes-base.webhook': {
+        type: 'n8n-nodes-base.webhook',
         displayName: 'Webhook',
         package: 'n8n-nodes-base',
         version: 2,
@@ -43,8 +43,8 @@ describe('WorkflowValidator - Comprehensive Tests', () => {
         properties: [],
         category: 'trigger'
       },
-      'nodes-base.httpRequest': {
-        type: 'nodes-base.httpRequest',
+      'n8n-nodes-base.httpRequest': {
+        type: 'n8n-nodes-base.httpRequest',
         displayName: 'HTTP Request',
         package: 'n8n-nodes-base',
         version: 4,
@@ -52,8 +52,8 @@ describe('WorkflowValidator - Comprehensive Tests', () => {
         properties: [],
         category: 'network'
       },
-      'nodes-base.set': {
-        type: 'nodes-base.set',
+      'n8n-nodes-base.set': {
+        type: 'n8n-nodes-base.set',
         displayName: 'Set',
         package: 'n8n-nodes-base',
         version: 3,
@@ -61,8 +61,8 @@ describe('WorkflowValidator - Comprehensive Tests', () => {
         properties: [],
         category: 'data'
       },
-      'nodes-base.code': {
-        type: 'nodes-base.code',
+      'n8n-nodes-base.code': {
+        type: 'n8n-nodes-base.code',
         displayName: 'Code',
         package: 'n8n-nodes-base',
         version: 2,
@@ -70,8 +70,8 @@ describe('WorkflowValidator - Comprehensive Tests', () => {
         properties: [],
         category: 'code'
       },
-      'nodes-base.manualTrigger': {
-        type: 'nodes-base.manualTrigger',
+      'n8n-nodes-base.manualTrigger': {
+        type: 'n8n-nodes-base.manualTrigger',
         displayName: 'Manual Trigger',
         package: 'n8n-nodes-base',
         version: 1,
@@ -79,8 +79,8 @@ describe('WorkflowValidator - Comprehensive Tests', () => {
         properties: [],
         category: 'trigger'
       },
-      'nodes-base.if': {
-        type: 'nodes-base.if',
+      'n8n-nodes-base.if': {
+        type: 'n8n-nodes-base.if',
         displayName: 'IF',
         package: 'n8n-nodes-base',
         version: 2,
@@ -88,8 +88,8 @@ describe('WorkflowValidator - Comprehensive Tests', () => {
         properties: [],
         category: 'logic'
       },
-      'nodes-base.slack': {
-        type: 'nodes-base.slack',
+      'n8n-nodes-base.slack': {
+        type: 'n8n-nodes-base.slack',
         displayName: 'Slack',
         package: 'n8n-nodes-base',
         version: 2,
@@ -97,8 +97,8 @@ describe('WorkflowValidator - Comprehensive Tests', () => {
         properties: [],
         category: 'communication'
       },
-      'nodes-base.googleSheets': {
-        type: 'nodes-base.googleSheets',
+      'n8n-nodes-base.googleSheets': {
+        type: 'n8n-nodes-base.googleSheets',
         displayName: 'Google Sheets',
         package: 'n8n-nodes-base',
         version: 4,
@@ -106,8 +106,8 @@ describe('WorkflowValidator - Comprehensive Tests', () => {
         properties: [],
         category: 'data'
       },
-      'nodes-langchain.agent': {
-        type: 'nodes-langchain.agent',
+      '@n8n/n8n-nodes-langchain.agent': {
+        type: '@n8n/n8n-nodes-langchain.agent',
         displayName: 'AI Agent',
         package: '@n8n/n8n-nodes-langchain',
         version: 1,
@@ -116,8 +116,8 @@ describe('WorkflowValidator - Comprehensive Tests', () => {
         isAITool: true,
         category: 'ai'
       },
-      'nodes-base.postgres': {
-        type: 'nodes-base.postgres',
+      'n8n-nodes-base.postgres': {
+        type: 'n8n-nodes-base.postgres',
         displayName: 'Postgres',
         package: 'n8n-nodes-base',
         version: 2,
@@ -514,7 +514,7 @@ describe('WorkflowValidator - Comprehensive Tests', () => {
           {
             id: '1',
             name: 'Webhook',
-            type: 'nodes-base.webhook', // This is now valid (normalized internally)
+            type: 'n8n-nodes-base.webhook', // This is now valid (normalized internally)
             position: [100, 100],
             parameters: {}
           }
@@ -524,9 +524,9 @@ describe('WorkflowValidator - Comprehensive Tests', () => {
 
       // Mock the normalized node lookup
       (mockNodeRepository.getNode as any) = vi.fn((type: string) => {
-        if (type === 'nodes-base.webhook') {
+        if (type === 'n8n-nodes-base.webhook') {
           return {
-            nodeType: 'nodes-base.webhook',
+            nodeType: 'n8n-nodes-base.webhook',
             displayName: 'Webhook',
             properties: [],
             isVersioned: false
@@ -579,7 +579,7 @@ describe('WorkflowValidator - Comprehensive Tests', () => {
 
       const result = await validator.validateWorkflow(workflow as any);
 
-      expect(mockNodeRepository.getNode).toHaveBeenCalledWith('nodes-base.webhook');
+      expect(mockNodeRepository.getNode).toHaveBeenCalledWith('n8n-nodes-base.webhook');
     });
 
     it('should validate typeVersion but skip parameter validation for langchain nodes', async () => {
@@ -602,7 +602,7 @@ describe('WorkflowValidator - Comprehensive Tests', () => {
       // After v2.17.4 fix: Langchain nodes SHOULD call getNode for typeVersion validation
       // This prevents invalid typeVersion values from bypassing validation
       // But they skip parameter validation (handled by dedicated AI validators)
-      expect(mockNodeRepository.getNode).toHaveBeenCalledWith('nodes-langchain.agent');
+      expect(mockNodeRepository.getNode).toHaveBeenCalledWith('@n8n/n8n-nodes-langchain.agent');
 
       // Should not have typeVersion validation errors (other AI-specific errors may exist)
       const typeVersionErrors = result.errors.filter(e => e.message.includes('typeVersion'));
@@ -1864,7 +1864,7 @@ describe('WorkflowValidator - Comprehensive Tests', () => {
       expect(unknownNodeError).toBeDefined();
 
       // For webhook, it should definitely suggest nodes-base.webhook
-      expect(unknownNodeError?.message).toContain('nodes-base.webhook');
+      expect(unknownNodeError?.message).toContain('n8n-nodes-base.webhook');
 
       // Test that slack without prefix gets suggestions
       const slackWorkflow = {
@@ -1885,7 +1885,7 @@ describe('WorkflowValidator - Comprehensive Tests', () => {
         e.message && e.message.includes('Unknown node type')
       );
       expect(slackError).toBeDefined();
-      expect(slackError?.message).toContain('nodes-base.slack');
+      expect(slackError?.message).toContain('n8n-nodes-base.slack');
     });
   });
 
@@ -1906,7 +1906,7 @@ describe('WorkflowValidator - Comprehensive Tests', () => {
           {
             id: '2',
             name: 'HTTP1',
-            type: 'nodes-base.httpRequest', // Valid prefix (normalized internally)
+            type: 'n8n-nodes-base.httpRequest', // Valid prefix (normalized internally)
             position: [300, 100],
             parameters: {}
           },

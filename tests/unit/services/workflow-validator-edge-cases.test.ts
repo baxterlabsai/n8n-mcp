@@ -61,7 +61,7 @@ describe('WorkflowValidator - Edge Cases', () => {
           };
         }
         // Handle common n8n node types
-        if (type.startsWith('n8n-nodes-base.') || type.startsWith('nodes-base.')) {
+        if (type.startsWith('n8n-nodes-base.') || type.startsWith('n8n-nodes-base.')) {
           const nodeName = type.split('.')[1];
           return {
             name: nodeName,

@@ -32,7 +32,7 @@ describe('WorkflowValidator - SplitInBatches Validation (Simplified)', () => {
   describe('SplitInBatches node detection', () => {
     it('should identify SplitInBatches nodes in workflow', async () => {
       mockNodeRepository.getNode.mockReturnValue({
-        nodeType: 'nodes-base.splitInBatches',
+        nodeType: 'n8n-nodes-base.splitInBatches',
         properties: []
       });
 
@@ -73,7 +73,7 @@ describe('WorkflowValidator - SplitInBatches Validation (Simplified)', () => {
 
     it('should handle SplitInBatches with processing node name patterns', async () => {
       mockNodeRepository.getNode.mockReturnValue({
-        nodeType: 'nodes-base.splitInBatches',
+        nodeType: 'n8n-nodes-base.splitInBatches',
         properties: []
       });
 
@@ -123,7 +123,7 @@ describe('WorkflowValidator - SplitInBatches Validation (Simplified)', () => {
 
     it('should handle final processing node patterns', async () => {
       mockNodeRepository.getNode.mockReturnValue({
-        nodeType: 'nodes-base.splitInBatches',
+        nodeType: 'n8n-nodes-base.splitInBatches',
         properties: []
       });
 
@@ -174,7 +174,7 @@ describe('WorkflowValidator - SplitInBatches Validation (Simplified)', () => {
   describe('Connection validation', () => {
     it('should validate connection indices', async () => {
       mockNodeRepository.getNode.mockReturnValue({
-        nodeType: 'nodes-base.splitInBatches',
+        nodeType: 'n8n-nodes-base.splitInBatches',
         properties: []
       });
 
@@ -215,7 +215,7 @@ describe('WorkflowValidator - SplitInBatches Validation (Simplified)', () => {
 
     it('should handle non-existent target nodes', async () => {
       mockNodeRepository.getNode.mockReturnValue({
-        nodeType: 'nodes-base.splitInBatches',
+        nodeType: 'n8n-nodes-base.splitInBatches',
         properties: []
       });
 
@@ -251,7 +251,7 @@ describe('WorkflowValidator - SplitInBatches Validation (Simplified)', () => {
   describe('Self-referencing connections', () => {
     it('should allow self-referencing for SplitInBatches nodes', async () => {
       mockNodeRepository.getNode.mockReturnValue({
-        nodeType: 'nodes-base.splitInBatches',
+        nodeType: 'n8n-nodes-base.splitInBatches',
         properties: []
       });
 
@@ -287,7 +287,7 @@ describe('WorkflowValidator - SplitInBatches Validation (Simplified)', () => {
 
     it('should warn about self-referencing for non-loop nodes', async () => {
       mockNodeRepository.getNode.mockReturnValue({
-        nodeType: 'nodes-base.set',
+        nodeType: 'n8n-nodes-base.set',
         properties: []
       });
 
@@ -324,7 +324,7 @@ describe('WorkflowValidator - SplitInBatches Validation (Simplified)', () => {
   describe('Output connection validation', () => {
     it('should validate output connections for nodes with outputs', async () => {
       mockNodeRepository.getNode.mockReturnValue({
-        nodeType: 'nodes-base.if',
+        nodeType: 'n8n-nodes-base.if',
         outputs: [
           { displayName: 'True', description: 'Items that match condition' },
           { displayName: 'False', description: 'Items that do not match condition' }
@@ -379,7 +379,7 @@ describe('WorkflowValidator - SplitInBatches Validation (Simplified)', () => {
   describe('Error handling', () => {
     it('should handle nodes without outputs gracefully', async () => {
       mockNodeRepository.getNode.mockReturnValue({
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         outputs: null,
         outputNames: null,
         properties: []

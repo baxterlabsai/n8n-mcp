@@ -34,9 +34,9 @@ describe('WorkflowValidator - Tool Variant Validation', () => {
     mockRepository = {
       getNode: vi.fn((nodeType: string) => {
         // Mock base node with Tool variant available
-        if (nodeType === 'nodes-base.supabase') {
+        if (nodeType === 'n8n-nodes-base.supabase') {
           return {
-            nodeType: 'nodes-base.supabase',
+            nodeType: 'n8n-nodes-base.supabase',
             displayName: 'Supabase',
             isAITool: true,
             hasToolVariant: true,
@@ -47,23 +47,23 @@ describe('WorkflowValidator - Tool Variant Validation', () => {
         }
 
         // Mock Tool variant node
-        if (nodeType === 'nodes-base.supabaseTool') {
+        if (nodeType === 'n8n-nodes-base.supabaseTool') {
           return {
-            nodeType: 'nodes-base.supabaseTool',
+            nodeType: 'n8n-nodes-base.supabaseTool',
             displayName: 'Supabase Tool',
             isAITool: true,
             hasToolVariant: false,
             isToolVariant: true,
-            toolVariantOf: 'nodes-base.supabase',
+            toolVariantOf: 'n8n-nodes-base.supabase',
             isTrigger: false,
             properties: []
           };
         }
 
         // Mock langchain node (Calculator tool)
-        if (nodeType === 'nodes-langchain.toolCalculator') {
+        if (nodeType === '@n8n/n8n-nodes-langchain.toolCalculator') {
           return {
-            nodeType: 'nodes-langchain.toolCalculator',
+            nodeType: '@n8n/n8n-nodes-langchain.toolCalculator',
             displayName: 'Calculator',
             isAITool: true,
             hasToolVariant: false,
@@ -74,9 +74,9 @@ describe('WorkflowValidator - Tool Variant Validation', () => {
         }
 
         // Mock HTTP Request Tool node
-        if (nodeType === 'nodes-langchain.toolHttpRequest') {
+        if (nodeType === '@n8n/n8n-nodes-langchain.toolHttpRequest') {
           return {
-            nodeType: 'nodes-langchain.toolHttpRequest',
+            nodeType: '@n8n/n8n-nodes-langchain.toolHttpRequest',
             displayName: 'HTTP Request Tool',
             isAITool: true,
             hasToolVariant: false,
@@ -87,9 +87,9 @@ describe('WorkflowValidator - Tool Variant Validation', () => {
         }
 
         // Mock base node without Tool variant
-        if (nodeType === 'nodes-base.httpRequest') {
+        if (nodeType === 'n8n-nodes-base.httpRequest') {
           return {
-            nodeType: 'nodes-base.httpRequest',
+            nodeType: 'n8n-nodes-base.httpRequest',
             displayName: 'HTTP Request',
             isAITool: false,
             hasToolVariant: false,
@@ -244,7 +244,7 @@ describe('WorkflowValidator - Tool Variant Validation', () => {
       await validator.validateWorkflow(workflow);
 
       // Verify repository was called to check if it's a Tool variant
-      expect(mockRepository.getNode).toHaveBeenCalledWith('nodes-base.supabaseTool');
+      expect(mockRepository.getNode).toHaveBeenCalledWith('n8n-nodes-base.supabaseTool');
     });
   });
 
@@ -368,9 +368,9 @@ describe('WorkflowValidator - Tool Variant Validation', () => {
 
     it('should handle multiple base nodes incorrectly used as tools', async () => {
       mockRepository.getNode = vi.fn((nodeType: string) => {
-        if (nodeType === 'nodes-base.postgres') {
+        if (nodeType === 'n8n-nodes-base.postgres') {
           return {
-            nodeType: 'nodes-base.postgres',
+            nodeType: 'n8n-nodes-base.postgres',
             displayName: 'Postgres',
             isAITool: true,
             hasToolVariant: true,
@@ -379,9 +379,9 @@ describe('WorkflowValidator - Tool Variant Validation', () => {
             properties: []
           };
         }
-        if (nodeType === 'nodes-base.supabase') {
+        if (nodeType === 'n8n-nodes-base.supabase') {
           return {
-            nodeType: 'nodes-base.supabase',
+            nodeType: 'n8n-nodes-base.supabase',
             displayName: 'Supabase',
             isAITool: true,
             hasToolVariant: true,
@@ -613,9 +613,9 @@ describe('WorkflowValidator - Tool Variant Validation', () => {
       // Update mock repository to include Google nodes
       mockRepository.getNode = vi.fn((nodeType: string) => {
         // Base node with Tool variant
-        if (nodeType === 'nodes-base.supabase') {
+        if (nodeType === 'n8n-nodes-base.supabase') {
           return {
-            nodeType: 'nodes-base.supabase',
+            nodeType: 'n8n-nodes-base.supabase',
             displayName: 'Supabase',
             isAITool: true,
             hasToolVariant: true,
@@ -626,23 +626,23 @@ describe('WorkflowValidator - Tool Variant Validation', () => {
         }
 
         // Tool variant in database
-        if (nodeType === 'nodes-base.supabaseTool') {
+        if (nodeType === 'n8n-nodes-base.supabaseTool') {
           return {
-            nodeType: 'nodes-base.supabaseTool',
+            nodeType: 'n8n-nodes-base.supabaseTool',
             displayName: 'Supabase Tool',
             isAITool: true,
             hasToolVariant: false,
             isToolVariant: true,
-            toolVariantOf: 'nodes-base.supabase',
+            toolVariantOf: 'n8n-nodes-base.supabase',
             isTrigger: false,
             properties: []
           };
         }
 
         // Google Drive base node (exists, but no Tool variant in DB)
-        if (nodeType === 'nodes-base.googleDrive') {
+        if (nodeType === 'n8n-nodes-base.googleDrive') {
           return {
-            nodeType: 'nodes-base.googleDrive',
+            nodeType: 'n8n-nodes-base.googleDrive',
             displayName: 'Google Drive',
             isAITool: false, // Not marked as AI tool in npm package
             hasToolVariant: false, // No Tool variant in database
@@ -654,9 +654,9 @@ describe('WorkflowValidator - Tool Variant Validation', () => {
         }
 
         // Google Sheets base node (exists, but no Tool variant in DB)
-        if (nodeType === 'nodes-base.googleSheets') {
+        if (nodeType === 'n8n-nodes-base.googleSheets') {
           return {
-            nodeType: 'nodes-base.googleSheets',
+            nodeType: 'n8n-nodes-base.googleSheets',
             displayName: 'Google Sheets',
             isAITool: false,
             hasToolVariant: false,
@@ -668,9 +668,9 @@ describe('WorkflowValidator - Tool Variant Validation', () => {
         }
 
         // AI Agent node
-        if (nodeType === 'nodes-langchain.agent') {
+        if (nodeType === '@n8n/n8n-nodes-langchain.agent') {
           return {
-            nodeType: 'nodes-langchain.agent',
+            nodeType: '@n8n/n8n-nodes-langchain.agent',
             displayName: 'AI Agent',
             isAITool: false,
             hasToolVariant: false,
@@ -884,7 +884,7 @@ describe('WorkflowValidator - Tool Variant Validation', () => {
 
       expect(inferredWarning).toBeDefined();
       expect(inferredWarning!.message).toContain('inferred as a dynamic AI Tool variant');
-      expect(inferredWarning!.message).toContain('nodes-base.googleDrive');
+      expect(inferredWarning!.message).toContain('n8n-nodes-base.googleDrive');
       expect(inferredWarning!.message).toContain('Google Drive');
       expect(inferredWarning!.message).toContain('AI Agent');
     });

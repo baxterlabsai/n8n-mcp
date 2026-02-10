@@ -89,14 +89,14 @@ describe('MCP Tool Invocation', () => {
     describe('get_node', () => {
       it('should get complete node information', async () => {
         const response = await client.callTool({ name: 'get_node', arguments: {
-          nodeType: 'nodes-base.httpRequest',
+          nodeType: 'n8n-nodes-base.httpRequest',
           detail: 'full'
         }});
 
         expect(((response as any).content[0]).type).toBe('text');
         const nodeInfo = JSON.parse(((response as any).content[0]).text);
 
-        expect(nodeInfo).toHaveProperty('nodeType', 'nodes-base.httpRequest');
+        expect(nodeInfo).toHaveProperty('nodeType', 'n8n-nodes-base.httpRequest');
         expect(nodeInfo).toHaveProperty('displayName');
         expect(nodeInfo).toHaveProperty('description');
         expect(nodeInfo).toHaveProperty('version');
@@ -105,7 +105,7 @@ describe('MCP Tool Invocation', () => {
       it('should handle non-existent nodes', async () => {
         try {
           await client.callTool({ name: 'get_node', arguments: {
-            nodeType: 'nodes-base.nonExistent'
+            nodeType: 'n8n-nodes-base.nonExistent'
           }});
           expect.fail('Should have thrown an error');
         } catch (error: any) {
@@ -128,7 +128,7 @@ describe('MCP Tool Invocation', () => {
     describe('get_node with different detail levels', () => {
       it('should return standard detail by default', async () => {
         const response = await client.callTool({ name: 'get_node', arguments: {
-          nodeType: 'nodes-base.httpRequest'
+          nodeType: 'n8n-nodes-base.httpRequest'
         }});
 
         const nodeInfo = JSON.parse(((response as any).content[0]).text);
@@ -141,7 +141,7 @@ describe('MCP Tool Invocation', () => {
 
         // Should be smaller than full detail
         const fullResponse = await client.callTool({ name: 'get_node', arguments: {
-          nodeType: 'nodes-base.httpRequest',
+          nodeType: 'n8n-nodes-base.httpRequest',
           detail: 'full'
         }});
 
@@ -155,7 +155,7 @@ describe('MCP Tool Invocation', () => {
     describe('validate_node', () => {
       it('should validate valid node configuration', async () => {
         const response = await client.callTool({ name: 'validate_node', arguments: {
-          nodeType: 'nodes-base.httpRequest',
+          nodeType: 'n8n-nodes-base.httpRequest',
           config: {
             method: 'GET',
             url: 'https://api.example.com/data'
@@ -171,7 +171,7 @@ describe('MCP Tool Invocation', () => {
 
       it('should detect missing required fields', async () => {
         const response = await client.callTool({ name: 'validate_node', arguments: {
-          nodeType: 'nodes-base.httpRequest',
+          nodeType: 'n8n-nodes-base.httpRequest',
           config: {
             method: 'GET'
             // Missing required 'url' field
@@ -190,7 +190,7 @@ describe('MCP Tool Invocation', () => {
 
         for (const profile of profiles) {
           const response = await client.callTool({ name: 'validate_node', arguments: {
-            nodeType: 'nodes-base.httpRequest',
+            nodeType: 'n8n-nodes-base.httpRequest',
             config: { method: 'GET', url: 'https://api.example.com' },
             mode: 'full',
             profile
@@ -209,7 +209,7 @@ describe('MCP Tool Invocation', () => {
             {
               id: '1',
               name: 'Start',
-              type: 'nodes-base.manualTrigger',
+              type: 'n8n-nodes-base.manualTrigger',
               typeVersion: 1,
               position: [0, 0],
               parameters: {}
@@ -217,7 +217,7 @@ describe('MCP Tool Invocation', () => {
             {
               id: '2',
               name: 'HTTP Request',
-              type: 'nodes-base.httpRequest',
+              type: 'n8n-nodes-base.httpRequest',
               typeVersion: 3,
               position: [250, 0],
               parameters: {
@@ -249,7 +249,7 @@ describe('MCP Tool Invocation', () => {
             {
               id: '1',
               name: 'Start',
-              type: 'nodes-base.manualTrigger',
+              type: 'n8n-nodes-base.manualTrigger',
               typeVersion: 1,
               position: [0, 0],
               parameters: {}
@@ -397,7 +397,7 @@ describe('MCP Tool Invocation', () => {
       const toolCalls = [
         { name: 'search_nodes', arguments: { query: 'http' } },
         { name: 'tools_documentation', arguments: {} },
-        { name: 'get_node', arguments: { nodeType: 'nodes-base.httpRequest' } },
+        { name: 'get_node', arguments: { nodeType: 'n8n-nodes-base.httpRequest' } },
         { name: 'search_nodes', arguments: { query: 'webhook' } }
       ];
 
@@ -416,7 +416,7 @@ describe('MCP Tool Invocation', () => {
 
     it('should maintain consistency across related tools', async () => {
       // Get node via different methods
-      const nodeType = 'nodes-base.httpRequest';
+      const nodeType = 'n8n-nodes-base.httpRequest';
       
       const [fullInfo, essentials, searchResult] = await Promise.all([
         client.callTool({ name: 'get_node', arguments: { nodeType } }),
@@ -430,9 +430,9 @@ describe('MCP Tool Invocation', () => {
       const search = searchData.results;
 
       // Should all reference the same node
-      expect(full.nodeType).toBe('nodes-base.httpRequest');
+      expect(full.nodeType).toBe('n8n-nodes-base.httpRequest');
       expect(essential.displayName).toBe(full.displayName);
-      expect(search.find((n: any) => n.nodeType === 'nodes-base.httpRequest')).toBeDefined();
+      expect(search.find((n: any) => n.nodeType === 'n8n-nodes-base.httpRequest')).toBeDefined();
     });
   });
 });

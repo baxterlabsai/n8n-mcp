@@ -57,7 +57,7 @@ describe('PostUpdateValidator', () => {
   describe('generateGuidance', () => {
     it('should generate complete guidance for successful migration', async () => {
       const mockAnalysis: VersionUpgradeAnalysis = {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         fromVersion: '1.0',
         toVersion: '2.0',
         hasBreakingChanges: false,
@@ -75,7 +75,7 @@ describe('PostUpdateValidator', () => {
       const guidance = await validator.generateGuidance(
         'node-1',
         'Test Node',
-        'nodes-base.httpRequest',
+        'n8n-nodes-base.httpRequest',
         '1.0',
         '2.0',
         migrationResult
@@ -88,7 +88,7 @@ describe('PostUpdateValidator', () => {
 
     it('should identify manual_required status for critical issues', async () => {
       const mockAnalysis: VersionUpgradeAnalysis = {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         fromVersion: '1.0',
         toVersion: '2.0',
         hasBreakingChanges: true,
@@ -108,7 +108,7 @@ describe('PostUpdateValidator', () => {
       const guidance = await validator.generateGuidance(
         'node-1',
         'Test Node',
-        'nodes-base.httpRequest',
+        'n8n-nodes-base.httpRequest',
         '1.0',
         '2.0',
         migrationResult
@@ -120,7 +120,7 @@ describe('PostUpdateValidator', () => {
 
     it('should set partial status for some remaining issues', async () => {
       const mockAnalysis: VersionUpgradeAnalysis = {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         fromVersion: '1.0',
         toVersion: '2.0',
         hasBreakingChanges: true,
@@ -140,7 +140,7 @@ describe('PostUpdateValidator', () => {
       const guidance = await validator.generateGuidance(
         'node-1',
         'Test Node',
-        'nodes-base.httpRequest',
+        'n8n-nodes-base.httpRequest',
         '1.0',
         '2.0',
         migrationResult
@@ -153,7 +153,7 @@ describe('PostUpdateValidator', () => {
   describe('required actions generation', () => {
     it('should generate required actions for manual changes', async () => {
       const mockAnalysis: VersionUpgradeAnalysis = {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         fromVersion: '1.0',
         toVersion: '2.0',
         hasBreakingChanges: true,
@@ -173,7 +173,7 @@ describe('PostUpdateValidator', () => {
       const guidance = await validator.generateGuidance(
         'node-1',
         'Test Node',
-        'nodes-base.httpRequest',
+        'n8n-nodes-base.httpRequest',
         '1.0',
         '2.0',
         migrationResult
@@ -187,7 +187,7 @@ describe('PostUpdateValidator', () => {
 
     it('should map change types to action types correctly', async () => {
       const mockAnalysis: VersionUpgradeAnalysis = {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         fromVersion: '1.0',
         toVersion: '2.0',
         hasBreakingChanges: true,
@@ -209,7 +209,7 @@ describe('PostUpdateValidator', () => {
       const guidance = await validator.generateGuidance(
         'node-1',
         'Test Node',
-        'nodes-base.httpRequest',
+        'n8n-nodes-base.httpRequest',
         '1.0',
         '2.0',
         migrationResult
@@ -222,7 +222,7 @@ describe('PostUpdateValidator', () => {
 
     it('should map severity to priority correctly', async () => {
       const mockAnalysis: VersionUpgradeAnalysis = {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         fromVersion: '1.0',
         toVersion: '2.0',
         hasBreakingChanges: true,
@@ -244,7 +244,7 @@ describe('PostUpdateValidator', () => {
       const guidance = await validator.generateGuidance(
         'node-1',
         'Test Node',
-        'nodes-base.httpRequest',
+        'n8n-nodes-base.httpRequest',
         '1.0',
         '2.0',
         migrationResult
@@ -259,7 +259,7 @@ describe('PostUpdateValidator', () => {
   describe('deprecated properties identification', () => {
     it('should identify removed properties', async () => {
       const mockAnalysis: VersionUpgradeAnalysis = {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         fromVersion: '1.0',
         toVersion: '2.0',
         hasBreakingChanges: true,
@@ -282,7 +282,7 @@ describe('PostUpdateValidator', () => {
       const guidance = await validator.generateGuidance(
         'node-1',
         'Test Node',
-        'nodes-base.httpRequest',
+        'n8n-nodes-base.httpRequest',
         '1.0',
         '2.0',
         migrationResult
@@ -296,7 +296,7 @@ describe('PostUpdateValidator', () => {
 
     it('should mark breaking removals appropriately', async () => {
       const mockAnalysis: VersionUpgradeAnalysis = {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         fromVersion: '1.0',
         toVersion: '2.0',
         hasBreakingChanges: true,
@@ -319,7 +319,7 @@ describe('PostUpdateValidator', () => {
       const guidance = await validator.generateGuidance(
         'node-1',
         'Test Node',
-        'nodes-base.httpRequest',
+        'n8n-nodes-base.httpRequest',
         '1.0',
         '2.0',
         migrationResult
@@ -426,7 +426,7 @@ describe('PostUpdateValidator', () => {
 
     it('should not document behavior changes for other nodes', async () => {
       const mockAnalysis: VersionUpgradeAnalysis = {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         fromVersion: '1.0',
         toVersion: '2.0',
         hasBreakingChanges: false,
@@ -444,7 +444,7 @@ describe('PostUpdateValidator', () => {
       const guidance = await validator.generateGuidance(
         'node-1',
         'HTTP Request',
-        'nodes-base.httpRequest',
+        'n8n-nodes-base.httpRequest',
         '1.0',
         '2.0',
         migrationResult
@@ -457,7 +457,7 @@ describe('PostUpdateValidator', () => {
   describe('migration steps generation', () => {
     it('should generate ordered migration steps', async () => {
       const mockAnalysis: VersionUpgradeAnalysis = {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         fromVersion: '1.0',
         toVersion: '2.0',
         hasBreakingChanges: true,
@@ -482,7 +482,7 @@ describe('PostUpdateValidator', () => {
       const guidance = await validator.generateGuidance(
         'node-1',
         'Test Node',
-        'nodes-base.httpRequest',
+        'n8n-nodes-base.httpRequest',
         '1.0',
         '2.0',
         migrationResult
@@ -525,7 +525,7 @@ describe('PostUpdateValidator', () => {
 
     it('should always include final validation step', async () => {
       const mockAnalysis: VersionUpgradeAnalysis = {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         fromVersion: '1.0',
         toVersion: '2.0',
         hasBreakingChanges: false,
@@ -543,7 +543,7 @@ describe('PostUpdateValidator', () => {
       const guidance = await validator.generateGuidance(
         'node-1',
         'Test Node',
-        'nodes-base.httpRequest',
+        'n8n-nodes-base.httpRequest',
         '1.0',
         '2.0',
         migrationResult
@@ -556,7 +556,7 @@ describe('PostUpdateValidator', () => {
   describe('confidence calculation', () => {
     it('should set HIGH confidence for complete migrations', async () => {
       const mockAnalysis: VersionUpgradeAnalysis = {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         fromVersion: '1.0',
         toVersion: '2.0',
         hasBreakingChanges: false,
@@ -574,7 +574,7 @@ describe('PostUpdateValidator', () => {
       const guidance = await validator.generateGuidance(
         'node-1',
         'Test Node',
-        'nodes-base.httpRequest',
+        'n8n-nodes-base.httpRequest',
         '1.0',
         '2.0',
         migrationResult
@@ -585,7 +585,7 @@ describe('PostUpdateValidator', () => {
 
     it('should set MEDIUM confidence for partial migrations with few issues', async () => {
       const mockAnalysis: VersionUpgradeAnalysis = {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         fromVersion: '1.0',
         toVersion: '2.0',
         hasBreakingChanges: true,
@@ -605,7 +605,7 @@ describe('PostUpdateValidator', () => {
       const guidance = await validator.generateGuidance(
         'node-1',
         'Test Node',
-        'nodes-base.httpRequest',
+        'n8n-nodes-base.httpRequest',
         '1.0',
         '2.0',
         migrationResult
@@ -616,7 +616,7 @@ describe('PostUpdateValidator', () => {
 
     it('should set LOW confidence for manual_required with many critical actions', async () => {
       const mockAnalysis: VersionUpgradeAnalysis = {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         fromVersion: '1.0',
         toVersion: '2.0',
         hasBreakingChanges: true,
@@ -639,7 +639,7 @@ describe('PostUpdateValidator', () => {
       const guidance = await validator.generateGuidance(
         'node-1',
         'Test Node',
-        'nodes-base.httpRequest',
+        'n8n-nodes-base.httpRequest',
         '1.0',
         '2.0',
         migrationResult
@@ -652,7 +652,7 @@ describe('PostUpdateValidator', () => {
   describe('time estimation', () => {
     it('should estimate < 1 minute for simple migrations', async () => {
       const mockAnalysis: VersionUpgradeAnalysis = {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         fromVersion: '1.0',
         toVersion: '2.0',
         hasBreakingChanges: false,
@@ -670,7 +670,7 @@ describe('PostUpdateValidator', () => {
       const guidance = await validator.generateGuidance(
         'node-1',
         'Test Node',
-        'nodes-base.httpRequest',
+        'n8n-nodes-base.httpRequest',
         '1.0',
         '2.0',
         migrationResult
@@ -681,7 +681,7 @@ describe('PostUpdateValidator', () => {
 
     it('should estimate 2-5 minutes for few actions', async () => {
       const mockAnalysis: VersionUpgradeAnalysis = {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         fromVersion: '1.0',
         toVersion: '2.0',
         hasBreakingChanges: true,
@@ -702,7 +702,7 @@ describe('PostUpdateValidator', () => {
       const guidance = await validator.generateGuidance(
         'node-1',
         'Test Node',
-        'nodes-base.httpRequest',
+        'n8n-nodes-base.httpRequest',
         '1.0',
         '2.0',
         migrationResult
@@ -750,7 +750,7 @@ describe('PostUpdateValidator', () => {
   describe('generateSummary', () => {
     it('should generate readable summary', async () => {
       const mockAnalysis: VersionUpgradeAnalysis = {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         fromVersion: '1.0',
         toVersion: '2.0',
         hasBreakingChanges: true,
@@ -771,7 +771,7 @@ describe('PostUpdateValidator', () => {
       const guidance = await validator.generateGuidance(
         'node-1',
         'Test Node',
-        'nodes-base.httpRequest',
+        'n8n-nodes-base.httpRequest',
         '1.0',
         '2.0',
         migrationResult
@@ -787,7 +787,7 @@ describe('PostUpdateValidator', () => {
 
     it('should limit actions displayed in summary', async () => {
       const mockAnalysis: VersionUpgradeAnalysis = {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         fromVersion: '1.0',
         toVersion: '2.0',
         hasBreakingChanges: true,
@@ -811,7 +811,7 @@ describe('PostUpdateValidator', () => {
       const guidance = await validator.generateGuidance(
         'node-1',
         'Test Node',
-        'nodes-base.httpRequest',
+        'n8n-nodes-base.httpRequest',
         '1.0',
         '2.0',
         migrationResult

@@ -18,9 +18,9 @@ describe('Loop Output Fix - Edge Cases', () => {
     mockNodeRepository = {
       getNode: vi.fn((nodeType: string) => {
         // Default return
-        if (nodeType === 'nodes-base.splitInBatches') {
+        if (nodeType === 'n8n-nodes-base.splitInBatches') {
           return {
-            nodeType: 'nodes-base.splitInBatches',
+            nodeType: 'n8n-nodes-base.splitInBatches',
             outputs: [
               { displayName: 'Done', name: 'done' },
               { displayName: 'Loop', name: 'loop' }
@@ -49,7 +49,7 @@ describe('Loop Output Fix - Edge Cases', () => {
   describe('Nodes without outputs', () => {
     it('should handle nodes with null outputs gracefully', async () => {
       mockNodeRepository.getNode.mockReturnValue({
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         outputs: null,
         outputNames: null,
         properties: []
@@ -94,7 +94,7 @@ describe('Loop Output Fix - Edge Cases', () => {
 
     it('should handle nodes with undefined outputs gracefully', async () => {
       mockNodeRepository.getNode.mockReturnValue({
-        nodeType: 'nodes-base.webhook',
+        nodeType: 'n8n-nodes-base.webhook',
         // outputs and outputNames are undefined
         properties: []
       });
@@ -121,7 +121,7 @@ describe('Loop Output Fix - Edge Cases', () => {
 
     it('should handle nodes with empty outputs array', async () => {
       mockNodeRepository.getNode.mockReturnValue({
-        nodeType: 'nodes-base.customNode',
+        nodeType: 'n8n-nodes-base.customNode',
         outputs: [],
         outputNames: [],
         properties: []
@@ -199,7 +199,7 @@ describe('Loop Output Fix - Edge Cases', () => {
 
     it('should handle very large connection indices', async () => {
       mockNodeRepository.getNode.mockReturnValue({
-        nodeType: 'nodes-base.switch',
+        nodeType: 'n8n-nodes-base.switch',
         outputs: [
           { displayName: 'Output 1' },
           { displayName: 'Output 2' }
@@ -493,7 +493,7 @@ describe('Loop Output Fix - Edge Cases', () => {
       }));
 
       mockNodeRepository.getNode.mockReturnValue({
-        nodeType: 'nodes-base.complexSwitch',
+        nodeType: 'n8n-nodes-base.complexSwitch',
         outputs: manyOutputs,
         outputNames: manyOutputs.map(o => o.name),
         properties: []
@@ -534,7 +534,7 @@ describe('Loop Output Fix - Edge Cases', () => {
 
     it('should handle mixed output types (main, error, ai_tool)', async () => {
       mockNodeRepository.getNode.mockReturnValue({
-        nodeType: 'nodes-base.complexNode',
+        nodeType: 'n8n-nodes-base.complexNode',
         outputs: [
           { displayName: 'Main', type: 'main' },
           { displayName: 'Error', type: 'error' }
@@ -789,7 +789,7 @@ describe('Loop Output Fix - Edge Cases', () => {
   describe('Performance edge cases', () => {
     it('should handle very large workflows efficiently', async () => {
       mockNodeRepository.getNode.mockReturnValue({
-        nodeType: 'nodes-base.set',
+        nodeType: 'n8n-nodes-base.set',
         properties: []
       });
 

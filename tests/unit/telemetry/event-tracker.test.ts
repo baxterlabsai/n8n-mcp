@@ -463,14 +463,14 @@ describe('TelemetryEventTracker', () => {
   describe('trackValidationDetails()', () => {
     it('should track validation error details', () => {
       const details = { field: 'url', value: 'invalid' };
-      eventTracker.trackValidationDetails('nodes-base.httpRequest', 'required_field_missing', details);
+      eventTracker.trackValidationDetails('n8n-nodes-base.httpRequest', 'required_field_missing', details);
 
       const events = eventTracker.getEventQueue();
       expect(events).toHaveLength(1);
       expect(events[0]).toMatchObject({
         event: 'validation_details',
         properties: {
-          nodeType: 'nodes-base.httpRequest',
+          nodeType: 'n8n-nodes-base.httpRequest',
           errorType: 'required_field_missing',
           errorCategory: 'required_field_error',
           details
@@ -540,12 +540,12 @@ describe('TelemetryEventTracker', () => {
 
   describe('trackNodeConfiguration()', () => {
     it('should track node configuration patterns', () => {
-      eventTracker.trackNodeConfiguration('nodes-base.httpRequest', 5, false);
+      eventTracker.trackNodeConfiguration('n8n-nodes-base.httpRequest', 5, false);
 
       const events = eventTracker.getEventQueue();
       expect(events).toHaveLength(1);
       expect(events[0].event).toBe('node_configuration');
-      expect(events[0].properties.nodeType).toBe('nodes-base.httpRequest');
+      expect(events[0].properties.nodeType).toBe('n8n-nodes-base.httpRequest');
       expect(events[0].properties.propertiesSet).toBe(5);
       expect(events[0].properties.usedDefaults).toBe(false);
       expect(events[0].properties.complexity).toBe('moderate'); // 5 properties is moderate (4-10)

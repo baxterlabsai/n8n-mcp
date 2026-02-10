@@ -90,11 +90,11 @@ describe.skipIf(!dbExists)('Database Content Validation', () => {
 
   describe('[CRITICAL] Production Search Scenarios Must Work', () => {
     const criticalSearches = [
-      { term: 'webhook', expectedNode: 'nodes-base.webhook', description: 'webhook node (39.6% user adoption)' },
-      { term: 'merge', expectedNode: 'nodes-base.merge', description: 'merge node (10.7% user adoption)' },
-      { term: 'code', expectedNode: 'nodes-base.code', description: 'code node (59.5% user adoption)' },
-      { term: 'http', expectedNode: 'nodes-base.httpRequest', description: 'http request node (55.1% user adoption)' },
-      { term: 'split', expectedNode: 'nodes-base.splitInBatches', description: 'split in batches node' },
+      { term: 'webhook', expectedNode: 'n8n-nodes-base.webhook', description: 'webhook node (39.6% user adoption)' },
+      { term: 'merge', expectedNode: 'n8n-nodes-base.merge', description: 'merge node (10.7% user adoption)' },
+      { term: 'code', expectedNode: 'n8n-nodes-base.code', description: 'code node (59.5% user adoption)' },
+      { term: 'http', expectedNode: 'n8n-nodes-base.httpRequest', description: 'http request node (55.1% user adoption)' },
+      { term: 'split', expectedNode: 'n8n-nodes-base.splitInBatches', description: 'split in batches node' },
     ];
 
     criticalSearches.forEach(({ term, expectedNode, description }) => {
@@ -233,8 +233,8 @@ describe.skipIf(!dbExists)('Database Content Validation', () => {
       // Exact match should be in top results (using production boosting logic with CASE-first ordering)
       const topNodes = results.slice(0, 3).map((r: any) => r.node_type);
       expect(topNodes,
-        'WARNING: Exact match "nodes-base.webhook" not in top 3 ranked results'
-      ).toContain('nodes-base.webhook');
+        'WARNING: Exact match "n8n-nodes-base.webhook" not in top 3 ranked results'
+      ).toContain('n8n-nodes-base.webhook');
     });
   });
 

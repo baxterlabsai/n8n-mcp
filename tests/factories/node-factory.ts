@@ -13,7 +13,7 @@ import { ParsedNode } from '../../src/parsers/node-parser';
  * 
  * // Create a node with specific properties
  * const slackNode = NodeFactory.build({
- *   nodeType: 'nodes-base.slack',
+ *   nodeType: 'n8n-nodes-base.slack',
  *   displayName: 'Slack',
  *   isAITool: true
  * });
@@ -28,7 +28,7 @@ import { ParsedNode } from '../../src/parsers/node-parser';
  * ```
  */
 export const NodeFactory = Factory.define<ParsedNode>(() => ({
-  nodeType: faker.helpers.arrayElement(['nodes-base.', 'nodes-langchain.']) + faker.word.noun(),
+  nodeType: faker.helpers.arrayElement(['n8n-nodes-base.', '@n8n/n8n-nodes-langchain.']) + faker.word.noun(),
   displayName: faker.helpers.arrayElement(['HTTP', 'Slack', 'Google', 'AWS']) + ' ' + faker.word.noun(),
   description: faker.lorem.sentence(),
   packageName: faker.helpers.arrayElement(['n8n-nodes-base', '@n8n/n8n-nodes-langchain']),

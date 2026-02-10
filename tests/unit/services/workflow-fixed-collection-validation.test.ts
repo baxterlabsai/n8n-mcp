@@ -16,11 +16,11 @@ describe('Workflow FixedCollection Validation', () => {
     // Create mock repository that returns basic node info for common nodes
     mockNodeRepository = {
       getNode: vi.fn().mockImplementation((type: string) => {
-        const normalizedType = type.replace('n8n-nodes-base.', '').replace('nodes-base.', '');
+        const normalizedType = type.replace('n8n-nodes-base.', '').replace('n8n-nodes-base.', '');
         switch (normalizedType) {
           case 'webhook':
             return {
-              nodeType: 'nodes-base.webhook',
+              nodeType: 'n8n-nodes-base.webhook',
               displayName: 'Webhook',
               properties: [
                 { name: 'path', type: 'string', required: true },
@@ -29,7 +29,7 @@ describe('Workflow FixedCollection Validation', () => {
             };
           case 'switch':
             return {
-              nodeType: 'nodes-base.switch',
+              nodeType: 'n8n-nodes-base.switch',
               displayName: 'Switch',
               properties: [
                 { name: 'rules', type: 'fixedCollection', required: true }
@@ -37,7 +37,7 @@ describe('Workflow FixedCollection Validation', () => {
             };
           case 'if':
             return {
-              nodeType: 'nodes-base.if',
+              nodeType: 'n8n-nodes-base.if',
               displayName: 'If',
               properties: [
                 { name: 'conditions', type: 'filter', required: true }
@@ -45,7 +45,7 @@ describe('Workflow FixedCollection Validation', () => {
             };
           case 'filter':
             return {
-              nodeType: 'nodes-base.filter',
+              nodeType: 'n8n-nodes-base.filter',
               displayName: 'Filter',
               properties: [
                 { name: 'conditions', type: 'filter', required: true }

@@ -85,7 +85,7 @@ describe('Node FTS5 Search Integration Tests', () => {
 
       expect(results.length).toBeGreaterThan(0);
       const nodeTypes = results.map((r: any) => r.node_type);
-      expect(nodeTypes).toContain('nodes-base.webhook');
+      expect(nodeTypes).toContain('n8n-nodes-base.webhook');
     });
 
     it('should find merge node via FTS5', () => {
@@ -96,7 +96,7 @@ describe('Node FTS5 Search Integration Tests', () => {
 
       expect(results.length).toBeGreaterThan(0);
       const nodeTypes = results.map((r: any) => r.node_type);
-      expect(nodeTypes).toContain('nodes-base.merge');
+      expect(nodeTypes).toContain('n8n-nodes-base.merge');
     });
 
     it('should find split batch node via FTS5', () => {
@@ -107,7 +107,7 @@ describe('Node FTS5 Search Integration Tests', () => {
 
       expect(results.length).toBeGreaterThan(0);
       const nodeTypes = results.map((r: any) => r.node_type);
-      expect(nodeTypes).toContain('nodes-base.splitInBatches');
+      expect(nodeTypes).toContain('n8n-nodes-base.splitInBatches');
     });
 
     it('should find code node via FTS5', () => {
@@ -118,7 +118,7 @@ describe('Node FTS5 Search Integration Tests', () => {
 
       expect(results.length).toBeGreaterThan(0);
       const nodeTypes = results.map((r: any) => r.node_type);
-      expect(nodeTypes).toContain('nodes-base.code');
+      expect(nodeTypes).toContain('n8n-nodes-base.code');
     });
 
     it('should find http request node via FTS5', () => {
@@ -129,7 +129,7 @@ describe('Node FTS5 Search Integration Tests', () => {
 
       expect(results.length).toBeGreaterThan(0);
       const nodeTypes = results.map((r: any) => r.node_type);
-      expect(nodeTypes).toContain('nodes-base.httpRequest');
+      expect(nodeTypes).toContain('n8n-nodes-base.httpRequest');
     });
   });
 
@@ -156,7 +156,7 @@ describe('Node FTS5 Search Integration Tests', () => {
       expect(results.length).toBeGreaterThan(0);
       // Exact match should be in top results (using production boosting logic with CASE-first ordering)
       const topResults = results.slice(0, 3).map((r: any) => r.node_type);
-      expect(topResults).toContain('nodes-base.webhook');
+      expect(topResults).toContain('n8n-nodes-base.webhook');
     });
 
     it('should support phrase searches', () => {

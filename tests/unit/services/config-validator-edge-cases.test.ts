@@ -12,7 +12,7 @@ describe('ConfigValidator - Edge Cases', () => {
 
   describe('Null and Undefined Handling', () => {
     it('should handle null config gracefully', () => {
-      const nodeType = 'nodes-base.test';
+      const nodeType = 'n8n-nodes-base.test';
       const config = null as any;
       const properties: any[] = [];
 
@@ -22,7 +22,7 @@ describe('ConfigValidator - Edge Cases', () => {
     });
 
     it('should handle undefined config gracefully', () => {
-      const nodeType = 'nodes-base.test';
+      const nodeType = 'n8n-nodes-base.test';
       const config = undefined as any;
       const properties: any[] = [];
 
@@ -32,7 +32,7 @@ describe('ConfigValidator - Edge Cases', () => {
     });
 
     it('should handle null properties array gracefully', () => {
-      const nodeType = 'nodes-base.test';
+      const nodeType = 'n8n-nodes-base.test';
       const config = {};
       const properties = null as any;
 
@@ -42,7 +42,7 @@ describe('ConfigValidator - Edge Cases', () => {
     });
 
     it('should handle undefined properties array gracefully', () => {
-      const nodeType = 'nodes-base.test';
+      const nodeType = 'n8n-nodes-base.test';
       const config = {};
       const properties = undefined as any;
 
@@ -52,7 +52,7 @@ describe('ConfigValidator - Edge Cases', () => {
     });
 
     it('should handle properties with null values in config', () => {
-      const nodeType = 'nodes-base.test';
+      const nodeType = 'n8n-nodes-base.test';
       const config = {
         nullField: null,
         undefinedField: undefined,
@@ -81,7 +81,7 @@ describe('ConfigValidator - Edge Cases', () => {
 
   describe('Boundary Value Testing', () => {
     it('should handle empty arrays', () => {
-      const nodeType = 'nodes-base.test';
+      const nodeType = 'n8n-nodes-base.test';
       const config = {
         arrayField: []
       };
@@ -95,7 +95,7 @@ describe('ConfigValidator - Edge Cases', () => {
     });
 
     it('should handle very large property arrays', () => {
-      const nodeType = 'nodes-base.test';
+      const nodeType = 'n8n-nodes-base.test';
       const config = { field1: 'value1' };
       const properties = Array(1000).fill(null).map((_, i) => ({
         name: `field${i}`,
@@ -108,7 +108,7 @@ describe('ConfigValidator - Edge Cases', () => {
     });
 
     it('should handle deeply nested displayOptions', () => {
-      const nodeType = 'nodes-base.test';
+      const nodeType = 'n8n-nodes-base.test';
       const config = {
         level1: 'a',
         level2: 'b',
@@ -128,7 +128,7 @@ describe('ConfigValidator - Edge Cases', () => {
     });
 
     it('should handle extremely long string values', () => {
-      const nodeType = 'nodes-base.test';
+      const nodeType = 'n8n-nodes-base.test';
       const longString = 'a'.repeat(10000);
       const config = {
         longField: longString
@@ -145,7 +145,7 @@ describe('ConfigValidator - Edge Cases', () => {
 
   describe('Invalid Data Type Handling', () => {
     it('should handle NaN values', () => {
-      const nodeType = 'nodes-base.test';
+      const nodeType = 'n8n-nodes-base.test';
       const config = {
         numberField: NaN
       };
@@ -163,7 +163,7 @@ describe('ConfigValidator - Edge Cases', () => {
     });
 
     it('should handle Infinity values', () => {
-      const nodeType = 'nodes-base.test';
+      const nodeType = 'n8n-nodes-base.test';
       const config = {
         numberField: Infinity
       };
@@ -180,7 +180,7 @@ describe('ConfigValidator - Edge Cases', () => {
     });
 
     it('should handle objects when expecting primitives', () => {
-      const nodeType = 'nodes-base.test';
+      const nodeType = 'n8n-nodes-base.test';
       const config = {
         stringField: { nested: 'object' },
         numberField: { value: 123 }
@@ -197,7 +197,7 @@ describe('ConfigValidator - Edge Cases', () => {
     });
 
     it('should handle circular references in config', () => {
-      const nodeType = 'nodes-base.test';
+      const nodeType = 'n8n-nodes-base.test';
       const config: any = { field: 'value' };
       config.circular = config; // Create circular reference
       const properties = [
@@ -214,7 +214,7 @@ describe('ConfigValidator - Edge Cases', () => {
 
   describe('Performance Boundaries', () => {
     it('should validate large config objects within reasonable time', () => {
-      const nodeType = 'nodes-base.test';
+      const nodeType = 'n8n-nodes-base.test';
       const config: Record<string, any> = {};
       const properties: any[] = [];
 
@@ -238,7 +238,7 @@ describe('ConfigValidator - Edge Cases', () => {
 
   describe('Special Characters and Encoding', () => {
     it('should handle special characters in property values', () => {
-      const nodeType = 'nodes-base.test';
+      const nodeType = 'n8n-nodes-base.test';
       const config = {
         specialField: 'Value with special chars: <>&"\'`\n\r\t'
       };
@@ -252,7 +252,7 @@ describe('ConfigValidator - Edge Cases', () => {
     });
 
     it('should handle unicode characters', () => {
-      const nodeType = 'nodes-base.test';
+      const nodeType = 'n8n-nodes-base.test';
       const config = {
         unicodeField: '🚀 Unicode: 你好世界 مرحبا بالعالم'
       };
@@ -268,7 +268,7 @@ describe('ConfigValidator - Edge Cases', () => {
 
   describe('Complex Validation Scenarios', () => {
     it('should handle conflicting displayOptions conditions', () => {
-      const nodeType = 'nodes-base.test';
+      const nodeType = 'n8n-nodes-base.test';
       const config = {
         mode: 'both',
         showField: true,
@@ -307,7 +307,7 @@ describe('ConfigValidator - Edge Cases', () => {
       // Should perform node-specific validation for Code nodes
       const result = ConfigValidator.validate(nodeType, config, properties);
 
-      expect(result.warnings.some(w => 
+      expect(result.warnings.some(w =>
         w.message.includes('No return statement found')
       )).toBe(true);
     });
@@ -315,7 +315,7 @@ describe('ConfigValidator - Edge Cases', () => {
 
   describe('Error Recovery and Resilience', () => {
     it('should continue validation after encountering errors', () => {
-      const nodeType = 'nodes-base.test';
+      const nodeType = 'n8n-nodes-base.test';
       const config = {
         field1: 'invalid-for-number',
         field2: null, // Required field missing
@@ -347,7 +347,7 @@ describe('ConfigValidator - Edge Cases', () => {
     });
 
     it('should handle malformed property definitions gracefully', () => {
-      const nodeType = 'nodes-base.test';
+      const nodeType = 'n8n-nodes-base.test';
       const config = { field: 'value' };
       const properties = [
         { name: 'field', type: 'string' },
@@ -367,8 +367,8 @@ describe('ConfigValidator - Edge Cases', () => {
     it('should validate multiple configs in batch if method exists', () => {
       // This test is for future implementation
       const configs = [
-        { nodeType: 'nodes-base.test', config: { field: 'value1' }, properties: [] },
-        { nodeType: 'nodes-base.test', config: { field: 'value2' }, properties: [] }
+        { nodeType: 'n8n-nodes-base.test', config: { field: 'value1' }, properties: [] },
+        { nodeType: 'n8n-nodes-base.test', config: { field: 'value2' }, properties: [] }
       ];
 
       // If validateBatch method is implemented in the future

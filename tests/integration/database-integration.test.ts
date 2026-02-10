@@ -28,22 +28,22 @@ describe('Database Integration Tests', () => {
     // Seed comprehensive test data
     await seedTestNodes(nodeRepo, [
       // Communication nodes
-      { nodeType: 'nodes-base.email', displayName: 'Email', category: 'Communication' },
-      { nodeType: 'nodes-base.discord', displayName: 'Discord', category: 'Communication' },
-      { nodeType: 'nodes-base.twilio', displayName: 'Twilio', category: 'Communication' },
+      { nodeType: 'n8n-nodes-base.email', displayName: 'Email', category: 'Communication' },
+      { nodeType: 'n8n-nodes-base.discord', displayName: 'Discord', category: 'Communication' },
+      { nodeType: 'n8n-nodes-base.twilio', displayName: 'Twilio', category: 'Communication' },
       
       // Data nodes
-      { nodeType: 'nodes-base.postgres', displayName: 'Postgres', category: 'Data' },
-      { nodeType: 'nodes-base.mysql', displayName: 'MySQL', category: 'Data' },
-      { nodeType: 'nodes-base.mongodb', displayName: 'MongoDB', category: 'Data' },
+      { nodeType: 'n8n-nodes-base.postgres', displayName: 'Postgres', category: 'Data' },
+      { nodeType: 'n8n-nodes-base.mysql', displayName: 'MySQL', category: 'Data' },
+      { nodeType: 'n8n-nodes-base.mongodb', displayName: 'MongoDB', category: 'Data' },
       
       // AI nodes
-      { nodeType: 'nodes-langchain.openAi', displayName: 'OpenAI', category: 'AI', isAITool: true },
-      { nodeType: 'nodes-langchain.agent', displayName: 'AI Agent', category: 'AI', isAITool: true },
+      { nodeType: '@n8n/n8n-nodes-langchain.openAi', displayName: 'OpenAI', category: 'AI', isAITool: true },
+      { nodeType: '@n8n/n8n-nodes-langchain.agent', displayName: 'AI Agent', category: 'AI', isAITool: true },
       
       // Trigger nodes
-      { nodeType: 'nodes-base.cron', displayName: 'Cron', category: 'Core Nodes', isTrigger: true },
-      { nodeType: 'nodes-base.emailTrigger', displayName: 'Email Trigger', category: 'Communication', isTrigger: true }
+      { nodeType: 'n8n-nodes-base.cron', displayName: 'Cron', category: 'Core Nodes', isTrigger: true },
+      { nodeType: 'n8n-nodes-base.emailTrigger', displayName: 'Email Trigger', category: 'Communication', isTrigger: true }
     ]);
     
     await seedTestTemplates(templateRepo, [
@@ -103,10 +103,10 @@ describe('Database Integration Tests', () => {
       expect(communicationNodes).toHaveLength(5); // slack (default), email, discord, twilio, emailTrigger
       
       const nodeTypes = communicationNodes.map(n => n.node_type);
-      expect(nodeTypes).toContain('nodes-base.email');
-      expect(nodeTypes).toContain('nodes-base.discord');
-      expect(nodeTypes).toContain('nodes-base.twilio');
-      expect(nodeTypes).toContain('nodes-base.emailTrigger');
+      expect(nodeTypes).toContain('n8n-nodes-base.email');
+      expect(nodeTypes).toContain('n8n-nodes-base.discord');
+      expect(nodeTypes).toContain('n8n-nodes-base.twilio');
+      expect(nodeTypes).toContain('n8n-nodes-base.emailTrigger');
     });
     
     it('should query AI-enabled nodes', () => {
@@ -116,8 +116,8 @@ describe('Database Integration Tests', () => {
       expect(aiNodes.length).toBeGreaterThanOrEqual(4);
       
       const aiNodeTypes = aiNodes.map(n => n.nodeType);
-      expect(aiNodeTypes).toContain('nodes-langchain.openAi');
-      expect(aiNodeTypes).toContain('nodes-langchain.agent');
+      expect(aiNodeTypes).toContain('@n8n/n8n-nodes-langchain.openAi');
+      expect(aiNodeTypes).toContain('@n8n/n8n-nodes-langchain.agent');
     });
     
     it('should query trigger nodes', () => {
@@ -128,8 +128,8 @@ describe('Database Integration Tests', () => {
       expect(triggers.length).toBeGreaterThanOrEqual(3); // cron, emailTrigger, webhook
       
       const triggerTypes = triggers.map(t => t.node_type);
-      expect(triggerTypes).toContain('nodes-base.cron');
-      expect(triggerTypes).toContain('nodes-base.emailTrigger');
+      expect(triggerTypes).toContain('n8n-nodes-base.cron');
+      expect(triggerTypes).toContain('n8n-nodes-base.emailTrigger');
     });
   });
   
@@ -228,7 +228,7 @@ describe('Database Integration Tests', () => {
         testDb.adapter.transaction(() => {
           // Add a new node
           nodeRepo.saveNode({
-            nodeType: 'nodes-base.transaction-test',
+            nodeType: 'n8n-nodes-base.transaction-test',
             displayName: 'Transaction Test',
             packageName: 'n8n-nodes-base',
             style: 'programmatic',
@@ -256,7 +256,7 @@ describe('Database Integration Tests', () => {
       // Verify rollback worked
       const finalNodeCount = dbHelpers.countRows(testDb.adapter, 'nodes');
       expect(finalNodeCount).toBe(initialNodeCount);
-      expect(dbHelpers.nodeExists(testDb.adapter, 'nodes-base.transaction-test')).toBe(false);
+      expect(dbHelpers.nodeExists(testDb.adapter, 'n8n-nodes-base.transaction-test')).toBe(false);
     });
   });
   
@@ -288,7 +288,7 @@ describe('Database Integration Tests', () => {
       expect(queryDuration).toBeLessThan(100); // Queries should be very fast
       
       // Cleanup bulk data
-      dbHelpers.executeSql(testDb.adapter, "DELETE FROM nodes WHERE node_type LIKE 'nodes-base.bulk%'");
+      dbHelpers.executeSql(testDb.adapter, "DELETE FROM nodes WHERE node_type LIKE 'n8n-nodes-base.bulk%'");
     });
   });
 });

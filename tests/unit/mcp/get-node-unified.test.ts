@@ -19,7 +19,7 @@ describe('Unified get_node Tool', () => {
     // Populate in-memory database with test nodes
     const testNodes = [
       {
-        node_type: 'nodes-base.httpRequest',
+        node_type: 'n8n-nodes-base.httpRequest',
         package_name: 'n8n-nodes-base',
         display_name: 'HTTP Request',
         description: 'Makes an HTTP request',
@@ -51,7 +51,7 @@ describe('Unified get_node Tool', () => {
         operations: JSON.stringify([])
       },
       {
-        node_type: 'nodes-base.webhook',
+        node_type: 'n8n-nodes-base.webhook',
         package_name: 'n8n-nodes-base',
         display_name: 'Webhook',
         description: 'Starts workflow on webhook call',
@@ -73,7 +73,7 @@ describe('Unified get_node Tool', () => {
         operations: JSON.stringify([])
       },
       {
-        node_type: 'nodes-langchain.agent',
+        node_type: '@n8n/n8n-nodes-langchain.agent',
         package_name: '@n8n/n8n-nodes-langchain',
         display_name: 'AI Agent',
         description: 'AI Agent node',
@@ -125,7 +125,7 @@ describe('Unified get_node Tool', () => {
 
       // HTTP Request versions
       versionInsertStmt.run(
-        'nodes-base.httpRequest',
+        'n8n-nodes-base.httpRequest',
         '4.1',
         'n8n-nodes-base',
         'HTTP Request',
@@ -136,7 +136,7 @@ describe('Unified get_node Tool', () => {
         JSON.stringify([])
       );
       versionInsertStmt.run(
-        'nodes-base.httpRequest',
+        'n8n-nodes-base.httpRequest',
         '4.2',
         'n8n-nodes-base',
         'HTTP Request',
@@ -157,7 +157,7 @@ describe('Unified get_node Tool', () => {
       `);
 
       changeInsertStmt.run(
-        'nodes-base.httpRequest',
+        'n8n-nodes-base.httpRequest',
         '4.1',
         '4.2',
         'authentication',
@@ -170,7 +170,7 @@ describe('Unified get_node Tool', () => {
         null
       );
       changeInsertStmt.run(
-        'nodes-base.httpRequest',
+        'n8n-nodes-base.httpRequest',
         '4.1',
         '4.2',
         'timeout',
@@ -192,27 +192,27 @@ describe('Unified get_node Tool', () => {
   describe('Parameter Validation', () => {
     it('should throw error for invalid detail level', async () => {
       await expect(
-        (server as any).getNode('nodes-base.httpRequest', 'invalid', 'info')
+        (server as any).getNode('n8n-nodes-base.httpRequest', 'invalid', 'info')
       ).rejects.toThrow('Invalid detail level "invalid"');
     });
 
     it('should throw error for invalid mode', async () => {
       await expect(
-        (server as any).getNode('nodes-base.httpRequest', 'standard', 'invalid')
+        (server as any).getNode('n8n-nodes-base.httpRequest', 'standard', 'invalid')
       ).rejects.toThrow('Invalid mode "invalid"');
     });
 
     it('should accept all valid detail levels', async () => {
       await expect(
-        (server as any).getNode('nodes-base.httpRequest', 'minimal', 'info')
+        (server as any).getNode('n8n-nodes-base.httpRequest', 'minimal', 'info')
       ).resolves.toBeDefined();
 
       await expect(
-        (server as any).getNode('nodes-base.httpRequest', 'standard', 'info')
+        (server as any).getNode('n8n-nodes-base.httpRequest', 'standard', 'info')
       ).resolves.toBeDefined();
 
       await expect(
-        (server as any).getNode('nodes-base.httpRequest', 'full', 'info')
+        (server as any).getNode('n8n-nodes-base.httpRequest', 'full', 'info')
       ).resolves.toBeDefined();
     });
 
@@ -222,18 +222,18 @@ describe('Unified get_node Tool', () => {
       for (const mode of validModes) {
         if (mode === 'info') {
           await expect(
-            (server as any).getNode('nodes-base.httpRequest', 'standard', mode)
+            (server as any).getNode('n8n-nodes-base.httpRequest', 'standard', mode)
           ).resolves.toBeDefined();
         } else if (mode === 'versions') {
           await expect(
-            (server as any).getNode('nodes-base.httpRequest', 'standard', mode)
+            (server as any).getNode('n8n-nodes-base.httpRequest', 'standard', mode)
           ).resolves.toBeDefined();
         }
       }
     });
 
     it('should use default values for optional parameters', async () => {
-      const result = await (server as any).getNode('nodes-base.httpRequest');
+      const result = await (server as any).getNode('n8n-nodes-base.httpRequest');
 
       expect(result).toBeDefined();
       expect(result.versionInfo).toBeDefined(); // standard mode includes version info
@@ -242,21 +242,21 @@ describe('Unified get_node Tool', () => {
     it('should normalize node type before processing', async () => {
       // Test short form
       const result1 = await (server as any).getNode('httpRequest', 'minimal', 'info');
-      expect(result1.nodeType).toBe('nodes-base.httpRequest');
+      expect(result1.nodeType).toBe('n8n-nodes-base.httpRequest');
 
       // Test full form
       const result2 = await (server as any).getNode('n8n-nodes-base.httpRequest', 'minimal', 'info');
-      expect(result2.nodeType).toBe('nodes-base.httpRequest');
+      expect(result2.nodeType).toBe('n8n-nodes-base.httpRequest');
 
       // Test with langchain package
       const result3 = await (server as any).getNode('agent', 'minimal', 'info');
-      expect(result3.nodeType).toBe('nodes-langchain.agent');
+      expect(result3.nodeType).toBe('@n8n/n8n-nodes-langchain.agent');
     });
   });
 
   describe('Info Mode - minimal detail', () => {
     it('should return only basic metadata for minimal detail', async () => {
-      const result = await (server as any).getNode('nodes-base.httpRequest', 'minimal', 'info');
+      const result = await (server as any).getNode('n8n-nodes-base.httpRequest', 'minimal', 'info');
 
       expect(result).toHaveProperty('nodeType');
       expect(result).toHaveProperty('workflowNodeType');
@@ -270,7 +270,7 @@ describe('Unified get_node Tool', () => {
     });
 
     it('should not include version info in minimal detail', async () => {
-      const result = await (server as any).getNode('nodes-base.httpRequest', 'minimal', 'info');
+      const result = await (server as any).getNode('n8n-nodes-base.httpRequest', 'minimal', 'info');
 
       expect(result).not.toHaveProperty('versionInfo');
       expect(result).not.toHaveProperty('properties');
@@ -279,9 +279,9 @@ describe('Unified get_node Tool', () => {
     });
 
     it('should return correct node metadata values', async () => {
-      const result = await (server as any).getNode('nodes-base.httpRequest', 'minimal', 'info');
+      const result = await (server as any).getNode('n8n-nodes-base.httpRequest', 'minimal', 'info');
 
-      expect(result.nodeType).toBe('nodes-base.httpRequest');
+      expect(result.nodeType).toBe('n8n-nodes-base.httpRequest');
       expect(result.displayName).toBe('HTTP Request');
       expect(result.description).toBe('Makes an HTTP request');
       expect(result.category).toBe('Core Nodes');
@@ -292,42 +292,42 @@ describe('Unified get_node Tool', () => {
     });
 
     it('should return correct workflow node type', async () => {
-      const result = await (server as any).getNode('nodes-base.httpRequest', 'minimal', 'info');
+      const result = await (server as any).getNode('n8n-nodes-base.httpRequest', 'minimal', 'info');
 
       expect(result.workflowNodeType).toBe('n8n-nodes-base.httpRequest');
     });
 
     it('should handle webhook node correctly', async () => {
-      const result = await (server as any).getNode('nodes-base.webhook', 'minimal', 'info');
+      const result = await (server as any).getNode('n8n-nodes-base.webhook', 'minimal', 'info');
 
       expect(result.isTrigger).toBe(true);
       expect(result.isWebhook).toBe(true);
     });
 
     it('should handle langchain nodes correctly', async () => {
-      const result = await (server as any).getNode('nodes-langchain.agent', 'minimal', 'info');
+      const result = await (server as any).getNode('@n8n/n8n-nodes-langchain.agent', 'minimal', 'info');
 
-      expect(result.nodeType).toBe('nodes-langchain.agent');
+      expect(result.nodeType).toBe('@n8n/n8n-nodes-langchain.agent');
       expect(result.workflowNodeType).toBe('@n8n/n8n-nodes-langchain.agent');
       expect(result.package).toBe('@n8n/n8n-nodes-langchain');
     });
 
     it('should throw error for non-existent node', async () => {
       await expect(
-        (server as any).getNode('nodes-base.nonexistent', 'minimal', 'info')
+        (server as any).getNode('n8n-nodes-base.nonexistent', 'minimal', 'info')
       ).rejects.toThrow('Node nodes-base.nonexistent not found');
     });
 
     it('should try alternative forms if node not found', async () => {
       // This tests the fallback logic in handleInfoMode for minimal detail
       const result = await (server as any).getNode('httpRequest', 'minimal', 'info');
-      expect(result.nodeType).toBe('nodes-base.httpRequest');
+      expect(result.nodeType).toBe('n8n-nodes-base.httpRequest');
     });
   });
 
   describe('Info Mode - standard detail', () => {
     it('should return essentials with version info for standard detail', async () => {
-      const result = await (server as any).getNode('nodes-base.httpRequest', 'standard', 'info');
+      const result = await (server as any).getNode('n8n-nodes-base.httpRequest', 'standard', 'info');
 
       expect(result).toHaveProperty('nodeType');
       expect(result).toHaveProperty('displayName');
@@ -339,7 +339,7 @@ describe('Unified get_node Tool', () => {
     });
 
     it('should include version summary in standard detail', async () => {
-      const result = await (server as any).getNode('nodes-base.httpRequest', 'standard', 'info');
+      const result = await (server as any).getNode('n8n-nodes-base.httpRequest', 'standard', 'info');
 
       expect(result.versionInfo).toBeDefined();
       expect(result.versionInfo).toHaveProperty('currentVersion');
@@ -348,14 +348,14 @@ describe('Unified get_node Tool', () => {
     });
 
     it('should not include examples by default in standard detail', async () => {
-      const result = await (server as any).getNode('nodes-base.httpRequest', 'standard', 'info');
+      const result = await (server as any).getNode('n8n-nodes-base.httpRequest', 'standard', 'info');
 
       expect(result.examples).toBeUndefined();
     });
 
     it('should include examples when includeExamples is true', async () => {
       const result = await (server as any).getNode(
-        'nodes-base.httpRequest',
+        'n8n-nodes-base.httpRequest',
         'standard',
         'info',
         false,
@@ -367,7 +367,7 @@ describe('Unified get_node Tool', () => {
     });
 
     it('should not include type info by default', async () => {
-      const result = await (server as any).getNode('nodes-base.httpRequest', 'standard', 'info');
+      const result = await (server as any).getNode('n8n-nodes-base.httpRequest', 'standard', 'info');
 
       if (result.requiredProperties && result.requiredProperties.length > 0) {
         expect(result.requiredProperties[0]).not.toHaveProperty('typeInfo');
@@ -379,7 +379,7 @@ describe('Unified get_node Tool', () => {
 
     it('should include type info when includeTypeInfo is true', async () => {
       const result = await (server as any).getNode(
-        'nodes-base.httpRequest',
+        'n8n-nodes-base.httpRequest',
         'standard',
         'info',
         true,
@@ -399,7 +399,7 @@ describe('Unified get_node Tool', () => {
 
     it('should include both type info and examples when both parameters are true', async () => {
       const result = await (server as any).getNode(
-        'nodes-base.httpRequest',
+        'n8n-nodes-base.httpRequest',
         'standard',
         'info',
         true,
@@ -413,7 +413,7 @@ describe('Unified get_node Tool', () => {
 
   describe('Info Mode - full detail', () => {
     it('should return complete node info with version info for full detail', async () => {
-      const result = await (server as any).getNode('nodes-base.httpRequest', 'full', 'info');
+      const result = await (server as any).getNode('n8n-nodes-base.httpRequest', 'full', 'info');
 
       expect(result).toHaveProperty('nodeType');
       expect(result).toHaveProperty('displayName');
@@ -424,7 +424,7 @@ describe('Unified get_node Tool', () => {
     });
 
     it('should include version summary in full detail', async () => {
-      const result = await (server as any).getNode('nodes-base.httpRequest', 'full', 'info');
+      const result = await (server as any).getNode('n8n-nodes-base.httpRequest', 'full', 'info');
 
       expect(result.versionInfo).toBeDefined();
       expect(result.versionInfo).toHaveProperty('currentVersion');
@@ -433,7 +433,7 @@ describe('Unified get_node Tool', () => {
     });
 
     it('should include complete properties array', async () => {
-      const result = await (server as any).getNode('nodes-base.httpRequest', 'full', 'info');
+      const result = await (server as any).getNode('n8n-nodes-base.httpRequest', 'full', 'info');
 
       expect(result.properties).toBeDefined();
       expect(Array.isArray(result.properties)).toBe(true);
@@ -441,7 +441,7 @@ describe('Unified get_node Tool', () => {
 
     it('should enrich properties with type info when includeTypeInfo is true', async () => {
       const result = await (server as any).getNode(
-        'nodes-base.httpRequest',
+        'n8n-nodes-base.httpRequest',
         'full',
         'info',
         true
@@ -454,7 +454,7 @@ describe('Unified get_node Tool', () => {
     });
 
     it('should not enrich properties with type info by default', async () => {
-      const result = await (server as any).getNode('nodes-base.httpRequest', 'full', 'info');
+      const result = await (server as any).getNode('n8n-nodes-base.httpRequest', 'full', 'info');
 
       if (result.properties && result.properties.length > 0) {
         expect(result.properties[0]).not.toHaveProperty('typeInfo');
@@ -464,7 +464,7 @@ describe('Unified get_node Tool', () => {
     it('should ignore includeExamples parameter in full detail', async () => {
       // includeExamples only applies to standard detail
       const result = await (server as any).getNode(
-        'nodes-base.httpRequest',
+        'n8n-nodes-base.httpRequest',
         'full',
         'info',
         false,
@@ -480,7 +480,7 @@ describe('Unified get_node Tool', () => {
   describe('Version Mode - versions', () => {
     it('should return version history for versions mode', async () => {
       const result = await (server as any).getNode(
-        'nodes-base.httpRequest',
+        'n8n-nodes-base.httpRequest',
         'standard',
         'versions'
       );
@@ -493,7 +493,7 @@ describe('Unified get_node Tool', () => {
 
     it('should include version details in version history', async () => {
       const result = await (server as any).getNode(
-        'nodes-base.httpRequest',
+        'n8n-nodes-base.httpRequest',
         'standard',
         'versions'
       );
@@ -514,12 +514,12 @@ describe('Unified get_node Tool', () => {
 
     it('should ignore detail level in versions mode', async () => {
       const resultMinimal = await (server as any).getNode(
-        'nodes-base.httpRequest',
+        'n8n-nodes-base.httpRequest',
         'minimal',
         'versions'
       );
       const resultFull = await (server as any).getNode(
-        'nodes-base.httpRequest',
+        'n8n-nodes-base.httpRequest',
         'full',
         'versions'
       );
@@ -530,7 +530,7 @@ describe('Unified get_node Tool', () => {
 
     it('should handle node with no version history', async () => {
       const result = await (server as any).getNode(
-        'nodes-base.webhook',
+        'n8n-nodes-base.webhook',
         'standard',
         'versions'
       );
@@ -545,19 +545,19 @@ describe('Unified get_node Tool', () => {
   describe('Version Mode - compare', () => {
     it('should throw error if fromVersion is missing', async () => {
       await expect(
-        (server as any).getNode('nodes-base.httpRequest', 'standard', 'compare')
+        (server as any).getNode('n8n-nodes-base.httpRequest', 'standard', 'compare')
       ).rejects.toThrow('fromVersion is required for compare mode');
     });
 
     it('should include nodeType in error message for missing fromVersion', async () => {
       await expect(
-        (server as any).getNode('nodes-base.httpRequest', 'standard', 'compare')
+        (server as any).getNode('n8n-nodes-base.httpRequest', 'standard', 'compare')
       ).rejects.toThrow('nodeType: nodes-base.httpRequest');
     });
 
     it('should compare versions with fromVersion only', async () => {
       const result = await (server as any).getNode(
-        'nodes-base.httpRequest',
+        'n8n-nodes-base.httpRequest',
         'standard',
         'compare',
         false,
@@ -575,7 +575,7 @@ describe('Unified get_node Tool', () => {
 
     it('should use latest version as toVersion by default', async () => {
       const result = await (server as any).getNode(
-        'nodes-base.httpRequest',
+        'n8n-nodes-base.httpRequest',
         'standard',
         'compare',
         false,
@@ -588,7 +588,7 @@ describe('Unified get_node Tool', () => {
 
     it('should compare specific versions when toVersion is provided', async () => {
       const result = await (server as any).getNode(
-        'nodes-base.httpRequest',
+        'n8n-nodes-base.httpRequest',
         'standard',
         'compare',
         false,
@@ -603,7 +603,7 @@ describe('Unified get_node Tool', () => {
 
     it('should return change details in compare mode', async () => {
       const result = await (server as any).getNode(
-        'nodes-base.httpRequest',
+        'n8n-nodes-base.httpRequest',
         'standard',
         'compare',
         false,
@@ -628,19 +628,19 @@ describe('Unified get_node Tool', () => {
   describe('Version Mode - breaking', () => {
     it('should throw error if fromVersion is missing', async () => {
       await expect(
-        (server as any).getNode('nodes-base.httpRequest', 'standard', 'breaking')
+        (server as any).getNode('n8n-nodes-base.httpRequest', 'standard', 'breaking')
       ).rejects.toThrow('fromVersion is required for breaking mode');
     });
 
     it('should include nodeType in error message for missing fromVersion', async () => {
       await expect(
-        (server as any).getNode('nodes-base.httpRequest', 'standard', 'breaking')
+        (server as any).getNode('n8n-nodes-base.httpRequest', 'standard', 'breaking')
       ).rejects.toThrow('nodeType: nodes-base.httpRequest');
     });
 
     it('should return breaking changes only', async () => {
       const result = await (server as any).getNode(
-        'nodes-base.httpRequest',
+        'n8n-nodes-base.httpRequest',
         'standard',
         'breaking',
         false,
@@ -658,7 +658,7 @@ describe('Unified get_node Tool', () => {
 
     it('should mark upgradeSafe as false when breaking changes exist', async () => {
       const result = await (server as any).getNode(
-        'nodes-base.httpRequest',
+        'n8n-nodes-base.httpRequest',
         'standard',
         'breaking',
         false,
@@ -674,7 +674,7 @@ describe('Unified get_node Tool', () => {
 
     it('should include breaking change details', async () => {
       const result = await (server as any).getNode(
-        'nodes-base.httpRequest',
+        'n8n-nodes-base.httpRequest',
         'standard',
         'breaking',
         false,
@@ -695,7 +695,7 @@ describe('Unified get_node Tool', () => {
 
     it('should use latest version when toVersion not specified', async () => {
       const result = await (server as any).getNode(
-        'nodes-base.httpRequest',
+        'n8n-nodes-base.httpRequest',
         'standard',
         'breaking',
         false,
@@ -710,14 +710,14 @@ describe('Unified get_node Tool', () => {
   describe('Version Mode - migrations', () => {
     it('should throw error if fromVersion is missing', async () => {
       await expect(
-        (server as any).getNode('nodes-base.httpRequest', 'standard', 'migrations')
+        (server as any).getNode('n8n-nodes-base.httpRequest', 'standard', 'migrations')
       ).rejects.toThrow('Both fromVersion and toVersion are required');
     });
 
     it('should throw error if toVersion is missing', async () => {
       await expect(
         (server as any).getNode(
-          'nodes-base.httpRequest',
+          'n8n-nodes-base.httpRequest',
           'standard',
           'migrations',
           false,
@@ -729,13 +729,13 @@ describe('Unified get_node Tool', () => {
 
     it('should include nodeType in error message for missing versions', async () => {
       await expect(
-        (server as any).getNode('nodes-base.httpRequest', 'standard', 'migrations')
+        (server as any).getNode('n8n-nodes-base.httpRequest', 'standard', 'migrations')
       ).rejects.toThrow('nodeType: nodes-base.httpRequest');
     });
 
     it('should return migration information', async () => {
       const result = await (server as any).getNode(
-        'nodes-base.httpRequest',
+        'n8n-nodes-base.httpRequest',
         'standard',
         'migrations',
         false,
@@ -755,7 +755,7 @@ describe('Unified get_node Tool', () => {
 
     it('should indicate if manual migration is required', async () => {
       const result = await (server as any).getNode(
-        'nodes-base.httpRequest',
+        'n8n-nodes-base.httpRequest',
         'standard',
         'migrations',
         false,
@@ -773,7 +773,7 @@ describe('Unified get_node Tool', () => {
 
     it('should include migration details', async () => {
       const result = await (server as any).getNode(
-        'nodes-base.httpRequest',
+        'n8n-nodes-base.httpRequest',
         'standard',
         'migrations',
         false,
@@ -943,7 +943,7 @@ describe('Unified get_node Tool', () => {
 
   describe('Helper Method - getVersionSummary', () => {
     it('should return version summary for node with versions', () => {
-      const summary = (server as any).getVersionSummary('nodes-base.httpRequest');
+      const summary = (server as any).getVersionSummary('n8n-nodes-base.httpRequest');
 
       expect(summary).toHaveProperty('currentVersion');
       expect(summary).toHaveProperty('totalVersions');
@@ -956,11 +956,11 @@ describe('Unified get_node Tool', () => {
       const cacheSetSpy = vi.spyOn(cache, 'set');
 
       // First call - should miss cache and set it
-      const summary1 = (server as any).getVersionSummary('nodes-base.httpRequest');
+      const summary1 = (server as any).getVersionSummary('n8n-nodes-base.httpRequest');
       expect(cacheSetSpy).toHaveBeenCalled();
 
       // Second call - should hit cache
-      const summary2 = (server as any).getVersionSummary('nodes-base.httpRequest');
+      const summary2 = (server as any).getVersionSummary('n8n-nodes-base.httpRequest');
 
       expect(summary1).toEqual(summary2);
     });
@@ -969,7 +969,7 @@ describe('Unified get_node Tool', () => {
       const cache = (server as any).cache;
       const cacheGetSpy = vi.spyOn(cache, 'get');
 
-      (server as any).getVersionSummary('nodes-base.httpRequest');
+      (server as any).getVersionSummary('n8n-nodes-base.httpRequest');
 
       expect(cacheGetSpy).toHaveBeenCalledWith('version-summary:nodes-base.httpRequest');
     });
@@ -978,7 +978,7 @@ describe('Unified get_node Tool', () => {
       const cache = (server as any).cache;
       const cacheSetSpy = vi.spyOn(cache, 'set');
 
-      (server as any).getVersionSummary('nodes-base.httpRequest');
+      (server as any).getVersionSummary('n8n-nodes-base.httpRequest');
 
       expect(cacheSetSpy).toHaveBeenCalledWith(
         expect.any(String),
@@ -988,7 +988,7 @@ describe('Unified get_node Tool', () => {
     });
 
     it('should return unknown version if no version data available', () => {
-      const summary = (server as any).getVersionSummary('nodes-base.webhook');
+      const summary = (server as any).getVersionSummary('n8n-nodes-base.webhook');
 
       expect(summary.currentVersion).toBeDefined();
       expect(summary.totalVersions).toBeDefined();
@@ -1005,14 +1005,14 @@ describe('Unified get_node Tool', () => {
       (uninitializedServer as any).repository = null;
 
       await expect(
-        (uninitializedServer as any).getNode('nodes-base.httpRequest', 'minimal', 'info')
+        (uninitializedServer as any).getNode('n8n-nodes-base.httpRequest', 'minimal', 'info')
       ).rejects.toThrow();
     });
 
     it('should include context in version mode errors', async () => {
       try {
         await (server as any).getNode(
-          'nodes-base.httpRequest',
+          'n8n-nodes-base.httpRequest',
           'standard',
           'compare'
         );
@@ -1025,7 +1025,7 @@ describe('Unified get_node Tool', () => {
     it('should handle invalid version mode gracefully', async () => {
       await expect(
         (server as any).getNode(
-          'nodes-base.httpRequest',
+          'n8n-nodes-base.httpRequest',
           'standard',
           'invalidmode'
         )
@@ -1037,7 +1037,7 @@ describe('Unified get_node Tool', () => {
     it('should route to handleInfoMode when mode is info', async () => {
       const handleInfoModeSpy = vi.spyOn(server as any, 'handleInfoMode');
 
-      await (server as any).getNode('nodes-base.httpRequest', 'standard', 'info');
+      await (server as any).getNode('n8n-nodes-base.httpRequest', 'standard', 'info');
 
       expect(handleInfoModeSpy).toHaveBeenCalled();
     });
@@ -1045,7 +1045,7 @@ describe('Unified get_node Tool', () => {
     it('should route to handleVersionMode when mode is not info', async () => {
       const handleVersionModeSpy = vi.spyOn(server as any, 'handleVersionMode');
 
-      await (server as any).getNode('nodes-base.httpRequest', 'standard', 'versions');
+      await (server as any).getNode('n8n-nodes-base.httpRequest', 'standard', 'versions');
 
       expect(handleVersionModeSpy).toHaveBeenCalled();
     });
@@ -1053,7 +1053,7 @@ describe('Unified get_node Tool', () => {
     it('should normalize node type before routing', async () => {
       const result = await (server as any).getNode('httpRequest', 'minimal', 'info');
 
-      expect(result.nodeType).toBe('nodes-base.httpRequest');
+      expect(result.nodeType).toBe('n8n-nodes-base.httpRequest');
     });
   });
 
@@ -1062,8 +1062,8 @@ describe('Unified get_node Tool', () => {
       const cache = (server as any).cache;
       const cacheGetSpy = vi.spyOn(cache, 'get');
 
-      await (server as any).getNode('nodes-base.httpRequest', 'standard', 'info', false, false);
-      await (server as any).getNode('nodes-base.httpRequest', 'standard', 'info', false, true);
+      await (server as any).getNode('n8n-nodes-base.httpRequest', 'standard', 'info', false, false);
+      await (server as any).getNode('n8n-nodes-base.httpRequest', 'standard', 'info', false, true);
 
       // Should check cache with different keys
       expect(cacheGetSpy).toHaveBeenCalledWith(expect.stringContaining('basic'));
@@ -1075,11 +1075,11 @@ describe('Unified get_node Tool', () => {
       const cacheSetSpy = vi.spyOn(cache, 'set');
 
       // First call
-      await (server as any).getNode('nodes-base.httpRequest', 'standard', 'info');
+      await (server as any).getNode('n8n-nodes-base.httpRequest', 'standard', 'info');
       const setCallCount = cacheSetSpy.mock.calls.length;
 
       // Second call - should use cached version summary
-      await (server as any).getNode('nodes-base.httpRequest', 'standard', 'info');
+      await (server as any).getNode('n8n-nodes-base.httpRequest', 'standard', 'info');
 
       // Set should not be called again for version summary
       expect(cacheSetSpy.mock.calls.length).toBe(setCallCount);
@@ -1088,14 +1088,14 @@ describe('Unified get_node Tool', () => {
 
   describe('Edge Cases', () => {
     it('should handle node with no properties gracefully', async () => {
-      const result = await (server as any).getNode('nodes-langchain.agent', 'full', 'info');
+      const result = await (server as any).getNode('@n8n/n8n-nodes-langchain.agent', 'full', 'info');
 
       expect(result).toBeDefined();
       expect(result.properties).toBeDefined();
     });
 
     it('should handle empty version history gracefully', async () => {
-      const result = await (server as any).getNode('nodes-base.webhook', 'standard', 'info');
+      const result = await (server as any).getNode('n8n-nodes-base.webhook', 'standard', 'info');
 
       // Webhook node has no version history in our test data
       expect(result.versionInfo).toBeDefined();
@@ -1110,13 +1110,13 @@ describe('Unified get_node Tool', () => {
         'info'
       );
 
-      expect(result.nodeType).toBe('nodes-base.httpRequest');
+      expect(result.nodeType).toBe('n8n-nodes-base.httpRequest');
     });
   });
 
   describe('Type Safety', () => {
     it('should return NodeMinimalInfo type for minimal detail', async () => {
-      const result = await (server as any).getNode('nodes-base.httpRequest', 'minimal', 'info');
+      const result = await (server as any).getNode('n8n-nodes-base.httpRequest', 'minimal', 'info');
 
       // Check type structure
       expect(result).toHaveProperty('nodeType');
@@ -1136,7 +1136,7 @@ describe('Unified get_node Tool', () => {
     });
 
     it('should return NodeStandardInfo type for standard detail', async () => {
-      const result = await (server as any).getNode('nodes-base.httpRequest', 'standard', 'info');
+      const result = await (server as any).getNode('n8n-nodes-base.httpRequest', 'standard', 'info');
 
       // Check type structure
       expect(result).toHaveProperty('nodeType');
@@ -1149,7 +1149,7 @@ describe('Unified get_node Tool', () => {
     });
 
     it('should return NodeFullInfo type for full detail', async () => {
-      const result = await (server as any).getNode('nodes-base.httpRequest', 'full', 'info');
+      const result = await (server as any).getNode('n8n-nodes-base.httpRequest', 'full', 'info');
 
       // Check type structure
       expect(result).toHaveProperty('nodeType');

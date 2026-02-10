@@ -21,14 +21,14 @@ describe('ValidationServiceError', () => {
       const cause = new Error('Original error');
       const error = new ValidationServiceError(
         'Validation failed',
-        'nodes-base.slack',
+        'n8n-nodes-base.slack',
         'channel',
         cause
       );
 
       expect(error.name).toBe('ValidationServiceError');
       expect(error.message).toBe('Validation failed');
-      expect(error.nodeType).toBe('nodes-base.slack');
+      expect(error.nodeType).toBe('n8n-nodes-base.slack');
       expect(error.property).toBe('channel');
       expect(error.cause).toBe(cause);
     });
@@ -70,46 +70,46 @@ describe('ValidationServiceError', () => {
   describe('jsonParseError factory', () => {
     it('should create error for JSON parsing failure', () => {
       const cause = new SyntaxError('Unexpected token');
-      const error = ValidationServiceError.jsonParseError('nodes-base.slack', cause);
+      const error = ValidationServiceError.jsonParseError('n8n-nodes-base.slack', cause);
 
       expect(error.name).toBe('ValidationServiceError');
-      expect(error.message).toBe('Failed to parse JSON data for node nodes-base.slack');
-      expect(error.nodeType).toBe('nodes-base.slack');
+      expect(error.message).toBe('Failed to parse JSON data for node n8n-nodes-base.slack');
+      expect(error.nodeType).toBe('n8n-nodes-base.slack');
       expect(error.property).toBeUndefined();
       expect(error.cause).toBe(cause);
     });
 
     it('should handle different error types as cause', () => {
       const cause = new TypeError('Cannot read property');
-      const error = ValidationServiceError.jsonParseError('nodes-base.webhook', cause);
+      const error = ValidationServiceError.jsonParseError('n8n-nodes-base.webhook', cause);
 
       expect(error.cause).toBe(cause);
-      expect(error.message).toContain('nodes-base.webhook');
+      expect(error.message).toContain('n8n-nodes-base.webhook');
     });
 
     it('should work with Error instances', () => {
       const cause = new Error('Generic parsing error');
-      const error = ValidationServiceError.jsonParseError('nodes-base.httpRequest', cause);
+      const error = ValidationServiceError.jsonParseError('n8n-nodes-base.httpRequest', cause);
 
       expect(error.cause).toBe(cause);
-      expect(error.nodeType).toBe('nodes-base.httpRequest');
+      expect(error.nodeType).toBe('n8n-nodes-base.httpRequest');
     });
   });
 
   describe('nodeNotFound factory', () => {
     it('should create error for missing node type', () => {
-      const error = ValidationServiceError.nodeNotFound('nodes-base.nonexistent');
+      const error = ValidationServiceError.nodeNotFound('n8n-nodes-base.nonexistent');
 
       expect(error.name).toBe('ValidationServiceError');
-      expect(error.message).toBe('Node type nodes-base.nonexistent not found in repository');
-      expect(error.nodeType).toBe('nodes-base.nonexistent');
+      expect(error.message).toBe('Node type n8n-nodes-base.nonexistent not found in repository');
+      expect(error.nodeType).toBe('n8n-nodes-base.nonexistent');
       expect(error.property).toBeUndefined();
       expect(error.cause).toBeUndefined();
     });
 
     it('should work with various node type formats', () => {
       const nodeTypes = [
-        'nodes-base.slack',
+        'n8n-nodes-base.slack',
         '@n8n/n8n-nodes-langchain.chatOpenAI',
         'custom-node',
         ''
@@ -127,27 +127,27 @@ describe('ValidationServiceError', () => {
     it('should create error for data extraction failure with cause', () => {
       const cause = new Error('Database connection failed');
       const error = ValidationServiceError.dataExtractionError(
-        'nodes-base.postgres',
+        'n8n-nodes-base.postgres',
         'operations',
         cause
       );
 
       expect(error.name).toBe('ValidationServiceError');
-      expect(error.message).toBe('Failed to extract operations for node nodes-base.postgres');
-      expect(error.nodeType).toBe('nodes-base.postgres');
+      expect(error.message).toBe('Failed to extract operations for node n8n-nodes-base.postgres');
+      expect(error.nodeType).toBe('n8n-nodes-base.postgres');
       expect(error.property).toBe('operations');
       expect(error.cause).toBe(cause);
     });
 
     it('should create error for data extraction failure without cause', () => {
       const error = ValidationServiceError.dataExtractionError(
-        'nodes-base.googleSheets',
+        'n8n-nodes-base.googleSheets',
         'resources'
       );
 
       expect(error.name).toBe('ValidationServiceError');
-      expect(error.message).toBe('Failed to extract resources for node nodes-base.googleSheets');
-      expect(error.nodeType).toBe('nodes-base.googleSheets');
+      expect(error.message).toBe('Failed to extract resources for node n8n-nodes-base.googleSheets');
+      expect(error.nodeType).toBe('n8n-nodes-base.googleSheets');
       expect(error.property).toBe('resources');
       expect(error.cause).toBeUndefined();
     });
@@ -157,22 +157,22 @@ describe('ValidationServiceError', () => {
 
       dataTypes.forEach(dataType => {
         const error = ValidationServiceError.dataExtractionError(
-          'nodes-base.test',
+          'n8n-nodes-base.test',
           dataType
         );
         expect(error.property).toBe(dataType);
-        expect(error.message).toBe(`Failed to extract ${dataType} for node nodes-base.test`);
+        expect(error.message).toBe(`Failed to extract ${dataType} for node n8n-nodes-base.test`);
       });
     });
 
     it('should handle empty strings and special characters', () => {
       const error = ValidationServiceError.dataExtractionError(
-        'nodes-base.test-node',
+        'n8n-nodes-base.test-node',
         'special/property:name'
       );
 
       expect(error.property).toBe('special/property:name');
-      expect(error.message).toBe('Failed to extract special/property:name for node nodes-base.test-node');
+      expect(error.message).toBe('Failed to extract special/property:name for node n8n-nodes-base.test-node');
     });
   });
 
@@ -180,7 +180,7 @@ describe('ValidationServiceError', () => {
     it('should maintain all properties when stringified', () => {
       const cause = new Error('Root cause');
       const error = ValidationServiceError.dataExtractionError(
-        'nodes-base.mysql',
+        'n8n-nodes-base.mysql',
         'tables',
         cause
       );
@@ -194,16 +194,16 @@ describe('ValidationServiceError', () => {
       };
 
       expect(serialized.name).toBe('ValidationServiceError');
-      expect(serialized.message).toBe('Failed to extract tables for node nodes-base.mysql');
-      expect(serialized.nodeType).toBe('nodes-base.mysql');
+      expect(serialized.message).toBe('Failed to extract tables for node n8n-nodes-base.mysql');
+      expect(serialized.nodeType).toBe('n8n-nodes-base.mysql');
       expect(serialized.property).toBe('tables');
     });
 
     it('should work with toString method', () => {
-      const error = ValidationServiceError.nodeNotFound('nodes-base.missing');
+      const error = ValidationServiceError.nodeNotFound('n8n-nodes-base.missing');
       const string = error.toString();
 
-      expect(string).toBe('ValidationServiceError: Node type nodes-base.missing not found in repository');
+      expect(string).toBe('ValidationServiceError: Node type n8n-nodes-base.missing not found in repository');
     });
 
     it('should preserve stack trace', () => {
@@ -216,8 +216,8 @@ describe('ValidationServiceError', () => {
   describe('error chaining and nested causes', () => {
     it('should handle nested error causes', () => {
       const rootCause = new Error('Database unavailable');
-      const intermediateCause = new ValidationServiceError('Connection failed', 'nodes-base.db', undefined, rootCause);
-      const finalError = ValidationServiceError.jsonParseError('nodes-base.slack', intermediateCause);
+      const intermediateCause = new ValidationServiceError('Connection failed', 'n8n-nodes-base.db', undefined, rootCause);
+      const finalError = ValidationServiceError.jsonParseError('n8n-nodes-base.slack', intermediateCause);
 
       expect(finalError.cause).toBe(intermediateCause);
       expect((finalError.cause as ValidationServiceError).cause).toBe(rootCause);
@@ -226,8 +226,8 @@ describe('ValidationServiceError', () => {
     it('should work with different error types in chain', () => {
       const syntaxError = new SyntaxError('Invalid JSON');
       const typeError = new TypeError('Property access failed');
-      const validationError = ValidationServiceError.dataExtractionError('nodes-base.test', 'props', syntaxError);
-      const finalError = ValidationServiceError.jsonParseError('nodes-base.final', typeError);
+      const validationError = ValidationServiceError.dataExtractionError('n8n-nodes-base.test', 'props', syntaxError);
+      const finalError = ValidationServiceError.jsonParseError('n8n-nodes-base.final', typeError);
 
       expect(validationError.cause).toBe(syntaxError);
       expect(finalError.cause).toBe(typeError);
@@ -257,7 +257,7 @@ describe('ValidationServiceError', () => {
     });
 
     it('should handle special characters in node types', () => {
-      const nodeType = 'nodes-base.test-node@1.0.0/special:version';
+      const nodeType = 'n8n-nodes-base.test-node@1.0.0/special:version';
       const error = ValidationServiceError.nodeNotFound(nodeType);
 
       expect(error.nodeType).toBe(nodeType);
