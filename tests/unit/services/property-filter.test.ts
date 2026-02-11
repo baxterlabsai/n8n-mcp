@@ -57,7 +57,7 @@ describe('PropertyFilter', () => {
       expect(result.required).toHaveLength(1);
       expect(result.required[0].name).toBe('url');
       expect(result.required[0].required).toBe(true);
-      
+
       expect(result.common).toHaveLength(5);
       expect(result.common.map(p => p.name)).toEqual([
         'method',
@@ -93,7 +93,7 @@ describe('PropertyFilter', () => {
         { name: 'complexField', type: 'collection' },
       ];
 
-      const result = PropertyFilter.getEssentials(properties, 'nodes-base.unknownNode');
+      const result = PropertyFilter.getEssentials(properties, 'n8n-nodes-base.unknownNode');
 
       expect(result.required).toHaveLength(1);
       expect(result.required[0].name).toBe('requiredField');
@@ -110,7 +110,7 @@ describe('PropertyFilter', () => {
         { name: 'field3', type: 'string', displayOptions: { show: { mode: ['advanced'], type: ['custom'] } } },
       ];
 
-      const result = PropertyFilter.getEssentials(properties, 'nodes-base.unknownNode');
+      const result = PropertyFilter.getEssentials(properties, 'n8n-nodes-base.unknownNode');
 
       expect(result.common).toHaveLength(2);
       expect(result.common[0].name).toBe('field1');
@@ -149,7 +149,7 @@ describe('PropertyFilter', () => {
         }
       ];
 
-      const result = PropertyFilter.getEssentials(properties, 'nodes-base.unknownNode');
+      const result = PropertyFilter.getEssentials(properties, 'n8n-nodes-base.unknownNode');
 
       const resourceProp = result.common.find(p => p.name === 'resource');
       expect(resourceProp?.options).toEqual([
@@ -198,7 +198,7 @@ describe('PropertyFilter', () => {
         }
       ];
 
-      const result = PropertyFilter.getEssentials(properties, 'nodes-base.unknownNode');
+      const result = PropertyFilter.getEssentials(properties, 'n8n-nodes-base.unknownNode');
 
       const complexProp = result.common.find(p => p.name === 'complexField');
       expect(complexProp?.showWhen).toBeUndefined();
@@ -214,7 +214,7 @@ describe('PropertyFilter', () => {
         { name: 'enableFeature', type: 'boolean', displayOptions: { show: { mode: ['advanced'] } } }
       ];
 
-      const result = PropertyFilter.getEssentials(properties, 'nodes-base.unknownNode');
+      const result = PropertyFilter.getEssentials(properties, 'n8n-nodes-base.unknownNode');
 
       const urlProp = result.common.find(p => p.name === 'url');
       expect(urlProp?.usageHint).toBe('Enter the full URL including https://');
@@ -235,7 +235,7 @@ describe('PropertyFilter', () => {
         { name: 'url' } // Should generate description
       ];
 
-      const result = PropertyFilter.getEssentials(properties, 'nodes-base.unknownNode');
+      const result = PropertyFilter.getEssentials(properties, 'n8n-nodes-base.unknownNode');
 
       expect(result.common[0].description).toBe('Primary description');
       expect(result.common[1].description).toBe('Hint description');
@@ -362,7 +362,7 @@ describe('PropertyFilter', () => {
         { name: 'field2', type: 'string' } // Valid
       ];
 
-      const result = PropertyFilter.getEssentials(properties, 'nodes-base.unknownNode');
+      const result = PropertyFilter.getEssentials(properties, 'n8n-nodes-base.unknownNode');
 
       expect(result.common.length).toBeGreaterThan(0);
       expect(result.common.every(p => p.name && p.type)).toBe(true);
@@ -380,7 +380,7 @@ describe('PropertyFilter', () => {
 
       // Should not throw or hang
       expect(() => {
-        PropertyFilter.getEssentials(properties, 'nodes-base.unknownNode');
+        PropertyFilter.getEssentials(properties, 'n8n-nodes-base.unknownNode');
       }).not.toThrow();
     });
 
@@ -392,7 +392,7 @@ describe('PropertyFilter', () => {
         { name: 'complex', type: 'collection', default: { key: 'value' } } // Should not include
       ];
 
-      const result = PropertyFilter.getEssentials(properties, 'nodes-base.unknownNode');
+      const result = PropertyFilter.getEssentials(properties, 'n8n-nodes-base.unknownNode');
 
       const method = result.common.find(p => p.name === 'method');
       expect(method?.default).toBe('GET');
@@ -448,7 +448,7 @@ describe('PropertyFilter', () => {
         }
       ];
 
-      const result = PropertyFilter.getEssentials(properties, 'nodes-base.unknownNode');
+      const result = PropertyFilter.getEssentials(properties, 'n8n-nodes-base.unknownNode');
 
       const resourceProp = result.common.find(p => p.name === 'resource');
       expect(resourceProp?.expectedFormat).toBeDefined();
@@ -467,7 +467,7 @@ describe('PropertyFilter', () => {
         }
       ];
 
-      const result = PropertyFilter.getEssentials(properties, 'nodes-base.unknownNode');
+      const result = PropertyFilter.getEssentials(properties, 'n8n-nodes-base.unknownNode');
 
       const itemProp = result.common.find(p => p.name === 'item');
       expect(itemProp?.expectedFormat).toBeDefined();

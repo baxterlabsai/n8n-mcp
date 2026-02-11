@@ -19,7 +19,7 @@ describe('OperationSimilarityService', () => {
 
     // Add test node with operations
     const testNode = {
-      nodeType: 'nodes-base.googleDrive',
+      nodeType: 'n8n-nodes-base.googleDrive',
       packageName: 'n8n-nodes-base',
       displayName: 'Google Drive',
       description: 'Access Google Drive',
@@ -89,7 +89,7 @@ describe('OperationSimilarityService', () => {
   describe('findSimilarOperations', () => {
     it('should find exact match', () => {
       const suggestions = service.findSimilarOperations(
-        'nodes-base.googleDrive',
+        'n8n-nodes-base.googleDrive',
         'download',
         'file'
       );
@@ -99,7 +99,7 @@ describe('OperationSimilarityService', () => {
 
     it('should suggest similar operations for typos', () => {
       const suggestions = service.findSimilarOperations(
-        'nodes-base.googleDrive',
+        'n8n-nodes-base.googleDrive',
         'downlod',
         'file'
       );
@@ -111,7 +111,7 @@ describe('OperationSimilarityService', () => {
 
     it('should handle common mistakes with patterns', () => {
       const suggestions = service.findSimilarOperations(
-        'nodes-base.googleDrive',
+        'n8n-nodes-base.googleDrive',
         'uploadFile',
         'file'
       );
@@ -123,7 +123,7 @@ describe('OperationSimilarityService', () => {
 
     it('should filter operations by resource', () => {
       const suggestions = service.findSimilarOperations(
-        'nodes-base.googleDrive',
+        'n8n-nodes-base.googleDrive',
         'upload',
         'folder'
       );
@@ -135,7 +135,7 @@ describe('OperationSimilarityService', () => {
 
     it('should return empty array for node not found', () => {
       const suggestions = service.findSimilarOperations(
-        'nodes-base.nonexistent',
+        'n8n-nodes-base.nonexistent',
         'operation',
         undefined
       );
@@ -145,7 +145,7 @@ describe('OperationSimilarityService', () => {
 
     it('should handle operations without resource filtering', () => {
       const suggestions = service.findSimilarOperations(
-        'nodes-base.googleDrive',
+        'n8n-nodes-base.googleDrive',
         'updat',  // Missing 'e' at the end
         undefined
       );
@@ -158,7 +158,7 @@ describe('OperationSimilarityService', () => {
   describe('similarity calculation', () => {
     it('should rank exact matches highest', () => {
       const suggestions = service.findSimilarOperations(
-        'nodes-base.googleDrive',
+        'n8n-nodes-base.googleDrive',
         'delete',
         'file'
       );
@@ -168,7 +168,7 @@ describe('OperationSimilarityService', () => {
 
     it('should rank substring matches high', () => {
       const suggestions = service.findSimilarOperations(
-        'nodes-base.googleDrive',
+        'n8n-nodes-base.googleDrive',
         'del',
         'file'
       );
@@ -181,7 +181,7 @@ describe('OperationSimilarityService', () => {
 
     it('should detect common variations', () => {
       const suggestions = service.findSimilarOperations(
-        'nodes-base.googleDrive',
+        'n8n-nodes-base.googleDrive',
         'getData',
         'file'
       );
@@ -195,14 +195,14 @@ describe('OperationSimilarityService', () => {
     it('should cache results for repeated queries', () => {
       // First call
       const suggestions1 = service.findSimilarOperations(
-        'nodes-base.googleDrive',
+        'n8n-nodes-base.googleDrive',
         'downlod',
         'file'
       );
 
       // Second call with same params
       const suggestions2 = service.findSimilarOperations(
-        'nodes-base.googleDrive',
+        'n8n-nodes-base.googleDrive',
         'downlod',
         'file'
       );
@@ -213,7 +213,7 @@ describe('OperationSimilarityService', () => {
     it('should clear cache when requested', () => {
       // Add to cache
       service.findSimilarOperations(
-        'nodes-base.googleDrive',
+        'n8n-nodes-base.googleDrive',
         'test',
         'file'
       );
@@ -223,7 +223,7 @@ describe('OperationSimilarityService', () => {
 
       // This would fetch fresh data (behavior is the same, just uncached)
       const suggestions = service.findSimilarOperations(
-        'nodes-base.googleDrive',
+        'n8n-nodes-base.googleDrive',
         'test',
         'file'
       );

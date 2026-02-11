@@ -60,7 +60,7 @@ describe('Basic MCP Connection', () => {
         expect(result.totalCount).toBeGreaterThan(0);
 
         // Should find webhook node
-        const webhookNode = result.results.find((n: any) => n.nodeType === 'nodes-base.webhook');
+        const webhookNode = result.results.find((n: any) => n.nodeType === 'n8n-nodes-base.webhook');
         expect(webhookNode).toBeDefined();
         expect(webhookNode.displayName).toContain('Webhook');
       }

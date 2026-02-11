@@ -12,7 +12,7 @@ describe('NodeVersionService', () => {
   let mockBreakingChangeDetector: BreakingChangeDetector;
 
   const createMockVersion = (version: string, isCurrentMax = false): NodeVersion => ({
-    nodeType: 'nodes-base.httpRequest',
+    nodeType: 'n8n-nodes-base.httpRequest',
     version,
     packageName: 'n8n-nodes-base',
     displayName: 'HTTP Request',
@@ -34,18 +34,18 @@ describe('NodeVersionService', () => {
       const versions = [createMockVersion('1.0'), createMockVersion('2.0', true)];
       vi.spyOn(mockRepository, 'getNodeVersions').mockReturnValue(versions);
 
-      const result = service.getAvailableVersions('nodes-base.httpRequest');
+      const result = service.getAvailableVersions('n8n-nodes-base.httpRequest');
 
       expect(result).toEqual(versions);
-      expect(mockRepository.getNodeVersions).toHaveBeenCalledWith('nodes-base.httpRequest');
+      expect(mockRepository.getNodeVersions).toHaveBeenCalledWith('n8n-nodes-base.httpRequest');
     });
 
     it('should cache results', () => {
       const versions = [createMockVersion('1.0')];
       vi.spyOn(mockRepository, 'getNodeVersions').mockReturnValue(versions);
 
-      service.getAvailableVersions('nodes-base.httpRequest');
-      service.getAvailableVersions('nodes-base.httpRequest');
+      service.getAvailableVersions('n8n-nodes-base.httpRequest');
+      service.getAvailableVersions('n8n-nodes-base.httpRequest');
 
       expect(mockRepository.getNodeVersions).toHaveBeenCalledTimes(1);
     });
@@ -54,8 +54,8 @@ describe('NodeVersionService', () => {
       const versions = [createMockVersion('1.0')];
       vi.spyOn(mockRepository, 'getNodeVersions').mockReturnValue(versions);
 
-      const result1 = service.getAvailableVersions('nodes-base.httpRequest');
-      const result2 = service.getAvailableVersions('nodes-base.httpRequest');
+      const result1 = service.getAvailableVersions('n8n-nodes-base.httpRequest');
+      const result2 = service.getAvailableVersions('n8n-nodes-base.httpRequest');
 
       expect(result1).toEqual(result2);
       expect(mockRepository.getNodeVersions).toHaveBeenCalledTimes(1);
@@ -66,12 +66,12 @@ describe('NodeVersionService', () => {
       const versions = [createMockVersion('1.0')];
       vi.spyOn(mockRepository, 'getNodeVersions').mockReturnValue(versions);
 
-      service.getAvailableVersions('nodes-base.httpRequest');
+      service.getAvailableVersions('n8n-nodes-base.httpRequest');
 
       // Advance time beyond TTL (5 minutes)
       vi.advanceTimersByTime(6 * 60 * 1000);
 
-      service.getAvailableVersions('nodes-base.httpRequest');
+      service.getAvailableVersions('n8n-nodes-base.httpRequest');
 
       expect(mockRepository.getNodeVersions).toHaveBeenCalledTimes(2);
 
@@ -88,7 +88,7 @@ describe('NodeVersionService', () => {
       ];
       vi.spyOn(mockRepository, 'getNodeVersions').mockReturnValue(versions);
 
-      const result = service.getLatestVersion('nodes-base.httpRequest');
+      const result = service.getLatestVersion('n8n-nodes-base.httpRequest');
 
       expect(result).toBe('2.0');
     });
@@ -101,7 +101,7 @@ describe('NodeVersionService', () => {
       ];
       vi.spyOn(mockRepository, 'getNodeVersions').mockReturnValue(versions);
 
-      const result = service.getLatestVersion('nodes-base.httpRequest');
+      const result = service.getLatestVersion('n8n-nodes-base.httpRequest');
 
       expect(result).toBe('2.0');
     });
@@ -109,13 +109,13 @@ describe('NodeVersionService', () => {
     it('should fallback to main nodes table if no versions', () => {
       vi.spyOn(mockRepository, 'getNodeVersions').mockReturnValue([]);
       vi.spyOn(mockRepository, 'getNode').mockReturnValue({
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         version: '1.0',
         packageName: 'n8n-nodes-base',
         displayName: 'HTTP Request'
       } as any);
 
-      const result = service.getLatestVersion('nodes-base.httpRequest');
+      const result = service.getLatestVersion('n8n-nodes-base.httpRequest');
 
       expect(result).toBe('1.0');
     });
@@ -124,7 +124,7 @@ describe('NodeVersionService', () => {
       vi.spyOn(mockRepository, 'getNodeVersions').mockReturnValue([]);
       vi.spyOn(mockRepository, 'getNode').mockReturnValue(null);
 
-      const result = service.getLatestVersion('nodes-base.httpRequest');
+      const result = service.getLatestVersion('n8n-nodes-base.httpRequest');
 
       expect(result).toBeNull();
     });
@@ -164,7 +164,7 @@ describe('NodeVersionService', () => {
       const versions = [createMockVersion('1.0', true)];
       vi.spyOn(mockRepository, 'getNodeVersions').mockReturnValue(versions);
 
-      const result = service.analyzeVersion('nodes-base.httpRequest', '1.0');
+      const result = service.analyzeVersion('n8n-nodes-base.httpRequest', '1.0');
 
       expect(result.isOutdated).toBe(false);
       expect(result.recommendUpgrade).toBe(false);
@@ -177,7 +177,7 @@ describe('NodeVersionService', () => {
       vi.spyOn(mockRepository, 'getNodeVersions').mockReturnValue(versions);
       vi.spyOn(mockBreakingChangeDetector, 'hasBreakingChanges').mockReturnValue(false);
 
-      const result = service.analyzeVersion('nodes-base.httpRequest', '1.0');
+      const result = service.analyzeVersion('n8n-nodes-base.httpRequest', '1.0');
 
       expect(result.isOutdated).toBe(true);
       expect(result.latestVersion).toBe('2.0');
@@ -189,7 +189,7 @@ describe('NodeVersionService', () => {
       vi.spyOn(mockRepository, 'getNodeVersions').mockReturnValue(versions);
       vi.spyOn(mockBreakingChangeDetector, 'hasBreakingChanges').mockReturnValue(false);
 
-      const result = service.analyzeVersion('nodes-base.httpRequest', '1.0');
+      const result = service.analyzeVersion('n8n-nodes-base.httpRequest', '1.0');
 
       expect(result.versionGap).toBeGreaterThan(0);
     });
@@ -199,7 +199,7 @@ describe('NodeVersionService', () => {
       vi.spyOn(mockRepository, 'getNodeVersions').mockReturnValue(versions);
       vi.spyOn(mockBreakingChangeDetector, 'hasBreakingChanges').mockReturnValue(true);
 
-      const result = service.analyzeVersion('nodes-base.httpRequest', '1.0');
+      const result = service.analyzeVersion('n8n-nodes-base.httpRequest', '1.0');
 
       expect(result.hasBreakingChanges).toBe(true);
       expect(result.confidence).toBe('MEDIUM');
@@ -211,7 +211,7 @@ describe('NodeVersionService', () => {
       vi.spyOn(mockRepository, 'getNodeVersions').mockReturnValue(versions);
       vi.spyOn(mockBreakingChangeDetector, 'hasBreakingChanges').mockReturnValue(false);
 
-      const result = service.analyzeVersion('nodes-base.httpRequest', '1.0');
+      const result = service.analyzeVersion('n8n-nodes-base.httpRequest', '1.0');
 
       expect(result.confidence).toBe('LOW');
       expect(result.reason).toContain('Version gap is large');
@@ -221,7 +221,7 @@ describe('NodeVersionService', () => {
       vi.spyOn(mockRepository, 'getNodeVersions').mockReturnValue([]);
       vi.spyOn(mockRepository, 'getNode').mockReturnValue(null);
 
-      const result = service.analyzeVersion('nodes-base.httpRequest', '1.0');
+      const result = service.analyzeVersion('n8n-nodes-base.httpRequest', '1.0');
 
       expect(result.isOutdated).toBe(false);
       expect(result.confidence).toBe('HIGH');
@@ -234,7 +234,7 @@ describe('NodeVersionService', () => {
       const versions = [createMockVersion('1.0', true)];
       vi.spyOn(mockRepository, 'getNodeVersions').mockReturnValue(versions);
 
-      const result = await service.suggestUpgradePath('nodes-base.httpRequest', '1.0');
+      const result = await service.suggestUpgradePath('n8n-nodes-base.httpRequest', '1.0');
 
       expect(result).toBeNull();
     });
@@ -243,7 +243,7 @@ describe('NodeVersionService', () => {
       vi.spyOn(mockRepository, 'getNodeVersions').mockReturnValue([]);
       vi.spyOn(mockRepository, 'getNode').mockReturnValue(null);
 
-      const result = await service.suggestUpgradePath('nodes-base.httpRequest', '1.0');
+      const result = await service.suggestUpgradePath('n8n-nodes-base.httpRequest', '1.0');
 
       expect(result).toBeNull();
     });
@@ -253,7 +253,7 @@ describe('NodeVersionService', () => {
       vi.spyOn(mockRepository, 'getNodeVersions').mockReturnValue(versions);
 
       const mockAnalysis: VersionUpgradeAnalysis = {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         fromVersion: '1.0',
         toVersion: '2.0',
         hasBreakingChanges: false,
@@ -265,7 +265,7 @@ describe('NodeVersionService', () => {
       };
       vi.spyOn(mockBreakingChangeDetector, 'analyzeVersionUpgrade').mockResolvedValue(mockAnalysis);
 
-      const result = await service.suggestUpgradePath('nodes-base.httpRequest', '1.0');
+      const result = await service.suggestUpgradePath('n8n-nodes-base.httpRequest', '1.0');
 
       expect(result).not.toBeNull();
       expect(result!.direct).toBe(true);
@@ -283,7 +283,7 @@ describe('NodeVersionService', () => {
       vi.spyOn(mockRepository, 'getNodeVersions').mockReturnValue(versions);
 
       const mockAnalysis: VersionUpgradeAnalysis = {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         fromVersion: '1.0',
         toVersion: '2.0',
         hasBreakingChanges: true,
@@ -300,7 +300,7 @@ describe('NodeVersionService', () => {
 
       vi.spyOn(mockBreakingChangeDetector, 'analyzeVersionUpgrade').mockResolvedValue(mockAnalysis);
 
-      const result = await service.suggestUpgradePath('nodes-base.httpRequest', '1.0');
+      const result = await service.suggestUpgradePath('n8n-nodes-base.httpRequest', '1.0');
 
       expect(result).not.toBeNull();
       expect(result!.intermediateVersions).toContain('1.5');
@@ -311,7 +311,7 @@ describe('NodeVersionService', () => {
       vi.spyOn(mockRepository, 'getNodeVersions').mockReturnValue(versions);
 
       const mockAnalysisLow: VersionUpgradeAnalysis = {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         fromVersion: '1.0',
         toVersion: '2.0',
         hasBreakingChanges: false,
@@ -323,7 +323,7 @@ describe('NodeVersionService', () => {
       };
       vi.spyOn(mockBreakingChangeDetector, 'analyzeVersionUpgrade').mockResolvedValue(mockAnalysisLow);
 
-      const result = await service.suggestUpgradePath('nodes-base.httpRequest', '1.0');
+      const result = await service.suggestUpgradePath('n8n-nodes-base.httpRequest', '1.0');
 
       expect(result!.estimatedEffort).toBe('LOW');
     });
@@ -333,7 +333,7 @@ describe('NodeVersionService', () => {
       vi.spyOn(mockRepository, 'getNodeVersions').mockReturnValue(versions);
 
       const mockAnalysisHigh: VersionUpgradeAnalysis = {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         fromVersion: '1.0',
         toVersion: '2.0',
         hasBreakingChanges: true,
@@ -345,7 +345,7 @@ describe('NodeVersionService', () => {
       };
       vi.spyOn(mockBreakingChangeDetector, 'analyzeVersionUpgrade').mockResolvedValue(mockAnalysisHigh);
 
-      const result = await service.suggestUpgradePath('nodes-base.httpRequest', '1.0');
+      const result = await service.suggestUpgradePath('n8n-nodes-base.httpRequest', '1.0');
 
       expect(result!.estimatedEffort).toBe('HIGH');
       expect(result!.totalBreakingChanges).toBeGreaterThan(5);
@@ -356,7 +356,7 @@ describe('NodeVersionService', () => {
       vi.spyOn(mockRepository, 'getNodeVersions').mockReturnValue(versions);
 
       const mockAnalysis: VersionUpgradeAnalysis = {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         fromVersion: '1.0',
         toVersion: '2.0',
         hasBreakingChanges: true,
@@ -368,7 +368,7 @@ describe('NodeVersionService', () => {
       };
       vi.spyOn(mockBreakingChangeDetector, 'analyzeVersionUpgrade').mockResolvedValue(mockAnalysis);
 
-      const result = await service.suggestUpgradePath('nodes-base.httpRequest', '1.0');
+      const result = await service.suggestUpgradePath('n8n-nodes-base.httpRequest', '1.0');
 
       expect(result!.steps[0].migrationHints).toContain('Review property changes');
     });
@@ -379,7 +379,7 @@ describe('NodeVersionService', () => {
       const versions = [createMockVersion('1.0'), createMockVersion('2.0')];
       vi.spyOn(mockRepository, 'getNodeVersions').mockReturnValue(versions);
 
-      const result = service.versionExists('nodes-base.httpRequest', '1.0');
+      const result = service.versionExists('n8n-nodes-base.httpRequest', '1.0');
 
       expect(result).toBe(true);
     });
@@ -388,7 +388,7 @@ describe('NodeVersionService', () => {
       const versions = [createMockVersion('1.0')];
       vi.spyOn(mockRepository, 'getNodeVersions').mockReturnValue(versions);
 
-      const result = service.versionExists('nodes-base.httpRequest', '2.0');
+      const result = service.versionExists('n8n-nodes-base.httpRequest', '2.0');
 
       expect(result).toBe(false);
     });
@@ -399,7 +399,7 @@ describe('NodeVersionService', () => {
       const version = createMockVersion('1.0');
       vi.spyOn(mockRepository, 'getNodeVersion').mockReturnValue(version);
 
-      const result = service.getVersionMetadata('nodes-base.httpRequest', '1.0');
+      const result = service.getVersionMetadata('n8n-nodes-base.httpRequest', '1.0');
 
       expect(result).toEqual(version);
     });
@@ -407,7 +407,7 @@ describe('NodeVersionService', () => {
     it('should return null if version not found', () => {
       vi.spyOn(mockRepository, 'getNodeVersion').mockReturnValue(null);
 
-      const result = service.getVersionMetadata('nodes-base.httpRequest', '99.0');
+      const result = service.getVersionMetadata('n8n-nodes-base.httpRequest', '99.0');
 
       expect(result).toBeNull();
     });
@@ -418,9 +418,9 @@ describe('NodeVersionService', () => {
       const versions = [createMockVersion('1.0')];
       vi.spyOn(mockRepository, 'getNodeVersions').mockReturnValue(versions);
 
-      service.getAvailableVersions('nodes-base.httpRequest');
-      service.clearCache('nodes-base.httpRequest');
-      service.getAvailableVersions('nodes-base.httpRequest');
+      service.getAvailableVersions('n8n-nodes-base.httpRequest');
+      service.clearCache('n8n-nodes-base.httpRequest');
+      service.getAvailableVersions('n8n-nodes-base.httpRequest');
 
       expect(mockRepository.getNodeVersions).toHaveBeenCalledTimes(2);
     });
@@ -429,13 +429,13 @@ describe('NodeVersionService', () => {
       const versions = [createMockVersion('1.0')];
       vi.spyOn(mockRepository, 'getNodeVersions').mockReturnValue(versions);
 
-      service.getAvailableVersions('nodes-base.httpRequest');
-      service.getAvailableVersions('nodes-base.webhook');
+      service.getAvailableVersions('n8n-nodes-base.httpRequest');
+      service.getAvailableVersions('n8n-nodes-base.webhook');
 
       service.clearCache();
 
-      service.getAvailableVersions('nodes-base.httpRequest');
-      service.getAvailableVersions('nodes-base.webhook');
+      service.getAvailableVersions('n8n-nodes-base.httpRequest');
+      service.getAvailableVersions('n8n-nodes-base.webhook');
 
       expect(mockRepository.getNodeVersions).toHaveBeenCalledTimes(4);
     });
@@ -450,8 +450,8 @@ describe('NodeVersionService', () => {
         .mockReturnValueOnce(httpVersions)
         .mockReturnValueOnce(webhookVersions);
 
-      const result1 = service.getAvailableVersions('nodes-base.httpRequest');
-      const result2 = service.getAvailableVersions('nodes-base.webhook');
+      const result1 = service.getAvailableVersions('n8n-nodes-base.httpRequest');
+      const result2 = service.getAvailableVersions('n8n-nodes-base.webhook');
 
       expect(result1).toEqual(httpVersions);
       expect(result2).toEqual(webhookVersions);
@@ -462,11 +462,11 @@ describe('NodeVersionService', () => {
       const versions = [createMockVersion('1.0')];
       vi.spyOn(mockRepository, 'getNodeVersions').mockReturnValue(versions);
 
-      service.getAvailableVersions('nodes-base.httpRequest');
+      service.getAvailableVersions('n8n-nodes-base.httpRequest');
       expect(mockRepository.getNodeVersions).toHaveBeenCalledTimes(1);
 
-      service.clearCache('nodes-base.httpRequest');
-      service.getAvailableVersions('nodes-base.httpRequest');
+      service.clearCache('n8n-nodes-base.httpRequest');
+      service.getAvailableVersions('n8n-nodes-base.httpRequest');
 
       expect(mockRepository.getNodeVersions).toHaveBeenCalledTimes(2);
     });
@@ -477,7 +477,7 @@ describe('NodeVersionService', () => {
       vi.spyOn(mockRepository, 'getNodeVersions').mockReturnValue([]);
       vi.spyOn(mockRepository, 'getNode').mockReturnValue(null);
 
-      const result = service.getLatestVersion('nodes-base.httpRequest');
+      const result = service.getLatestVersion('n8n-nodes-base.httpRequest');
 
       expect(result).toBeNull();
     });

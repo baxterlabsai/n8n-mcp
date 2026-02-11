@@ -72,7 +72,7 @@ describe('WorkflowAutoFixer', () => {
   describe('Expression Format Fixes', () => {
     it('should fix missing prefix in expressions', async () => {
       const workflow = createMockWorkflow([
-        createMockNode('node-1', 'nodes-base.httpRequest', {
+        createMockNode('node-1', 'n8n-nodes-base.httpRequest', {
           url: '{{ $json.url }}',
           method: 'GET'
         })
@@ -118,7 +118,7 @@ describe('WorkflowAutoFixer', () => {
 
     it('should handle multiple expression fixes in same node', async () => {
       const workflow = createMockWorkflow([
-        createMockNode('node-1', 'nodes-base.httpRequest', {
+        createMockNode('node-1', 'n8n-nodes-base.httpRequest', {
           url: '{{ $json.url }}',
           body: '{{ $json.body }}'
         })
@@ -172,7 +172,7 @@ describe('WorkflowAutoFixer', () => {
   describe('TypeVersion Fixes', () => {
     it('should fix typeVersion exceeding maximum', async () => {
       const workflow = createMockWorkflow([
-        createMockNode('node-1', 'nodes-base.httpRequest', {})
+        createMockNode('node-1', 'n8n-nodes-base.httpRequest', {})
       ]);
 
       const validationResult: WorkflowValidationResult = {
@@ -208,7 +208,7 @@ describe('WorkflowAutoFixer', () => {
   describe('Error Output Configuration Fixes', () => {
     it('should remove conflicting onError setting', async () => {
       const workflow = createMockWorkflow([
-        createMockNode('node-1', 'nodes-base.httpRequest', {})
+        createMockNode('node-1', 'n8n-nodes-base.httpRequest', {})
       ]);
       workflow.nodes[0].onError = 'continueErrorOutput';
 
@@ -301,7 +301,7 @@ describe('WorkflowAutoFixer', () => {
   describe('Confidence Filtering', () => {
     it('should filter fixes by confidence level', async () => {
       const workflow = createMockWorkflow([
-        createMockNode('node-1', 'nodes-base.httpRequest', { url: '{{ $json.url }}' })
+        createMockNode('node-1', 'n8n-nodes-base.httpRequest', { url: '{{ $json.url }}' })
       ]);
 
       const formatIssues: ExpressionFormatIssue[] = [{
@@ -342,7 +342,7 @@ describe('WorkflowAutoFixer', () => {
   describe('Summary Generation', () => {
     it('should generate appropriate summary for fixes', async () => {
       const workflow = createMockWorkflow([
-        createMockNode('node-1', 'nodes-base.httpRequest', { url: '{{ $json.url }}' })
+        createMockNode('node-1', 'n8n-nodes-base.httpRequest', { url: '{{ $json.url }}' })
       ]);
 
       const formatIssues: ExpressionFormatIssue[] = [{

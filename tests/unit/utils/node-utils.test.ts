@@ -5,24 +5,24 @@ describe('node-utils', () => {
   describe('getNodeTypeAlternatives', () => {
     describe('valid inputs', () => {
       it('should generate alternatives for standard node type', () => {
-        const alternatives = getNodeTypeAlternatives('nodes-base.httpRequest');
+        const alternatives = getNodeTypeAlternatives('n8n-nodes-base.httpRequest');
 
-        expect(alternatives).toContain('nodes-base.httprequest');
+        expect(alternatives).toContain('n8n-nodes-base.httprequest');
         expect(alternatives.length).toBeGreaterThan(0);
       });
 
       it('should generate alternatives for langchain node type', () => {
-        const alternatives = getNodeTypeAlternatives('nodes-langchain.agent');
+        const alternatives = getNodeTypeAlternatives('@n8n/n8n-nodes-langchain.agent');
 
-        expect(alternatives).toContain('nodes-langchain.agent');
+        expect(alternatives).toContain('@n8n/n8n-nodes-langchain.agent');
         expect(alternatives.length).toBeGreaterThan(0);
       });
 
       it('should generate alternatives for bare node name', () => {
         const alternatives = getNodeTypeAlternatives('webhook');
 
-        expect(alternatives).toContain('nodes-base.webhook');
-        expect(alternatives).toContain('nodes-langchain.webhook');
+        expect(alternatives).toContain('n8n-nodes-base.webhook');
+        expect(alternatives).toContain('@n8n/n8n-nodes-langchain.webhook');
       });
     });
 
@@ -72,41 +72,41 @@ describe('node-utils', () => {
 
     describe('edge cases', () => {
       it('should handle node type with only prefix', () => {
-        const alternatives = getNodeTypeAlternatives('nodes-base.');
+        const alternatives = getNodeTypeAlternatives('n8n-nodes-base.');
 
         expect(alternatives).toBeInstanceOf(Array);
       });
 
       it('should handle node type with multiple dots', () => {
-        const alternatives = getNodeTypeAlternatives('nodes-base.some.complex.type');
+        const alternatives = getNodeTypeAlternatives('n8n-nodes-base.some.complex.type');
 
         expect(alternatives).toBeInstanceOf(Array);
         expect(alternatives.length).toBeGreaterThan(0);
       });
 
       it('should handle camelCase node names', () => {
-        const alternatives = getNodeTypeAlternatives('nodes-base.httpRequest');
+        const alternatives = getNodeTypeAlternatives('n8n-nodes-base.httpRequest');
 
-        expect(alternatives).toContain('nodes-base.httprequest');
+        expect(alternatives).toContain('n8n-nodes-base.httprequest');
       });
     });
   });
 
   describe('normalizeNodeType', () => {
     it('should normalize n8n-nodes-base prefix', () => {
-      expect(normalizeNodeType('n8n-nodes-base.webhook')).toBe('nodes-base.webhook');
+      expect(normalizeNodeType('n8n-nodes-base.webhook')).toBe('n8n-nodes-base.webhook');
     });
 
     it('should normalize @n8n/n8n-nodes-langchain prefix', () => {
-      expect(normalizeNodeType('@n8n/n8n-nodes-langchain.agent')).toBe('nodes-langchain.agent');
+      expect(normalizeNodeType('@n8n/n8n-nodes-langchain.agent')).toBe('@n8n/n8n-nodes-langchain.agent');
     });
 
     it('should normalize n8n-nodes-langchain prefix', () => {
-      expect(normalizeNodeType('n8n-nodes-langchain.chatTrigger')).toBe('nodes-langchain.chatTrigger');
+      expect(normalizeNodeType('n8n-nodes-langchain.chatTrigger')).toBe('n8n-nodes-langchain.chatTrigger');
     });
 
     it('should leave already normalized types unchanged', () => {
-      expect(normalizeNodeType('nodes-base.slack')).toBe('nodes-base.slack');
+      expect(normalizeNodeType('n8n-nodes-base.slack')).toBe('n8n-nodes-base.slack');
     });
 
     it('should leave community nodes unchanged', () => {
@@ -116,11 +116,11 @@ describe('node-utils', () => {
 
   describe('getWorkflowNodeType', () => {
     it('should construct workflow node type for n8n-nodes-base', () => {
-      expect(getWorkflowNodeType('n8n-nodes-base', 'nodes-base.webhook')).toBe('n8n-nodes-base.webhook');
+      expect(getWorkflowNodeType('n8n-nodes-base', 'n8n-nodes-base.webhook')).toBe('n8n-nodes-base.webhook');
     });
 
     it('should construct workflow node type for langchain', () => {
-      expect(getWorkflowNodeType('@n8n/n8n-nodes-langchain', 'nodes-langchain.agent')).toBe('@n8n/n8n-nodes-langchain.agent');
+      expect(getWorkflowNodeType('@n8n/n8n-nodes-langchain', '@n8n/n8n-nodes-langchain.agent')).toBe('@n8n/n8n-nodes-langchain.agent');
     });
 
     it('should return as-is for unknown packages', () => {

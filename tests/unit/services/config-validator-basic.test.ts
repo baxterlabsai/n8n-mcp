@@ -12,7 +12,7 @@ describe('ConfigValidator - Basic Validation', () => {
 
   describe('validate', () => {
     it('should validate required fields for Slack message post', () => {
-      const nodeType = 'nodes-base.slack';
+      const nodeType = 'n8n-nodes-base.slack';
       const config = {
         resource: 'message',
         operation: 'post'
@@ -68,7 +68,7 @@ describe('ConfigValidator - Basic Validation', () => {
     });
 
     it('should validate successfully with all required fields', () => {
-      const nodeType = 'nodes-base.slack';
+      const nodeType = 'n8n-nodes-base.slack';
       const config = {
         resource: 'message',
         operation: 'post',
@@ -130,7 +130,7 @@ describe('ConfigValidator - Basic Validation', () => {
     });
 
     it('should handle unknown node types gracefully', () => {
-      const nodeType = 'nodes-base.unknown';
+      const nodeType = 'n8n-nodes-base.unknown';
       const config = { field: 'value' };
       const properties: any[] = [];
 
@@ -142,7 +142,7 @@ describe('ConfigValidator - Basic Validation', () => {
     });
 
     it('should validate property types', () => {
-      const nodeType = 'nodes-base.test';
+      const nodeType = 'n8n-nodes-base.test';
       const config = {
         numberField: 'not-a-number', // Should be number
         booleanField: 'yes' // Should be boolean
@@ -166,7 +166,7 @@ describe('ConfigValidator - Basic Validation', () => {
     });
 
     it('should validate option values', () => {
-      const nodeType = 'nodes-base.test';
+      const nodeType = 'n8n-nodes-base.test';
       const config = {
         selectField: 'invalid-option'
       };
@@ -192,7 +192,7 @@ describe('ConfigValidator - Basic Validation', () => {
     });
 
     it('should check property visibility based on displayOptions', () => {
-      const nodeType = 'nodes-base.test';
+      const nodeType = 'n8n-nodes-base.test';
       const config = {
         resource: 'user',
         userField: 'visible'
@@ -230,7 +230,7 @@ describe('ConfigValidator - Basic Validation', () => {
     });
 
     it('should handle empty properties array', () => {
-      const nodeType = 'nodes-base.test';
+      const nodeType = 'n8n-nodes-base.test';
       const config = { someField: 'value' };
       const properties: any[] = [];
 
@@ -241,7 +241,7 @@ describe('ConfigValidator - Basic Validation', () => {
     });
 
     it('should handle missing displayOptions gracefully', () => {
-      const nodeType = 'nodes-base.test';
+      const nodeType = 'n8n-nodes-base.test';
       const config = { field1: 'value1' };
       const properties = [
         { name: 'field1', type: 'string' }
@@ -254,7 +254,7 @@ describe('ConfigValidator - Basic Validation', () => {
     });
 
     it('should validate options with array format', () => {
-      const nodeType = 'nodes-base.test';
+      const nodeType = 'n8n-nodes-base.test';
       const config = { optionField: 'b' };
       const properties = [
         {
@@ -277,7 +277,7 @@ describe('ConfigValidator - Basic Validation', () => {
 
   describe('edge cases and additional coverage', () => {
     it('should handle null and undefined config values', () => {
-      const nodeType = 'nodes-base.test';
+      const nodeType = 'n8n-nodes-base.test';
       const config = {
         nullField: null,
         undefinedField: undefined,
@@ -296,7 +296,7 @@ describe('ConfigValidator - Basic Validation', () => {
     });
 
     it('should validate nested displayOptions conditions', () => {
-      const nodeType = 'nodes-base.test';
+      const nodeType = 'n8n-nodes-base.test';
       const config = {
         mode: 'advanced',
         resource: 'user',
@@ -340,7 +340,7 @@ describe('ConfigValidator - Basic Validation', () => {
     });
 
     it('should handle hide conditions in displayOptions', () => {
-      const nodeType = 'nodes-base.test';
+      const nodeType = 'n8n-nodes-base.test';
       const config = {
         showAdvanced: false,
         hiddenField: 'should-not-be-here'
@@ -369,7 +369,7 @@ describe('ConfigValidator - Basic Validation', () => {
     });
 
     it('should handle internal properties that start with underscore', () => {
-      const nodeType = 'nodes-base.test';
+      const nodeType = 'n8n-nodes-base.test';
       const config = {
         '@version': 1,
         '_internalField': 'value',
@@ -389,7 +389,7 @@ describe('ConfigValidator - Basic Validation', () => {
     });
 
     it('should warn about inefficient configured but hidden properties', () => {
-      const nodeType = 'nodes-base.test'; // Changed from Code node
+      const nodeType = 'n8n-nodes-base.test'; // Changed from Code node
       const config = {
         mode: 'manual',
         automaticField: 'This will not be used'
@@ -422,7 +422,7 @@ describe('ConfigValidator - Basic Validation', () => {
     });
 
     it('should suggest commonly used properties', () => {
-      const nodeType = 'nodes-base.httpRequest';
+      const nodeType = 'n8n-nodes-base.httpRequest';
       const config = {
         method: 'GET',
         url: 'https://api.example.com/data'

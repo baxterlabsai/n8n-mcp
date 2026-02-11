@@ -13,7 +13,7 @@ describe('Node Classification Utilities', () => {
     });
 
     test('should identify normalized sticky note type', () => {
-      expect(isStickyNote('nodes-base.stickyNote')).toBe(true);
+      expect(isStickyNote('n8n-nodes-base.stickyNote')).toBe(true);
     });
 
     test('should identify scoped sticky note type', () => {
@@ -85,7 +85,7 @@ describe('Node Classification Utilities', () => {
     });
 
     test('should identify all sticky note variations as non-executable', () => {
-      expect(isNonExecutableNode('nodes-base.stickyNote')).toBe(true);
+      expect(isNonExecutableNode('n8n-nodes-base.stickyNote')).toBe(true);
       expect(isNonExecutableNode('@n8n/n8n-nodes-base.stickyNote')).toBe(true);
     });
 
@@ -113,7 +113,7 @@ describe('Node Classification Utilities', () => {
       });
 
       test('should return false for all sticky note variations', () => {
-        expect(requiresIncomingConnection('nodes-base.stickyNote')).toBe(false);
+        expect(requiresIncomingConnection('n8n-nodes-base.stickyNote')).toBe(false);
         expect(requiresIncomingConnection('@n8n/n8n-nodes-base.stickyNote')).toBe(false);
       });
     });
@@ -225,7 +225,7 @@ describe('Node Classification Utilities', () => {
     test('all sticky note variations should be non-executable', () => {
       const stickyTypes = [
         'n8n-nodes-base.stickyNote',
-        'nodes-base.stickyNote',
+        'n8n-nodes-base.stickyNote',
         '@n8n/n8n-nodes-base.stickyNote'
       ];
 

@@ -19,9 +19,9 @@ describe('Validation System Fixes', () => {
     // Mock repository for testing
     mockNodeRepository = {
       getNode: (nodeType: string) => {
-        if (nodeType === 'nodes-base.webhook' || nodeType === 'n8n-nodes-base.webhook') {
+        if (nodeType === 'n8n-nodes-base.webhook' || nodeType === 'n8n-nodes-base.webhook') {
           return {
-            nodeType: 'nodes-base.webhook',
+            nodeType: 'n8n-nodes-base.webhook',
             displayName: 'Webhook',
             properties: [
               { name: 'path', required: true, displayName: 'Path' },
@@ -29,9 +29,9 @@ describe('Validation System Fixes', () => {
             ]
           };
         }
-        if (nodeType === 'nodes-base.set' || nodeType === 'n8n-nodes-base.set') {
+        if (nodeType === 'n8n-nodes-base.set' || nodeType === 'n8n-nodes-base.set') {
           return {
-            nodeType: 'nodes-base.set',
+            nodeType: 'n8n-nodes-base.set',
             displayName: 'Set',
             properties: [
               { name: 'values', required: false, displayName: 'Values' }
@@ -54,7 +54,7 @@ describe('Validation System Fixes', () => {
     test('should handle empty config in validation schemas', () => {
       // Test the validation schema handles empty config
       const result = ToolValidation.validateNodeMinimal({
-        nodeType: 'nodes-base.webhook',
+        nodeType: 'n8n-nodes-base.webhook',
         config: undefined
       });
       
@@ -66,7 +66,7 @@ describe('Validation System Fixes', () => {
 
     test('should handle null config in validation schemas', () => {
       const result = ToolValidation.validateNodeMinimal({
-        nodeType: 'nodes-base.webhook',
+        nodeType: 'n8n-nodes-base.webhook',
         config: null
       });
       
@@ -78,7 +78,7 @@ describe('Validation System Fixes', () => {
 
     test('should accept valid config object', () => {
       const result = ToolValidation.validateNodeMinimal({
-        nodeType: 'nodes-base.webhook',
+        nodeType: 'n8n-nodes-base.webhook',
         config: { path: '/webhook', httpMethod: 'POST' }
       });
       
@@ -116,7 +116,7 @@ describe('Validation System Fixes', () => {
     test('should handle non-string nodeType gracefully', () => {
       expect(() => {
         EnhancedConfigValidator.validateWithMode(
-          { type: 'nodes-base.slack' } as any,
+          { type: 'n8n-nodes-base.slack' } as any,
           { resource: 'channel', operation: 'create' },
           [],
           'operation',
@@ -127,7 +127,7 @@ describe('Validation System Fixes', () => {
 
     test('should handle valid nodeType properly', () => {
       const result = EnhancedConfigValidator.validateWithMode(
-        'nodes-base.set',
+        'n8n-nodes-base.set',
         { values: {} },
         [],
         'operation',
@@ -375,7 +375,7 @@ describe('Validation System Fixes', () => {
     test('should validate tool parameters with schemas', () => {
       // Test validate_node_operation parameters
       const validationResult = ToolValidation.validateNodeOperation({
-        nodeType: 'nodes-base.webhook',
+        nodeType: 'n8n-nodes-base.webhook',
         config: { path: '/test' },
         profile: 'ai-friendly'
       });

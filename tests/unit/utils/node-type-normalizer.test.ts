@@ -13,44 +13,44 @@ describe('NodeTypeNormalizer', () => {
     describe('Base nodes', () => {
       it('should normalize full base form to short form', () => {
         expect(NodeTypeNormalizer.normalizeToFullForm('n8n-nodes-base.webhook'))
-          .toBe('nodes-base.webhook');
+          .toBe('n8n-nodes-base.webhook');
       });
 
       it('should normalize full base form with different node names', () => {
         expect(NodeTypeNormalizer.normalizeToFullForm('n8n-nodes-base.httpRequest'))
-          .toBe('nodes-base.httpRequest');
+          .toBe('n8n-nodes-base.httpRequest');
         expect(NodeTypeNormalizer.normalizeToFullForm('n8n-nodes-base.set'))
-          .toBe('nodes-base.set');
+          .toBe('n8n-nodes-base.set');
         expect(NodeTypeNormalizer.normalizeToFullForm('n8n-nodes-base.slack'))
-          .toBe('nodes-base.slack');
+          .toBe('n8n-nodes-base.slack');
       });
 
       it('should leave short base form unchanged', () => {
-        expect(NodeTypeNormalizer.normalizeToFullForm('nodes-base.webhook'))
-          .toBe('nodes-base.webhook');
-        expect(NodeTypeNormalizer.normalizeToFullForm('nodes-base.httpRequest'))
-          .toBe('nodes-base.httpRequest');
+        expect(NodeTypeNormalizer.normalizeToFullForm('n8n-nodes-base.webhook'))
+          .toBe('n8n-nodes-base.webhook');
+        expect(NodeTypeNormalizer.normalizeToFullForm('n8n-nodes-base.httpRequest'))
+          .toBe('n8n-nodes-base.httpRequest');
       });
     });
 
     describe('LangChain nodes', () => {
       it('should normalize full langchain form to short form', () => {
         expect(NodeTypeNormalizer.normalizeToFullForm('@n8n/n8n-nodes-langchain.agent'))
-          .toBe('nodes-langchain.agent');
+          .toBe('@n8n/n8n-nodes-langchain.agent');
         expect(NodeTypeNormalizer.normalizeToFullForm('@n8n/n8n-nodes-langchain.openAi'))
-          .toBe('nodes-langchain.openAi');
+          .toBe('@n8n/n8n-nodes-langchain.openAi');
       });
 
       it('should normalize langchain form with n8n- prefix but missing @n8n/', () => {
         expect(NodeTypeNormalizer.normalizeToFullForm('n8n-nodes-langchain.agent'))
-          .toBe('nodes-langchain.agent');
+          .toBe('n8n-nodes-langchain.agent');
       });
 
       it('should leave short langchain form unchanged', () => {
-        expect(NodeTypeNormalizer.normalizeToFullForm('nodes-langchain.agent'))
-          .toBe('nodes-langchain.agent');
-        expect(NodeTypeNormalizer.normalizeToFullForm('nodes-langchain.openAi'))
-          .toBe('nodes-langchain.openAi');
+        expect(NodeTypeNormalizer.normalizeToFullForm('@n8n/n8n-nodes-langchain.agent'))
+          .toBe('@n8n/n8n-nodes-langchain.agent');
+        expect(NodeTypeNormalizer.normalizeToFullForm('@n8n/n8n-nodes-langchain.openAi'))
+          .toBe('@n8n/n8n-nodes-langchain.openAi');
       });
     });
 
@@ -90,18 +90,18 @@ describe('NodeTypeNormalizer', () => {
 
       expect(result).toEqual({
         original: 'n8n-nodes-base.webhook',
-        normalized: 'nodes-base.webhook',
-        wasNormalized: true,
+        normalized: 'n8n-nodes-base.webhook',
+        wasNormalized: false,
         package: 'base'
       });
     });
 
     it('should return normalization details for already short form', () => {
-      const result = NodeTypeNormalizer.normalizeWithDetails('nodes-base.webhook');
+      const result = NodeTypeNormalizer.normalizeWithDetails('n8n-nodes-base.webhook');
 
       expect(result).toEqual({
-        original: 'nodes-base.webhook',
-        normalized: 'nodes-base.webhook',
+        original: 'n8n-nodes-base.webhook',
+        normalized: 'n8n-nodes-base.webhook',
         wasNormalized: false,
         package: 'base'
       });
@@ -112,8 +112,8 @@ describe('NodeTypeNormalizer', () => {
 
       expect(result).toEqual({
         original: '@n8n/n8n-nodes-langchain.agent',
-        normalized: 'nodes-langchain.agent',
-        wasNormalized: true,
+        normalized: '@n8n/n8n-nodes-langchain.agent',
+        wasNormalized: false,
         package: 'langchain'
       });
     });
@@ -147,9 +147,9 @@ describe('NodeTypeNormalizer', () => {
       const result = NodeTypeNormalizer.normalizeBatch(types);
 
       expect(result.size).toBe(3);
-      expect(result.get('n8n-nodes-base.webhook')).toBe('nodes-base.webhook');
-      expect(result.get('n8n-nodes-base.set')).toBe('nodes-base.set');
-      expect(result.get('@n8n/n8n-nodes-langchain.agent')).toBe('nodes-langchain.agent');
+      expect(result.get('n8n-nodes-base.webhook')).toBe('n8n-nodes-base.webhook');
+      expect(result.get('n8n-nodes-base.set')).toBe('n8n-nodes-base.set');
+      expect(result.get('@n8n/n8n-nodes-langchain.agent')).toBe('@n8n/n8n-nodes-langchain.agent');
     });
 
     it('should handle empty array', () => {
@@ -160,17 +160,17 @@ describe('NodeTypeNormalizer', () => {
     it('should handle mixed forms', () => {
       const types = [
         'n8n-nodes-base.webhook',
-        'nodes-base.set',
+        'n8n-nodes-base.set',
         '@n8n/n8n-nodes-langchain.agent',
-        'nodes-langchain.openAi'
+        '@n8n/n8n-nodes-langchain.openAi'
       ];
       const result = NodeTypeNormalizer.normalizeBatch(types);
 
       expect(result.size).toBe(4);
-      expect(result.get('n8n-nodes-base.webhook')).toBe('nodes-base.webhook');
-      expect(result.get('nodes-base.set')).toBe('nodes-base.set');
-      expect(result.get('@n8n/n8n-nodes-langchain.agent')).toBe('nodes-langchain.agent');
-      expect(result.get('nodes-langchain.openAi')).toBe('nodes-langchain.openAi');
+      expect(result.get('n8n-nodes-base.webhook')).toBe('n8n-nodes-base.webhook');
+      expect(result.get('n8n-nodes-base.set')).toBe('n8n-nodes-base.set');
+      expect(result.get('@n8n/n8n-nodes-langchain.agent')).toBe('@n8n/n8n-nodes-langchain.agent');
+      expect(result.get('@n8n/n8n-nodes-langchain.openAi')).toBe('@n8n/n8n-nodes-langchain.openAi');
     });
   });
 
@@ -186,8 +186,8 @@ describe('NodeTypeNormalizer', () => {
 
       const result = NodeTypeNormalizer.normalizeWorkflowNodeTypes(workflow);
 
-      expect(result.nodes[0].type).toBe('nodes-base.webhook');
-      expect(result.nodes[1].type).toBe('nodes-base.set');
+      expect(result.nodes[0].type).toBe('n8n-nodes-base.webhook');
+      expect(result.nodes[1].type).toBe('n8n-nodes-base.set');
     });
 
     it('should preserve all other node properties', () => {
@@ -208,7 +208,7 @@ describe('NodeTypeNormalizer', () => {
       const result = NodeTypeNormalizer.normalizeWorkflowNodeTypes(workflow);
 
       expect(result.nodes[0]).toEqual({
-        type: 'nodes-base.webhook', // normalized to short form
+        type: 'n8n-nodes-base.webhook', // normalized to short form
         id: 'test-id', // preserved
         name: 'Test Webhook', // preserved
         parameters: { path: '/test' }, // preserved
@@ -315,16 +315,16 @@ describe('NodeTypeNormalizer', () => {
   describe('toWorkflowFormat', () => {
     describe('Base nodes', () => {
       it('should convert short base form to full workflow format', () => {
-        expect(NodeTypeNormalizer.toWorkflowFormat('nodes-base.webhook'))
+        expect(NodeTypeNormalizer.toWorkflowFormat('n8n-nodes-base.webhook'))
           .toBe('n8n-nodes-base.webhook');
       });
 
       it('should convert multiple base nodes', () => {
-        expect(NodeTypeNormalizer.toWorkflowFormat('nodes-base.httpRequest'))
+        expect(NodeTypeNormalizer.toWorkflowFormat('n8n-nodes-base.httpRequest'))
           .toBe('n8n-nodes-base.httpRequest');
-        expect(NodeTypeNormalizer.toWorkflowFormat('nodes-base.set'))
+        expect(NodeTypeNormalizer.toWorkflowFormat('n8n-nodes-base.set'))
           .toBe('n8n-nodes-base.set');
-        expect(NodeTypeNormalizer.toWorkflowFormat('nodes-base.slack'))
+        expect(NodeTypeNormalizer.toWorkflowFormat('n8n-nodes-base.slack'))
           .toBe('n8n-nodes-base.slack');
       });
 
@@ -338,9 +338,9 @@ describe('NodeTypeNormalizer', () => {
 
     describe('LangChain nodes', () => {
       it('should convert short langchain form to full workflow format', () => {
-        expect(NodeTypeNormalizer.toWorkflowFormat('nodes-langchain.agent'))
+        expect(NodeTypeNormalizer.toWorkflowFormat('@n8n/n8n-nodes-langchain.agent'))
           .toBe('@n8n/n8n-nodes-langchain.agent');
-        expect(NodeTypeNormalizer.toWorkflowFormat('nodes-langchain.openAi'))
+        expect(NodeTypeNormalizer.toWorkflowFormat('@n8n/n8n-nodes-langchain.openAi'))
           .toBe('@n8n/n8n-nodes-langchain.openAi');
       });
 
@@ -389,9 +389,9 @@ describe('NodeTypeNormalizer', () => {
 
     describe('Tool variants', () => {
       it('should convert short Tool variant to full form', () => {
-        expect(NodeTypeNormalizer.toWorkflowFormat('nodes-base.supabaseTool'))
+        expect(NodeTypeNormalizer.toWorkflowFormat('n8n-nodes-base.supabaseTool'))
           .toBe('n8n-nodes-base.supabaseTool');
-        expect(NodeTypeNormalizer.toWorkflowFormat('nodes-base.postgresTool'))
+        expect(NodeTypeNormalizer.toWorkflowFormat('n8n-nodes-base.postgresTool'))
           .toBe('n8n-nodes-base.postgresTool');
       });
 
@@ -407,7 +407,7 @@ describe('NodeTypeNormalizer', () => {
 
         // Convert to short (database) form
         const shortForm = NodeTypeNormalizer.normalizeToFullForm(workflowType);
-        expect(shortForm).toBe('nodes-base.webhook');
+        expect(shortForm).toBe('n8n-nodes-base.webhook');
 
         // Convert back to workflow form
         const backToWorkflow = NodeTypeNormalizer.toWorkflowFormat(shortForm);
@@ -419,7 +419,7 @@ describe('NodeTypeNormalizer', () => {
 
         // Convert to short form
         const shortForm = NodeTypeNormalizer.normalizeToFullForm(workflowType);
-        expect(shortForm).toBe('nodes-langchain.agent');
+        expect(shortForm).toBe('@n8n/n8n-nodes-langchain.agent');
 
         // Convert back to workflow form
         const backToWorkflow = NodeTypeNormalizer.toWorkflowFormat(shortForm);
@@ -434,7 +434,7 @@ describe('NodeTypeNormalizer', () => {
       const fullFormType = 'n8n-nodes-base.webhook'; // External source produces this
       const normalized = NodeTypeNormalizer.normalizeToFullForm(fullFormType);
 
-      expect(normalized).toBe('nodes-base.webhook'); // Database stores in short form
+      expect(normalized).toBe('n8n-nodes-base.webhook'); // Database stores in short form
     });
 
     it('should work correctly in a workflow validation scenario', () => {
@@ -442,7 +442,7 @@ describe('NodeTypeNormalizer', () => {
         nodes: [
           { type: 'n8n-nodes-base.webhook', id: '1', name: 'Webhook', parameters: {}, position: [0, 0] },
           { type: 'n8n-nodes-base.httpRequest', id: '2', name: 'HTTP', parameters: {}, position: [200, 0] },
-          { type: 'nodes-base.set', id: '3', name: 'Set', parameters: {}, position: [400, 0] }
+          { type: 'n8n-nodes-base.set', id: '3', name: 'Set', parameters: {}, position: [400, 0] }
         ],
         connections: {}
       };
@@ -450,15 +450,15 @@ describe('NodeTypeNormalizer', () => {
       const normalized = NodeTypeNormalizer.normalizeWorkflowNodeTypes(workflow);
 
       // All node types should now be in short form for database lookup
-      expect(normalized.nodes.every((n: any) => n.type.startsWith('nodes-base.'))).toBe(true);
+      expect(normalized.nodes.every((n: any) => n.type.startsWith('n8n-nodes-base.'))).toBe(true);
     });
 
     it('should convert database format to workflow format for API calls', () => {
       // Scenario: Reading from database and sending to n8n API
       const dbTypes = [
-        'nodes-base.webhook',
-        'nodes-base.httpRequest',
-        'nodes-langchain.agent'
+        'n8n-nodes-base.webhook',
+        'n8n-nodes-base.httpRequest',
+        '@n8n/n8n-nodes-langchain.agent'
       ];
 
       const workflowTypes = dbTypes.map(t => NodeTypeNormalizer.toWorkflowFormat(t));
@@ -473,7 +473,7 @@ describe('NodeTypeNormalizer', () => {
     it('should handle Tool variant correction scenario', () => {
       // Scenario: Auto-fixer changes base node to Tool variant
       const baseType = 'n8n-nodes-base.supabase'; // Current type in workflow
-      const toolVariantShort = 'nodes-base.supabaseTool'; // From database/generator
+      const toolVariantShort = 'n8n-nodes-base.supabaseTool'; // From database/generator
 
       // Convert to workflow format for the fix
       const fixedType = NodeTypeNormalizer.toWorkflowFormat(toolVariantShort);

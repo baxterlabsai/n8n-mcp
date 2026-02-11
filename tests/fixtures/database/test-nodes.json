@@ -2,7 +2,7 @@
   "nodes": [
     {
       "style": "programmatic",
-      "nodeType": "nodes-base.httpRequest",
+      "nodeType": "n8n-nodes-base.httpRequest",
       "displayName": "HTTP Request",
       "description": "Makes HTTP requests and returns the response",
       "category": "Core Nodes",
@@ -39,7 +39,7 @@
     },
     {
       "style": "programmatic",
-      "nodeType": "nodes-base.webhook",
+      "nodeType": "n8n-nodes-base.webhook",
       "displayName": "Webhook",
       "description": "Receives data from external services via webhooks",
       "category": "Core Nodes",
@@ -73,7 +73,7 @@
     },
     {
       "style": "declarative",
-      "nodeType": "nodes-base.slack",
+      "nodeType": "n8n-nodes-base.slack",
       "displayName": "Slack",
       "description": "Send messages and interact with Slack",
       "category": "Communication",

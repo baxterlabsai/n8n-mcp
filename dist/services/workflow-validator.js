@@ -139,9 +139,9 @@ class WorkflowValidator {
         if (workflow.nodes.length === 1) {
             const singleNode = workflow.nodes[0];
             const normalizedType = node_type_normalizer_1.NodeTypeNormalizer.normalizeToFullForm(singleNode.type);
-            const isWebhook = normalizedType === 'nodes-base.webhook' ||
-                normalizedType === 'nodes-base.webhookTrigger';
-            const isLangchainNode = normalizedType.startsWith('nodes-langchain.');
+            const isWebhook = normalizedType === 'n8n-nodes-base.webhook' ||
+                normalizedType === 'n8n-nodes-base.webhookTrigger';
+            const isLangchainNode = normalizedType.startsWith('@n8n/n8n-nodes-langchain.');
             if (!isWebhook && !isLangchainNode) {
                 result.errors.push({
                     type: 'error',
@@ -331,7 +331,7 @@ class WorkflowValidator {
                         });
                     }
                 }
-                if (normalizedType.startsWith('nodes-langchain.')) {
+                if (normalizedType.startsWith('@n8n/n8n-nodes-langchain.') || normalizedType.startsWith('n8n-nodes-langchain.')) {
                     continue;
                 }
                 if (nodeInfo.isInferred) {
@@ -709,7 +709,7 @@ class WorkflowValidator {
             if (node.disabled || (0, node_classification_1.isNonExecutableNode)(node.type))
                 continue;
             const normalizedType = node_type_normalizer_1.NodeTypeNormalizer.normalizeToFullForm(node.type);
-            if (normalizedType.startsWith('nodes-langchain.')) {
+            if (normalizedType.startsWith('@n8n/n8n-nodes-langchain.') || normalizedType.startsWith('n8n-nodes-langchain.')) {
                 continue;
             }
             const context = {

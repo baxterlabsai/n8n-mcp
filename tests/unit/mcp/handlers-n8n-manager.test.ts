@@ -500,7 +500,7 @@ describe('handlers-n8n-manager', () => {
         expect(result.details.errors).toHaveLength(1);
         expect(result.details.errors[0]).toContain('Node 1');
         expect(result.details.errors[0]).toContain('Webhook');
-        expect(result.details.errors[0]).toContain('nodes-base.webhook');
+        expect(result.details.errors[0]).toContain('n8n-nodes-base.webhook');
       });
 
       it('should handle nodes with null type gracefully', async () => {

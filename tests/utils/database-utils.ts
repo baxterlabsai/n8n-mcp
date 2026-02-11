@@ -154,14 +154,14 @@ export async function seedTestNodes(
 ): Promise<ParsedNode[]> {
   const defaultNodes: ParsedNode[] = [
     createTestNode({
-      nodeType: 'nodes-base.httpRequest',
+      nodeType: 'n8n-nodes-base.httpRequest',
       displayName: 'HTTP Request',
       description: 'Makes HTTP requests',
       category: 'Core Nodes',
       isAITool: true
     }),
     createTestNode({
-      nodeType: 'nodes-base.webhook',
+      nodeType: 'n8n-nodes-base.webhook',
       displayName: 'Webhook',
       description: 'Receives webhook calls',
       category: 'Core Nodes',
@@ -169,7 +169,7 @@ export async function seedTestNodes(
       isWebhook: true
     }),
     createTestNode({
-      nodeType: 'nodes-base.slack',
+      nodeType: 'n8n-nodes-base.slack',
       displayName: 'Slack',
       description: 'Send messages to Slack',
       category: 'Communication',
@@ -245,7 +245,7 @@ export async function seedTestTemplates(
 export function createTestNode(overrides: Partial<ParsedNode> = {}): ParsedNode {
   return {
     style: 'programmatic',
-    nodeType: 'nodes-base.test',
+    nodeType: 'n8n-nodes-base.test',
     displayName: 'Test Node',
     description: 'A test node',
     category: 'Test',

@@ -2,22 +2,18 @@
  * Utility functions for working with n8n node types
  * Provides consistent normalization and transformation of node type strings
  */
+import { NodeTypeNormalizer } from './node-type-normalizer';
 
 /**
- * Normalize a node type to the standard short form
- * Handles both old-style (n8n-nodes-base.) and new-style (nodes-base.) prefixes
+ * Normalize a node type to FULL form (n8n-nodes-base.*)
+ * Delegates to NodeTypeNormalizer for consistency.
  *
  * @example
- * normalizeNodeType('n8n-nodes-base.httpRequest') // 'nodes-base.httpRequest'
- * normalizeNodeType('@n8n/n8n-nodes-langchain.openAi') // 'nodes-langchain.openAi'
- * normalizeNodeType('nodes-base.webhook') // 'nodes-base.webhook' (unchanged)
+ * normalizeNodeType('nodes-base.httpRequest') // 'n8n-nodes-base.httpRequest'
+ * normalizeNodeType('n8n-nodes-base.webhook') // 'n8n-nodes-base.webhook' (unchanged)
  */
 export function normalizeNodeType(type: string): string {
-  if (!type) return type;
-
-  return type
-    .replace(/^n8n-nodes-base\./, 'nodes-base.')
-    .replace(/^@n8n\/n8n-nodes-langchain\./, 'nodes-langchain.');
+  return NodeTypeNormalizer.normalizeToFullForm(type);
 }
 
 /**
@@ -78,7 +74,7 @@ export function getNodePackage(type: string): string | null {
  */
 export function isBaseNode(type: string): boolean {
   const normalized = normalizeNodeType(type);
-  return normalized.startsWith('nodes-base.');
+  return normalized.startsWith('n8n-nodes-base.');
 }
 
 /**
@@ -86,7 +82,7 @@ export function isBaseNode(type: string): boolean {
  */
 export function isLangChainNode(type: string): boolean {
   const normalized = normalizeNodeType(type);
-  return normalized.startsWith('nodes-langchain.');
+  return normalized.startsWith('@n8n/n8n-nodes-langchain.') || normalized.startsWith('n8n-nodes-langchain.');
 }
 
 /**
@@ -119,23 +115,23 @@ export function isValidNodeTypeFormat(type: string): boolean {
 export function getNodeTypeVariations(type: string): string[] {
   const variations: string[] = [];
 
-  // If it already has a package prefix, try normalized version first
+  // If it already has a package prefix, try normalized (FULL) version first
   if (type.includes('.')) {
-    variations.push(normalizeNodeType(type));
-
-    // Also try the denormalized versions
     const normalized = normalizeNodeType(type);
-    if (normalized.startsWith('nodes-base.')) {
-      variations.push(denormalizeNodeType(normalized, 'base'));
-    } else if (normalized.startsWith('nodes-langchain.')) {
-      variations.push(denormalizeNodeType(normalized, 'langchain'));
+    variations.push(normalized);
+
+    // Also try SHORT form for backward compatibility
+    if (normalized.startsWith('n8n-nodes-base.')) {
+      variations.push(normalized.replace(/^n8n-nodes-base\./, 'nodes-base.'));
+    } else if (normalized.startsWith('@n8n/n8n-nodes-langchain.')) {
+      variations.push(normalized.replace(/^@n8n\/n8n-nodes-langchain\./, 'nodes-langchain.'));
     }
   } else {
-    // No package prefix, try common packages
-    variations.push(`nodes-base.${type}`);
+    // No package prefix, try common packages (FULL form first)
     variations.push(`n8n-nodes-base.${type}`);
-    variations.push(`nodes-langchain.${type}`);
+    variations.push(`nodes-base.${type}`);
     variations.push(`@n8n/n8n-nodes-langchain.${type}`);
+    variations.push(`nodes-langchain.${type}`);
   }
 
   // Remove duplicates while preserving order
@@ -174,9 +170,9 @@ export function isTriggerNode(nodeType: string): boolean {
 
   // Check for specific trigger types that don't have 'trigger' in their name
   const specificTriggers = [
-    'nodes-base.start',
-    'nodes-base.manualTrigger',
-    'nodes-base.formTrigger'
+    'n8n-nodes-base.start',
+    'n8n-nodes-base.manualTrigger',
+    'n8n-nodes-base.formTrigger'
   ];
 
   return specificTriggers.includes(normalized);
@@ -228,7 +224,7 @@ export function getTriggerTypeDescription(nodeType: string): string {
     return 'Schedule Trigger (time-based)';
   }
 
-  if (lowerType.includes('manual') || normalized === 'nodes-base.start') {
+  if (lowerType.includes('manual') || normalized === 'n8n-nodes-base.start') {
     return 'Manual Trigger (manual execution)';
   }
 

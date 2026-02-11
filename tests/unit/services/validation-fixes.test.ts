@@ -86,7 +86,7 @@ describe('Validation Fixes for False Positives', () => {
 
     // Mock Google Drive node data
     const googleDriveNodeData = {
-      node_type: 'nodes-base.googleDrive',
+      node_type: 'n8n-nodes-base.googleDrive',
       package_name: 'n8n-nodes-base',
       display_name: 'Google Drive',
       description: 'Access Google Drive',
@@ -187,9 +187,9 @@ describe('Validation Fixes for False Positives', () => {
         resource: 'fileFolder'
       };
 
-      const node = repository.getNode('nodes-base.googleDrive');
+      const node = repository.getNode('n8n-nodes-base.googleDrive');
       const result = EnhancedConfigValidator.validateWithMode(
-        'nodes-base.googleDrive',
+        'n8n-nodes-base.googleDrive',
         config,
         node.properties,
         'operation',
@@ -209,9 +209,9 @@ describe('Validation Fixes for False Positives', () => {
         // operation is not specified, should use default 'search'
       };
 
-      const node = repository.getNode('nodes-base.googleDrive');
+      const node = repository.getNode('n8n-nodes-base.googleDrive');
       const result = EnhancedConfigValidator.validateWithMode(
-        'nodes-base.googleDrive',
+        'n8n-nodes-base.googleDrive',
         config,
         node.properties,
         'operation',
@@ -242,9 +242,9 @@ describe('Validation Fixes for False Positives', () => {
         }
       };
 
-      const node = repository.getNode('nodes-base.googleDrive');
+      const node = repository.getNode('n8n-nodes-base.googleDrive');
       const result = EnhancedConfigValidator.validateWithMode(
-        'nodes-base.googleDrive',
+        'n8n-nodes-base.googleDrive',
         config,
         node.properties,
         'operation',
@@ -324,9 +324,9 @@ describe('Validation Fixes for False Positives', () => {
         resource: 'invalidResource'
       };
 
-      const node = repository.getNode('nodes-base.googleDrive');
+      const node = repository.getNode('n8n-nodes-base.googleDrive');
       const result = EnhancedConfigValidator.validateWithMode(
-        'nodes-base.googleDrive',
+        'n8n-nodes-base.googleDrive',
         config,
         node.properties,
         'operation',

@@ -79,22 +79,22 @@ describe('Database Utils', () => {
       const nodes = await seedTestNodes(testDb.nodeRepository);
       
       expect(nodes).toHaveLength(3);
-      expect(nodes[0].nodeType).toBe('nodes-base.httpRequest');
-      expect(nodes[1].nodeType).toBe('nodes-base.webhook');
-      expect(nodes[2].nodeType).toBe('nodes-base.slack');
+      expect(nodes[0].nodeType).toBe('n8n-nodes-base.httpRequest');
+      expect(nodes[1].nodeType).toBe('n8n-nodes-base.webhook');
+      expect(nodes[2].nodeType).toBe('n8n-nodes-base.slack');
     });
     
     it('should seed custom nodes along with defaults', async () => {
       const customNodes = [
-        { nodeType: 'nodes-base.custom1', displayName: 'Custom 1' },
-        { nodeType: 'nodes-base.custom2', displayName: 'Custom 2' }
+        { nodeType: 'n8n-nodes-base.custom1', displayName: 'Custom 1' },
+        { nodeType: 'n8n-nodes-base.custom2', displayName: 'Custom 2' }
       ];
       
       const nodes = await seedTestNodes(testDb.nodeRepository, customNodes);
       
       expect(nodes).toHaveLength(5); // 3 default + 2 custom
-      expect(nodes[3].nodeType).toBe('nodes-base.custom1');
-      expect(nodes[4].nodeType).toBe('nodes-base.custom2');
+      expect(nodes[3].nodeType).toBe('n8n-nodes-base.custom1');
+      expect(nodes[4].nodeType).toBe('n8n-nodes-base.custom2');
     });
     
     it('should save nodes to database', async () => {
@@ -103,7 +103,7 @@ describe('Database Utils', () => {
       const count = dbHelpers.countRows(testDb.adapter, 'nodes');
       expect(count).toBe(3);
       
-      const httpNode = testDb.nodeRepository.getNode('nodes-base.httpRequest');
+      const httpNode = testDb.nodeRepository.getNode('n8n-nodes-base.httpRequest');
       expect(httpNode).toBeDefined();
       expect(httpNode.displayName).toBe('HTTP Request');
     });
@@ -139,7 +139,7 @@ describe('Database Utils', () => {
     it('should create a node with defaults', () => {
       const node = createTestNode();
       
-      expect(node.nodeType).toBe('nodes-base.test');
+      expect(node.nodeType).toBe('n8n-nodes-base.test');
       expect(node.displayName).toBe('Test Node');
       expect(node.style).toBe('programmatic');
       expect(node.isAITool).toBe(false);
@@ -147,12 +147,12 @@ describe('Database Utils', () => {
     
     it('should override defaults', () => {
       const node = createTestNode({
-        nodeType: 'nodes-base.custom',
+        nodeType: 'n8n-nodes-base.custom',
         displayName: 'Custom Node',
         isAITool: true
       });
       
-      expect(node.nodeType).toBe('nodes-base.custom');
+      expect(node.nodeType).toBe('n8n-nodes-base.custom');
       expect(node.displayName).toBe('Custom Node');
       expect(node.isAITool).toBe(true);
     });
@@ -219,7 +219,7 @@ describe('Database Utils', () => {
       expect(dbHelpers.countRows(testDb.adapter, 'nodes')).toBe(3);
       expect(dbHelpers.countRows(testDb.adapter, 'templates')).toBe(2);
       
-      const httpNode = testDb.nodeRepository.getNode('nodes-base.httpRequest');
+      const httpNode = testDb.nodeRepository.getNode('n8n-nodes-base.httpRequest');
       expect(httpNode).toBeDefined();
       expect(httpNode.displayName).toBe('HTTP Request');
     });
@@ -235,8 +235,8 @@ describe('Database Utils', () => {
       const fixturePath = path.join(__dirname, '../../temp/test-fixtures.json');
       const fixtures = {
         nodes: [
-          createTestNode({ nodeType: 'nodes-base.fixture1' }),
-          createTestNode({ nodeType: 'nodes-base.fixture2' })
+          createTestNode({ nodeType: 'n8n-nodes-base.fixture1' }),
+          createTestNode({ nodeType: 'n8n-nodes-base.fixture2' })
         ],
         templates: [
           createTestTemplate({ id: 1000, name: 'Fixture Template' })
@@ -258,8 +258,8 @@ describe('Database Utils', () => {
       expect(dbHelpers.countRows(testDb.adapter, 'nodes')).toBe(2);
       expect(dbHelpers.countRows(testDb.adapter, 'templates')).toBe(1);
       
-      expect(dbHelpers.nodeExists(testDb.adapter, 'nodes-base.fixture1')).toBe(true);
-      expect(dbHelpers.nodeExists(testDb.adapter, 'nodes-base.fixture2')).toBe(true);
+      expect(dbHelpers.nodeExists(testDb.adapter, 'n8n-nodes-base.fixture1')).toBe(true);
+      expect(dbHelpers.nodeExists(testDb.adapter, 'n8n-nodes-base.fixture2')).toBe(true);
       
       // Cleanup
       fs.unlinkSync(fixturePath);
@@ -278,16 +278,16 @@ describe('Database Utils', () => {
     });
     
     it('should check if node exists', () => {
-      expect(dbHelpers.nodeExists(testDb.adapter, 'nodes-base.httpRequest')).toBe(true);
-      expect(dbHelpers.nodeExists(testDb.adapter, 'nodes-base.nonexistent')).toBe(false);
+      expect(dbHelpers.nodeExists(testDb.adapter, 'n8n-nodes-base.httpRequest')).toBe(true);
+      expect(dbHelpers.nodeExists(testDb.adapter, 'n8n-nodes-base.nonexistent')).toBe(false);
     });
     
     it('should get all node types', () => {
       const nodeTypes = dbHelpers.getAllNodeTypes(testDb.adapter);
       expect(nodeTypes).toHaveLength(3);
-      expect(nodeTypes).toContain('nodes-base.httpRequest');
-      expect(nodeTypes).toContain('nodes-base.webhook');
-      expect(nodeTypes).toContain('nodes-base.slack');
+      expect(nodeTypes).toContain('n8n-nodes-base.httpRequest');
+      expect(nodeTypes).toContain('n8n-nodes-base.webhook');
+      expect(nodeTypes).toContain('n8n-nodes-base.slack');
     });
     
     it('should clear table', () => {
@@ -324,7 +324,7 @@ describe('Database Utils', () => {
     it('should rollback transaction for testing', async () => {
       // Insert a node
       await seedTestNodes(testDb.nodeRepository, [
-        { nodeType: 'nodes-base.transaction-test' }
+        { nodeType: 'n8n-nodes-base.transaction-test' }
       ]);
       
       const initialCount = dbHelpers.countRows(testDb.adapter, 'nodes');
@@ -332,7 +332,7 @@ describe('Database Utils', () => {
       // Try to insert in a transaction that will rollback
       const result = await withTransaction(testDb.adapter, async () => {
         testDb.nodeRepository.saveNode(createTestNode({
-          nodeType: 'nodes-base.should-rollback'
+          nodeType: 'n8n-nodes-base.should-rollback'
         }));
         
         // Verify it was inserted within transaction
@@ -379,8 +379,8 @@ describe('Database Utils', () => {
       
       // Add more data
       await seedTestNodes(testDb.nodeRepository, [
-        { nodeType: 'nodes-base.extra1' },
-        { nodeType: 'nodes-base.extra2' }
+        { nodeType: 'n8n-nodes-base.extra1' },
+        { nodeType: 'n8n-nodes-base.extra2' }
       ]);
       
       expect(dbHelpers.countRows(testDb.adapter, 'nodes')).toBe(5);

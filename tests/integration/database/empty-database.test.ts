@@ -93,7 +93,7 @@ describe('Empty Database Detection Tests', () => {
 
   describe('Repository Methods with Empty Database', () => {
     it('should return null for getNode() with empty database', () => {
-      const node = repository.getNode('nodes-base.webhook');
+      const node = repository.getNode('n8n-nodes-base.webhook');
       expect(node).toBeNull();
     });
 

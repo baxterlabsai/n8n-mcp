@@ -19,7 +19,7 @@ describe('ResourceSimilarityService', () => {
 
     // Add test node with resources
     const testNode = {
-      nodeType: 'nodes-base.googleDrive',
+      nodeType: 'n8n-nodes-base.googleDrive',
       packageName: 'n8n-nodes-base',
       displayName: 'Google Drive',
       description: 'Access Google Drive',
@@ -50,7 +50,7 @@ describe('ResourceSimilarityService', () => {
 
     // Add Slack node for testing different patterns
     const slackNode = {
-      nodeType: 'nodes-base.slack',
+      nodeType: 'n8n-nodes-base.slack',
       packageName: 'n8n-nodes-base',
       displayName: 'Slack',
       description: 'Send messages to Slack',
@@ -90,7 +90,7 @@ describe('ResourceSimilarityService', () => {
   describe('findSimilarResources', () => {
     it('should find exact match', () => {
       const suggestions = service.findSimilarResources(
-        'nodes-base.googleDrive',
+        'n8n-nodes-base.googleDrive',
         'file',
         5
       );
@@ -100,7 +100,7 @@ describe('ResourceSimilarityService', () => {
 
     it('should suggest singular form for plural input', () => {
       const suggestions = service.findSimilarResources(
-        'nodes-base.googleDrive',
+        'n8n-nodes-base.googleDrive',
         'files',
         5
       );
@@ -113,7 +113,7 @@ describe('ResourceSimilarityService', () => {
 
     it('should suggest singular form for folders', () => {
       const suggestions = service.findSimilarResources(
-        'nodes-base.googleDrive',
+        'n8n-nodes-base.googleDrive',
         'folders',
         5
       );
@@ -125,7 +125,7 @@ describe('ResourceSimilarityService', () => {
 
     it('should handle typos with Levenshtein distance', () => {
       const suggestions = service.findSimilarResources(
-        'nodes-base.googleDrive',
+        'n8n-nodes-base.googleDrive',
         'flie',
         5
       );
@@ -137,7 +137,7 @@ describe('ResourceSimilarityService', () => {
 
     it('should handle combined resources', () => {
       const suggestions = service.findSimilarResources(
-        'nodes-base.googleDrive',
+        'n8n-nodes-base.googleDrive',
         'fileAndFolder',
         5
       );
@@ -150,7 +150,7 @@ describe('ResourceSimilarityService', () => {
 
     it('should return empty array for node not found', () => {
       const suggestions = service.findSimilarResources(
-        'nodes-base.nonexistent',
+        'n8n-nodes-base.nonexistent',
         'resource',
         5
       );
@@ -162,7 +162,7 @@ describe('ResourceSimilarityService', () => {
   describe('plural/singular detection', () => {
     it('should handle regular plurals (s)', () => {
       const suggestions = service.findSimilarResources(
-        'nodes-base.slack',
+        'n8n-nodes-base.slack',
         'channels',
         5
       );
@@ -173,7 +173,7 @@ describe('ResourceSimilarityService', () => {
 
     it('should handle plural ending in es', () => {
       const suggestions = service.findSimilarResources(
-        'nodes-base.slack',
+        'n8n-nodes-base.slack',
         'messages',
         5
       );
@@ -185,7 +185,7 @@ describe('ResourceSimilarityService', () => {
     it('should handle plural ending in ies', () => {
       // Test with a hypothetical 'entities' -> 'entity' conversion
       const suggestions = service.findSimilarResources(
-        'nodes-base.googleDrive',
+        'n8n-nodes-base.googleDrive',
         'entities',
         5
       );
@@ -198,7 +198,7 @@ describe('ResourceSimilarityService', () => {
   describe('node-specific patterns', () => {
     it('should apply Google Drive specific patterns', () => {
       const suggestions = service.findSimilarResources(
-        'nodes-base.googleDrive',
+        'n8n-nodes-base.googleDrive',
         'sharedDrives',
         5
       );
@@ -210,7 +210,7 @@ describe('ResourceSimilarityService', () => {
 
     it('should apply Slack specific patterns', () => {
       const suggestions = service.findSimilarResources(
-        'nodes-base.slack',
+        'n8n-nodes-base.slack',
         'users',
         5
       );
@@ -223,7 +223,7 @@ describe('ResourceSimilarityService', () => {
   describe('similarity calculation', () => {
     it('should rank exact matches highest', () => {
       const suggestions = service.findSimilarResources(
-        'nodes-base.googleDrive',
+        'n8n-nodes-base.googleDrive',
         'file',
         5
       );
@@ -233,7 +233,7 @@ describe('ResourceSimilarityService', () => {
 
     it('should rank substring matches high', () => {
       const suggestions = service.findSimilarResources(
-        'nodes-base.googleDrive',
+        'n8n-nodes-base.googleDrive',
         'fil',
         5
       );
@@ -249,14 +249,14 @@ describe('ResourceSimilarityService', () => {
     it('should cache results for repeated queries', () => {
       // First call
       const suggestions1 = service.findSimilarResources(
-        'nodes-base.googleDrive',
+        'n8n-nodes-base.googleDrive',
         'files',
         5
       );
 
       // Second call with same params
       const suggestions2 = service.findSimilarResources(
-        'nodes-base.googleDrive',
+        'n8n-nodes-base.googleDrive',
         'files',
         5
       );
@@ -267,7 +267,7 @@ describe('ResourceSimilarityService', () => {
     it('should clear cache when requested', () => {
       // Add to cache
       service.findSimilarResources(
-        'nodes-base.googleDrive',
+        'n8n-nodes-base.googleDrive',
         'test',
         5
       );
@@ -277,7 +277,7 @@ describe('ResourceSimilarityService', () => {
 
       // This would fetch fresh data (behavior is the same, just uncached)
       const suggestions = service.findSimilarResources(
-        'nodes-base.googleDrive',
+        'n8n-nodes-base.googleDrive',
         'test',
         5
       );

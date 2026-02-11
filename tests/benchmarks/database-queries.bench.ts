@@ -43,7 +43,7 @@ describe('Database Query Performance', () => {
   });
 
   bench('getNodeByType - existing node', async () => {
-    await repository.getNodeByType('nodes-base.testNode100');
+    await repository.getNodeByType('n8n-nodes-base.testNode100');
   }, {
     iterations: 1000,
     warmupIterations: 100,
@@ -52,7 +52,7 @@ describe('Database Query Performance', () => {
   });
 
   bench('getNodeByType - non-existing node', async () => {
-    await repository.getNodeByType('nodes-base.nonExistentNode');
+    await repository.getNodeByType('n8n-nodes-base.nonExistentNode');
   }, {
     iterations: 1000,
     warmupIterations: 100,
@@ -146,7 +146,7 @@ describe('Database Query Performance', () => {
   });
 
   bench('upsertNode - existing node update', async () => {
-    const existingNode = await repository.getNodeByType('nodes-base.testNode0');
+    const existingNode = await repository.getNodeByType('n8n-nodes-base.testNode0');
     if (existingNode) {
       existingNode.description = `Updated description ${Date.now()}`;
       await repository.upsertNode(existingNode);

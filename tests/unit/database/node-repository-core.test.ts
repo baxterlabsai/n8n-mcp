@@ -69,7 +69,7 @@ describe('NodeRepository - Core Functionality', () => {
   describe('saveNode', () => {
     it('should save a node with proper JSON serialization', () => {
       const parsedNode: ParsedNode = {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         displayName: 'HTTP Request',
         description: 'Makes HTTP requests',
         category: 'transform',
@@ -96,7 +96,7 @@ describe('NodeRepository - Core Functionality', () => {
       // Get the prepared statement and verify run was called
       const stmt = mockAdapter._getStatement(mockAdapter.prepare.mock.lastCall?.[0] || '');
       expect(stmt?.run).toHaveBeenCalledWith(
-        'nodes-base.httpRequest',
+        'n8n-nodes-base.httpRequest',
         'n8n-nodes-base',
         'HTTP Request',
         'Makes HTTP requests',
@@ -129,7 +129,7 @@ describe('NodeRepository - Core Functionality', () => {
     
     it('should handle nodes without optional fields', () => {
       const minimalNode: ParsedNode = {
-        nodeType: 'nodes-base.simple',
+        nodeType: 'n8n-nodes-base.simple',
         displayName: 'Simple Node',
         category: 'core',
         style: 'programmatic',
@@ -160,7 +160,7 @@ describe('NodeRepository - Core Functionality', () => {
   describe('getNode', () => {
     it('should retrieve and deserialize a node correctly', () => {
       const mockRow = {
-        node_type: 'nodes-base.httpRequest',
+        node_type: 'n8n-nodes-base.httpRequest',
         display_name: 'HTTP Request',
         description: 'Makes HTTP requests',
         category: 'transform',
@@ -193,12 +193,12 @@ describe('NodeRepository - Core Functionality', () => {
         ai_summary_generated_at: null,
       };
 
-      mockAdapter._setMockData('node:nodes-base.httpRequest', mockRow);
+      mockAdapter._setMockData('node:n8n-nodes-base.httpRequest', mockRow);
 
-      const result = repository.getNode('nodes-base.httpRequest');
+      const result = repository.getNode('n8n-nodes-base.httpRequest');
 
       expect(result).toEqual({
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         displayName: 'HTTP Request',
         description: 'Makes HTTP requests',
         category: 'transform',
@@ -239,7 +239,7 @@ describe('NodeRepository - Core Functionality', () => {
     
     it('should handle invalid JSON gracefully', () => {
       const mockRow = {
-        node_type: 'nodes-base.broken',
+        node_type: 'n8n-nodes-base.broken',
         display_name: 'Broken Node',
         description: 'Node with broken JSON',
         category: 'transform',
@@ -272,9 +272,9 @@ describe('NodeRepository - Core Functionality', () => {
         ai_summary_generated_at: null,
       };
 
-      mockAdapter._setMockData('node:nodes-base.broken', mockRow);
+      mockAdapter._setMockData('node:n8n-nodes-base.broken', mockRow);
 
-      const result = repository.getNode('nodes-base.broken');
+      const result = repository.getNode('n8n-nodes-base.broken');
 
       expect(result?.properties).toEqual([]); // defaultValue from safeJsonParse
       expect(result?.operations).toEqual([]); // defaultValue from safeJsonParse
@@ -286,13 +286,13 @@ describe('NodeRepository - Core Functionality', () => {
     it('should retrieve all AI tools sorted by display name', () => {
       const mockAITools = [
         {
-          node_type: 'nodes-base.openai',
+          node_type: 'n8n-nodes-base.openai',
           display_name: 'OpenAI',
           description: 'OpenAI integration',
           package_name: 'n8n-nodes-base'
         },
         {
-          node_type: 'nodes-base.agent',
+          node_type: 'n8n-nodes-base.agent',
           display_name: 'AI Agent',
           description: 'AI Agent node',
           package_name: '@n8n/n8n-nodes-langchain'
@@ -305,13 +305,13 @@ describe('NodeRepository - Core Functionality', () => {
       
       expect(result).toEqual([
         {
-          nodeType: 'nodes-base.openai',
+          nodeType: 'n8n-nodes-base.openai',
           displayName: 'OpenAI',
           description: 'OpenAI integration',
           package: 'n8n-nodes-base'
         },
         {
-          nodeType: 'nodes-base.agent',
+          nodeType: 'n8n-nodes-base.agent',
           displayName: 'AI Agent',
           description: 'AI Agent node',
           package: '@n8n/n8n-nodes-langchain'
@@ -374,7 +374,7 @@ describe('NodeRepository - Core Functionality', () => {
       }));
       
       const node: ParsedNode = {
-        nodeType: 'nodes-base.large',
+        nodeType: 'n8n-nodes-base.large',
         displayName: 'Large Node',
         category: 'test',
         style: 'declarative',
@@ -401,7 +401,7 @@ describe('NodeRepository - Core Functionality', () => {
     
     it('should handle boolean conversion for integer fields', () => {
       const mockRow = {
-        node_type: 'nodes-base.bool-test',
+        node_type: 'n8n-nodes-base.bool-test',
         display_name: 'Bool Test',
         description: 'Testing boolean conversion',
         category: 'test',
@@ -412,7 +412,7 @@ describe('NodeRepository - Core Functionality', () => {
         is_webhook: '1', // String that should be converted
         is_versioned: '0', // String that should be converted
         is_tool_variant: 1,
-        tool_variant_of: 'nodes-base.bool-base',
+        tool_variant_of: 'n8n-nodes-base.bool-base',
         has_tool_variant: 0,
         version: null,
         properties_schema: '[]',
@@ -434,16 +434,16 @@ describe('NodeRepository - Core Functionality', () => {
         ai_summary_generated_at: null,
       };
 
-      mockAdapter._setMockData('node:nodes-base.bool-test', mockRow);
+      mockAdapter._setMockData('node:n8n-nodes-base.bool-test', mockRow);
 
-      const result = repository.getNode('nodes-base.bool-test');
+      const result = repository.getNode('n8n-nodes-base.bool-test');
 
       expect(result?.isAITool).toBe(true);
       expect(result?.isTrigger).toBe(false);
       expect(result?.isWebhook).toBe(true);
       expect(result?.isVersioned).toBe(false);
       expect(result?.isToolVariant).toBe(true);
-      expect(result?.toolVariantOf).toBe('nodes-base.bool-base');
+      expect(result?.toolVariantOf).toBe('n8n-nodes-base.bool-base');
       expect(result?.hasToolVariant).toBe(false);
     });
   });

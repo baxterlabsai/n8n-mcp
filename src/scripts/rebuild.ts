@@ -208,7 +208,7 @@ function validateDatabase(repository: NodeRepository): { passed: boolean; issues
     }
 
     // Check critical nodes
-    const criticalNodes = ['nodes-base.httpRequest', 'nodes-base.code', 'nodes-base.webhook', 'nodes-base.slack'];
+    const criticalNodes = ['n8n-nodes-base.httpRequest', 'n8n-nodes-base.code', 'n8n-nodes-base.webhook', 'n8n-nodes-base.slack'];
 
     for (const nodeType of criticalNodes) {
       const node = repository.getNode(nodeType);

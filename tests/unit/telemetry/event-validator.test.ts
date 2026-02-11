@@ -230,7 +230,7 @@ describe('TelemetryEventValidator', () => {
         user_id: 'user123',
         event: 'validation_details',
         properties: {
-          nodeType: 'nodes-base.httpRequest',
+          nodeType: 'n8n-nodes-base.httpRequest',
           errorType: 'required_field_missing',
           errorCategory: 'validation_error',
           details: { field: 'url' }
@@ -239,7 +239,7 @@ describe('TelemetryEventValidator', () => {
 
       const result = validator.validateEvent(event);
       expect(result).not.toBeNull();
-      expect(result?.properties.nodeType).toBe('nodes-base.httpRequest');
+      expect(result?.properties.nodeType).toBe('n8n-nodes-base.httpRequest');
       expect(result?.properties.errorType).toBe('required_field_missing');
     });
 

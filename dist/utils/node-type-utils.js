@@ -11,12 +11,9 @@ exports.getNodeTypeVariations = getNodeTypeVariations;
 exports.isTriggerNode = isTriggerNode;
 exports.isActivatableTrigger = isActivatableTrigger;
 exports.getTriggerTypeDescription = getTriggerTypeDescription;
+const node_type_normalizer_1 = require("./node-type-normalizer");
 function normalizeNodeType(type) {
-    if (!type)
-        return type;
-    return type
-        .replace(/^n8n-nodes-base\./, 'nodes-base.')
-        .replace(/^@n8n\/n8n-nodes-langchain\./, 'nodes-langchain.');
+    return node_type_normalizer_1.NodeTypeNormalizer.normalizeToFullForm(type);
 }
 function denormalizeNodeType(type, packageType) {
     if (!type)
@@ -42,11 +39,11 @@ function getNodePackage(type) {
 }
 function isBaseNode(type) {
     const normalized = normalizeNodeType(type);
-    return normalized.startsWith('nodes-base.');
+    return normalized.startsWith('n8n-nodes-base.');
 }
 function isLangChainNode(type) {
     const normalized = normalizeNodeType(type);
-    return normalized.startsWith('nodes-langchain.');
+    return normalized.startsWith('@n8n/n8n-nodes-langchain.') || normalized.startsWith('n8n-nodes-langchain.');
 }
 function isValidNodeTypeFormat(type) {
     if (!type || typeof type !== 'string')
@@ -61,20 +58,20 @@ function isValidNodeTypeFormat(type) {
 function getNodeTypeVariations(type) {
     const variations = [];
     if (type.includes('.')) {
-        variations.push(normalizeNodeType(type));
         const normalized = normalizeNodeType(type);
-        if (normalized.startsWith('nodes-base.')) {
-            variations.push(denormalizeNodeType(normalized, 'base'));
+        variations.push(normalized);
+        if (normalized.startsWith('n8n-nodes-base.')) {
+            variations.push(normalized.replace(/^n8n-nodes-base\./, 'nodes-base.'));
         }
-        else if (normalized.startsWith('nodes-langchain.')) {
-            variations.push(denormalizeNodeType(normalized, 'langchain'));
+        else if (normalized.startsWith('@n8n/n8n-nodes-langchain.')) {
+            variations.push(normalized.replace(/^@n8n\/n8n-nodes-langchain\./, 'nodes-langchain.'));
         }
     }
     else {
-        variations.push(`nodes-base.${type}`);
         variations.push(`n8n-nodes-base.${type}`);
-        variations.push(`nodes-langchain.${type}`);
+        variations.push(`nodes-base.${type}`);
         variations.push(`@n8n/n8n-nodes-langchain.${type}`);
+        variations.push(`nodes-langchain.${type}`);
     }
     return [...new Set(variations)];
 }
@@ -88,9 +85,9 @@ function isTriggerNode(nodeType) {
         return true;
     }
     const specificTriggers = [
-        'nodes-base.start',
-        'nodes-base.manualTrigger',
-        'nodes-base.formTrigger'
+        'n8n-nodes-base.start',
+        'n8n-nodes-base.manualTrigger',
+        'n8n-nodes-base.formTrigger'
     ];
     return specificTriggers.includes(normalized);
 }
@@ -109,7 +106,7 @@ function getTriggerTypeDescription(nodeType) {
     if (lowerType.includes('schedule') || lowerType.includes('cron')) {
         return 'Schedule Trigger (time-based)';
     }
-    if (lowerType.includes('manual') || normalized === 'nodes-base.start') {
+    if (lowerType.includes('manual') || normalized === 'n8n-nodes-base.start') {
         return 'Manual Trigger (manual execution)';
     }
     if (lowerType.includes('email') || lowerType.includes('imap') || lowerType.includes('gmail')) {

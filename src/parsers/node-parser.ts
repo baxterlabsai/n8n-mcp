@@ -124,17 +124,18 @@ export class NodeParser {
   private extractNodeType(description: INodeTypeBaseDescription | INodeTypeDescription, packageName: string): string {
     // Ensure we have the full node type including package prefix
     const name = description.name;
-    
+
     if (!name) {
       throw new Error('Node is missing name property');
     }
-    
+
     if (name.includes('.')) {
       return name;
     }
-    
-    // Add package prefix if missing
-    const packagePrefix = packageName.replace('@n8n/', '').replace('n8n-', '');
+
+    // Add package prefix if missing - preserve n8n- prefix to match n8n workflow format
+    // Modified from upstream to align with n8n's internal workflow JSON format
+    const packagePrefix = packageName.replace('@n8n/', '');
     return `${packagePrefix}.${name}`;
   }
   

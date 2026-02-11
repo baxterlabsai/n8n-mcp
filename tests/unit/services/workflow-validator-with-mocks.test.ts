@@ -34,15 +34,15 @@ describe('WorkflowValidator - Simple Unit Tests', () => {
       // Arrange
       const nodeData = {
         'n8n-nodes-base.webhook': {
-          type: 'nodes-base.webhook',
+          type: 'n8n-nodes-base.webhook',
           displayName: 'Webhook',
           name: 'webhook',
           version: 1,
           isVersioned: true,
           properties: []
         },
-        'nodes-base.webhook': {
-          type: 'nodes-base.webhook',
+        'n8n-nodes-base.webhook': {
+          type: 'n8n-nodes-base.webhook',
           displayName: 'Webhook',
           name: 'webhook',
           version: 1,
@@ -169,26 +169,26 @@ describe('WorkflowValidator - Simple Unit Tests', () => {
       // Arrange
       const nodeData = {
         'n8n-nodes-base.manualTrigger': {
-          type: 'nodes-base.manualTrigger',
+          type: 'n8n-nodes-base.manualTrigger',
           displayName: 'Manual Trigger',
           isVersioned: false,
           properties: []
         },
-        'nodes-base.manualTrigger': {
-          type: 'nodes-base.manualTrigger',
+        'n8n-nodes-base.manualTrigger': {
+          type: 'n8n-nodes-base.manualTrigger',
           displayName: 'Manual Trigger',
           isVersioned: false,
           properties: []
         },
         'n8n-nodes-base.set': {
-          type: 'nodes-base.set',
+          type: 'n8n-nodes-base.set',
           displayName: 'Set',
           version: 2,
           isVersioned: true,
           properties: []
         },
-        'nodes-base.set': {
-          type: 'nodes-base.set',
+        'n8n-nodes-base.set': {
+          type: 'n8n-nodes-base.set',
           displayName: 'Set',
           version: 2,
           isVersioned: true,
@@ -245,14 +245,14 @@ describe('WorkflowValidator - Simple Unit Tests', () => {
       // Arrange
       const nodeData = {
         'n8n-nodes-base.set': {
-          type: 'nodes-base.set',
+          type: 'n8n-nodes-base.set',
           displayName: 'Set',
           isVersioned: true,
           version: 2,
           properties: []
         },
-        'nodes-base.set': {
-          type: 'nodes-base.set',
+        'n8n-nodes-base.set': {
+          type: 'n8n-nodes-base.set',
           displayName: 'Set',
           isVersioned: true,
           version: 2,
@@ -332,24 +332,24 @@ describe('WorkflowValidator - Simple Unit Tests', () => {
       // Arrange
       const nodeData = {
         'n8n-nodes-base.manualTrigger': {
-          type: 'nodes-base.manualTrigger',
+          type: 'n8n-nodes-base.manualTrigger',
           displayName: 'Manual Trigger',
           properties: []
         },
-        'nodes-base.manualTrigger': {
-          type: 'nodes-base.manualTrigger',
+        'n8n-nodes-base.manualTrigger': {
+          type: 'n8n-nodes-base.manualTrigger',
           displayName: 'Manual Trigger',
           properties: []
         },
         'n8n-nodes-base.set': {
-          type: 'nodes-base.set',
+          type: 'n8n-nodes-base.set',
           displayName: 'Set',
           version: 2,
           isVersioned: true,
           properties: []
         },
-        'nodes-base.set': {
-          type: 'nodes-base.set',
+        'n8n-nodes-base.set': {
+          type: 'n8n-nodes-base.set',
           displayName: 'Set',
           version: 2,
           isVersioned: true,
@@ -401,14 +401,14 @@ describe('WorkflowValidator - Simple Unit Tests', () => {
       // Arrange
       const nodeData = {
         'n8n-nodes-base.httpRequest': {
-          type: 'nodes-base.httpRequest',
+          type: 'n8n-nodes-base.httpRequest',
           displayName: 'HTTP Request',
           isVersioned: true,
           version: 3, // Latest version is 3
           properties: []
         },
-        'nodes-base.httpRequest': {
-          type: 'nodes-base.httpRequest',
+        'n8n-nodes-base.httpRequest': {
+          type: 'n8n-nodes-base.httpRequest',
           displayName: 'HTTP Request',
           isVersioned: true,
           version: 3,
@@ -452,8 +452,8 @@ describe('WorkflowValidator - Simple Unit Tests', () => {
       // Arrange - Test that full-form types are normalized to short form to find the node
       // The repository only has the node under the SHORT normalized key (database format)
       const nodeData = {
-        'nodes-base.webhook': {  // Repository has it under SHORT form (database format)
-          type: 'nodes-base.webhook',
+        'n8n-nodes-base.webhook': {  // Repository has it under SHORT form (database format)
+          type: 'n8n-nodes-base.webhook',
           displayName: 'Webhook',
           isVersioned: true,
           version: 2,
@@ -466,9 +466,9 @@ describe('WorkflowValidator - Simple Unit Tests', () => {
       const mockRepository = {
         getNode: vi.fn((type: string) => {
           // The validator now normalizes to short form before calling getNode
-          // So getNode receives 'nodes-base.webhook'
-          if (type === 'nodes-base.webhook') {
-            return nodeData['nodes-base.webhook'];
+          // So getNode receives 'n8n-nodes-base.webhook'
+          if (type === 'n8n-nodes-base.webhook') {
+            return nodeData['n8n-nodes-base.webhook'];
           }
           return null;
         }),

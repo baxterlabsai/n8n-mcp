@@ -154,7 +154,7 @@ describe.skip('MCP Telemetry Integration', () => {
       server: mockServer,
       handleTool: vi.fn().mockResolvedValue({ content: [{ type: 'text', text: 'Success' }] }),
       executeTool: vi.fn().mockResolvedValue({
-        results: [{ nodeType: 'nodes-base.webhook' }],
+        results: [{ nodeType: 'n8n-nodes-base.webhook' }],
         totalResults: 1
       }),
       close: vi.fn()
@@ -205,7 +205,7 @@ describe.skip('MCP Telemetry Integration', () => {
 
       // Mock the executeTool method to return a successful result
       vi.spyOn(mcpServer as any, 'executeTool').mockResolvedValue({
-        results: [{ nodeType: 'nodes-base.webhook' }],
+        results: [{ nodeType: 'n8n-nodes-base.webhook' }],
         totalResults: 1
       });
 
@@ -264,12 +264,12 @@ describe.skip('MCP Telemetry Integration', () => {
         method: 'tools/call',
         params: {
           name: 'get_node',
-          arguments: { nodeType: 'nodes-base.webhook' }
+          arguments: { nodeType: 'n8n-nodes-base.webhook' }
         }
       };
 
       vi.spyOn(mcpServer as any, 'executeTool').mockResolvedValue({
-        nodeType: 'nodes-base.webhook',
+        nodeType: 'n8n-nodes-base.webhook',
         displayName: 'Webhook'
       });
 
@@ -301,8 +301,8 @@ describe.skip('MCP Telemetry Integration', () => {
       // Mock search results
       vi.spyOn(mcpServer as any, 'executeTool').mockResolvedValue({
         results: [
-          { nodeType: 'nodes-base.webhook', score: 0.95 },
-          { nodeType: 'nodes-base.httpRequest', score: 0.8 }
+          { nodeType: 'n8n-nodes-base.webhook', score: 0.95 },
+          { nodeType: 'n8n-nodes-base.httpRequest', score: 0.8 }
         ],
         totalResults: 2
       });
@@ -352,7 +352,7 @@ describe.skip('MCP Telemetry Integration', () => {
 
       // Mock main search with no results, triggering fallback
       vi.spyOn(mcpServer as any, 'executeTool').mockResolvedValue({
-        results: [{ nodeType: 'nodes-base.webhook', score: 0.6 }],
+        results: [{ nodeType: 'n8n-nodes-base.webhook', score: 0.6 }],
         totalResults: 1,
         usedFallback: true
       });
@@ -466,7 +466,7 @@ describe.skip('MCP Telemetry Integration', () => {
         params: {
           name: 'validate_node_operation',
           arguments: {
-            nodeType: 'nodes-base.httpRequest',
+            nodeType: 'n8n-nodes-base.httpRequest',
             config: { url: 'https://api.example.com', method: 'GET' }
           }
         }

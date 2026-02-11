@@ -41,8 +41,8 @@ describe('NodeSimilarityService', () => {
 
     it('should refresh cache with new data', async () => {
       const nodes = [
-        createMockNode('nodes-base.httpRequest', 'HTTP Request'),
-        createMockNode('nodes-base.webhook', 'Webhook')
+        createMockNode('n8n-nodes-base.httpRequest', 'HTTP Request'),
+        createMockNode('n8n-nodes-base.webhook', 'Webhook')
       ];
 
       vi.spyOn(mockRepository, 'getAllNodes').mockReturnValue(nodes);
@@ -54,7 +54,7 @@ describe('NodeSimilarityService', () => {
     });
 
     it('should use stale cache on refresh error', async () => {
-      const staleNodes = [createMockNode('nodes-base.slack', 'Slack')];
+      const staleNodes = [createMockNode('n8n-nodes-base.slack', 'Slack')];
       service['nodeCache'] = staleNodes;
       service['cacheExpiry'] = Date.now() + 1000; // Set cache as not expired
 
@@ -69,7 +69,7 @@ describe('NodeSimilarityService', () => {
 
     it('should refresh cache when expired', async () => {
       service['cacheExpiry'] = Date.now() - 1000; // Cache expired
-      const nodes = [createMockNode('nodes-base.httpRequest', 'HTTP Request')];
+      const nodes = [createMockNode('n8n-nodes-base.httpRequest', 'HTTP Request')];
 
       vi.spyOn(mockRepository, 'getAllNodes').mockReturnValue(nodes);
 
@@ -106,10 +106,10 @@ describe('NodeSimilarityService', () => {
   describe('Node Suggestions', () => {
     beforeEach(() => {
       const nodes = [
-        createMockNode('nodes-base.httpRequest', 'HTTP Request', 'Make HTTP requests'),
-        createMockNode('nodes-base.webhook', 'Webhook', 'Receive webhooks'),
-        createMockNode('nodes-base.slack', 'Slack', 'Send messages to Slack'),
-        createMockNode('nodes-langchain.openAi', 'OpenAI', 'Use OpenAI models')
+        createMockNode('n8n-nodes-base.httpRequest', 'HTTP Request', 'Make HTTP requests'),
+        createMockNode('n8n-nodes-base.webhook', 'Webhook', 'Receive webhooks'),
+        createMockNode('n8n-nodes-base.slack', 'Slack', 'Send messages to Slack'),
+        createMockNode('@n8n/n8n-nodes-langchain.openAi', 'OpenAI', 'Use OpenAI models')
       ];
 
       vi.spyOn(mockRepository, 'getAllNodes').mockReturnValue(nodes);
@@ -119,7 +119,7 @@ describe('NodeSimilarityService', () => {
       const suggestions = await service.findSimilarNodes('httpRequest', 3);
 
       expect(suggestions).toHaveLength(1);
-      expect(suggestions[0].nodeType).toBe('nodes-base.httpRequest');
+      expect(suggestions[0].nodeType).toBe('n8n-nodes-base.httpRequest');
       expect(suggestions[0].confidence).toBeGreaterThan(0.5); // Adjusted based on actual implementation
     });
 
@@ -127,7 +127,7 @@ describe('NodeSimilarityService', () => {
       const suggestions = await service.findSimilarNodes('htpRequest', 3);
 
       expect(suggestions.length).toBeGreaterThan(0);
-      expect(suggestions[0].nodeType).toBe('nodes-base.httpRequest');
+      expect(suggestions[0].nodeType).toBe('n8n-nodes-base.httpRequest');
       expect(suggestions[0].confidence).toBeGreaterThan(0.4); // Adjusted based on actual implementation
     });
 
@@ -135,7 +135,7 @@ describe('NodeSimilarityService', () => {
       const suggestions = await service.findSimilarNodes('slack', 3);
 
       expect(suggestions.length).toBeGreaterThan(0);
-      expect(suggestions[0].nodeType).toBe('nodes-base.slack');
+      expect(suggestions[0].nodeType).toBe('n8n-nodes-base.slack');
     });
 
     it('should return empty array for no matches', async () => {
@@ -162,14 +162,14 @@ describe('NodeSimilarityService', () => {
     it('should handle package prefix normalization', async () => {
       // Add a node with the exact type we're searching for
       const nodes = [
-        createMockNode('nodes-base.httpRequest', 'HTTP Request', 'Make HTTP requests')
+        createMockNode('n8n-nodes-base.httpRequest', 'HTTP Request', 'Make HTTP requests')
       ];
       vi.spyOn(mockRepository, 'getAllNodes').mockReturnValue(nodes);
 
-      const suggestions = await service.findSimilarNodes('nodes-base.httpRequest', 3);
+      const suggestions = await service.findSimilarNodes('n8n-nodes-base.httpRequest', 3);
 
       expect(suggestions.length).toBeGreaterThan(0);
-      expect(suggestions[0].nodeType).toBe('nodes-base.httpRequest');
+      expect(suggestions[0].nodeType).toBe('n8n-nodes-base.httpRequest');
     });
   });
 

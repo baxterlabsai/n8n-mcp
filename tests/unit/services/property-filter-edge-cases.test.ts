@@ -12,12 +12,12 @@ describe('PropertyFilter - Edge Cases', () => {
 
   describe('Null and Undefined Handling', () => {
     it('should handle null properties gracefully', () => {
-      const result = PropertyFilter.getEssentials(null as any, 'nodes-base.http');
+      const result = PropertyFilter.getEssentials(null as any, 'n8n-nodes-base.http');
       expect(result).toEqual({ required: [], common: [] });
     });
 
     it('should handle undefined properties gracefully', () => {
-      const result = PropertyFilter.getEssentials(undefined as any, 'nodes-base.http');
+      const result = PropertyFilter.getEssentials(undefined as any, 'n8n-nodes-base.http');
       expect(result).toEqual({ required: [], common: [] });
     });
 
@@ -38,7 +38,7 @@ describe('PropertyFilter - Edge Cases', () => {
         { name: 'prop2', type: null }
       ];
       
-      const result = PropertyFilter.getEssentials(properties as any, 'nodes-base.test');
+      const result = PropertyFilter.getEssentials(properties as any, 'n8n-nodes-base.test');
       expect(() => result).not.toThrow();
       expect(result.required).toBeDefined();
       expect(result.common).toBeDefined();
@@ -47,7 +47,7 @@ describe('PropertyFilter - Edge Cases', () => {
 
   describe('Boundary Value Testing', () => {
     it('should handle empty properties array', () => {
-      const result = PropertyFilter.getEssentials([], 'nodes-base.http');
+      const result = PropertyFilter.getEssentials([], 'n8n-nodes-base.http');
       expect(result).toEqual({ required: [], common: [] });
     });
 
@@ -61,7 +61,7 @@ describe('PropertyFilter - Edge Cases', () => {
       }));
       
       const start = Date.now();
-      const result = PropertyFilter.getEssentials(largeProperties, 'nodes-base.test');
+      const result = PropertyFilter.getEssentials(largeProperties, 'n8n-nodes-base.test');
       const duration = Date.now() - start;
       
       expect(result).toBeDefined();
@@ -82,7 +82,7 @@ describe('PropertyFilter - Edge Cases', () => {
         }
       ];
       
-      const result = PropertyFilter.getEssentials(properties, 'nodes-base.test');
+      const result = PropertyFilter.getEssentials(properties, 'n8n-nodes-base.test');
       // For unconfigured nodes, this might be included as required
       const allProps = [...result.required, ...result.common];
       const longProp = allProps.find(p => p.name === 'longProp');
@@ -105,7 +105,7 @@ describe('PropertyFilter - Edge Cases', () => {
         required: true
       }];
       
-      const result = PropertyFilter.getEssentials(properties, 'nodes-base.test');
+      const result = PropertyFilter.getEssentials(properties, 'n8n-nodes-base.test');
       const allProps = [...result.required, ...result.common];
       const selectProp = allProps.find(p => p.name === 'selectProp');
       
@@ -131,7 +131,7 @@ describe('PropertyFilter - Edge Cases', () => {
         description: `A ${type} property`
       }));
       
-      const result = PropertyFilter.getEssentials(properties, 'nodes-base.test');
+      const result = PropertyFilter.getEssentials(properties, 'n8n-nodes-base.test');
       expect(result).toBeDefined();
       
       const allProps = [...result.required, ...result.common];
@@ -150,7 +150,7 @@ describe('PropertyFilter - Edge Cases', () => {
         ]
       }];
       
-      const result = PropertyFilter.getEssentials(properties, 'nodes-base.test');
+      const result = PropertyFilter.getEssentials(properties, 'n8n-nodes-base.test');
       const allProps = [...result.required, ...result.common];
       
       // Should include the collection
@@ -173,7 +173,7 @@ describe('PropertyFilter - Edge Cases', () => {
         }]
       }];
       
-      const result = PropertyFilter.getEssentials(properties, 'nodes-base.test');
+      const result = PropertyFilter.getEssentials(properties, 'n8n-nodes-base.test');
       const allProps = [...result.required, ...result.common];
       
       // Should include the fixed collection
@@ -191,7 +191,7 @@ describe('PropertyFilter - Edge Cases', () => {
       properties[0].self = properties[0];
       
       expect(() => {
-        PropertyFilter.getEssentials(properties, 'nodes-base.test');
+        PropertyFilter.getEssentials(properties, 'n8n-nodes-base.test');
       }).not.toThrow();
     });
 
@@ -203,7 +203,7 @@ describe('PropertyFilter - Edge Cases', () => {
         { name: 'prop@special', type: 'string', displayName: 'Prop Special' }
       ];
       
-      const result = PropertyFilter.getEssentials(properties, 'nodes-base.test');
+      const result = PropertyFilter.getEssentials(properties, 'n8n-nodes-base.test');
       expect(result).toBeDefined();
     });
 
@@ -214,7 +214,7 @@ describe('PropertyFilter - Edge Cases', () => {
         { name: 'duplicate', type: 'boolean', displayName: 'Third Duplicate' }
       ];
       
-      const result = PropertyFilter.getEssentials(properties, 'nodes-base.test');
+      const result = PropertyFilter.getEssentials(properties, 'n8n-nodes-base.test');
       const allProps = [...result.required, ...result.common];
       
       // Should deduplicate
@@ -236,7 +236,7 @@ describe('PropertyFilter - Edge Cases', () => {
       ];
       
       const result = PropertyFilter.getEssentials(properties, 'nodes-base.httpRequest');
-      
+
       expect(result.required.some(p => p.name === 'url')).toBe(true);
       expect(result.common.some(p => p.name === 'method')).toBe(true);
       expect(result.common.some(p => p.name === 'authentication')).toBe(true);
@@ -259,7 +259,7 @@ describe('PropertyFilter - Edge Cases', () => {
       ];
       
       const result = PropertyFilter.getEssentials(properties, 'nodes-base.slack');
-      
+
       // In the actual config, resource and operation are in common, not required
       expect(result.common.some(p => p.name === 'resource')).toBe(true);
       expect(result.common.some(p => p.name === 'operation')).toBe(true);
@@ -278,7 +278,7 @@ describe('PropertyFilter - Edge Cases', () => {
         { name: 'internalProp', type: 'hidden' }
       ];
       
-      const result = PropertyFilter.getEssentials(properties, 'nodes-base.unknownNode');
+      const result = PropertyFilter.getEssentials(properties, 'n8n-nodes-base.unknownNode');
       
       // Should include required properties
       expect(result.required.some(p => p.name === 'requiredProp')).toBe(true);
@@ -298,7 +298,7 @@ describe('PropertyFilter - Edge Cases', () => {
         { name: 'advanced3', type: 'assignmentCollection', displayName: 'Advanced Assignment' }
       ];
       
-      const result = PropertyFilter.getEssentials(properties, 'nodes-base.advancedNode');
+      const result = PropertyFilter.getEssentials(properties, 'n8n-nodes-base.advancedNode');
       
       // Should still return some properties
       const allProps = [...result.required, ...result.common];
@@ -324,7 +324,7 @@ describe('PropertyFilter - Edge Cases', () => {
         }))
       }];
       
-      const result = PropertyFilter.getEssentials(properties, 'nodes-base.test');
+      const result = PropertyFilter.getEssentials(properties, 'n8n-nodes-base.test');
       const allProps = [...result.required, ...result.common];
       const simplified = allProps.find(p => p.name === 'complexProp');
       
@@ -347,7 +347,7 @@ describe('PropertyFilter - Edge Cases', () => {
         { name: 'anotherProp', displayName: '', type: 'number' }
       ];
       
-      const result = PropertyFilter.getEssentials(properties, 'nodes-base.test');
+      const result = PropertyFilter.getEssentials(properties, 'n8n-nodes-base.test');
       const allProps = [...result.required, ...result.common];
       
       allProps.forEach(prop => {

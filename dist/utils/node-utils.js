@@ -3,17 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.normalizeNodeType = normalizeNodeType;
 exports.getNodeTypeAlternatives = getNodeTypeAlternatives;
 exports.getWorkflowNodeType = getWorkflowNodeType;
+const node_type_normalizer_1 = require("./node-type-normalizer");
 function normalizeNodeType(nodeType) {
-    if (nodeType.startsWith('n8n-nodes-base.')) {
-        return nodeType.replace('n8n-nodes-base.', 'nodes-base.');
-    }
-    if (nodeType.startsWith('@n8n/n8n-nodes-langchain.')) {
-        return nodeType.replace('@n8n/n8n-nodes-langchain.', 'nodes-langchain.');
-    }
-    if (nodeType.startsWith('n8n-nodes-langchain.')) {
-        return nodeType.replace('n8n-nodes-langchain.', 'nodes-langchain.');
-    }
-    return nodeType;
+    return node_type_normalizer_1.NodeTypeNormalizer.normalizeToFullForm(nodeType);
 }
 function getNodeTypeAlternatives(nodeType) {
     if (!nodeType || typeof nodeType !== 'string' || nodeType.trim() === '') {
@@ -34,10 +26,14 @@ function getNodeTypeAlternatives(nodeType) {
         }
     }
     if (!nodeType.includes('.')) {
+        alternatives.push(`n8n-nodes-base.${nodeType}`);
+        alternatives.push(`@n8n/n8n-nodes-langchain.${nodeType}`);
         alternatives.push(`nodes-base.${nodeType}`);
         alternatives.push(`nodes-langchain.${nodeType}`);
         const camelCaseVariants = generateCamelCaseVariants(nodeType);
         camelCaseVariants.forEach(variant => {
+            alternatives.push(`n8n-nodes-base.${variant}`);
+            alternatives.push(`@n8n/n8n-nodes-langchain.${variant}`);
             alternatives.push(`nodes-base.${variant}`);
             alternatives.push(`nodes-langchain.${variant}`);
         });

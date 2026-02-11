@@ -258,7 +258,7 @@ export class EnhancedConfigValidator extends ConfigValidator {
         type: 'invalid_type',
         property: 'nodeType',
         message: `Invalid nodeType: expected string, got ${typeof nodeType}`,
-        fix: 'Provide a valid node type string (e.g., "nodes-base.webhook")'
+        fix: 'Provide a valid node type string (e.g., "n8n-nodes-base.webhook")'
       });
       return;
     }
@@ -281,67 +281,67 @@ export class EnhancedConfigValidator extends ConfigValidator {
       autofix: result.autofix || {}
     };
     
-    // Normalize node type (handle both 'n8n-nodes-base.x' and 'nodes-base.x' formats)
-    const normalizedNodeType = nodeType.replace('n8n-nodes-base.', 'nodes-base.');
-    
+    // Normalize node type to FULL form for consistent matching
+    const normalizedNodeType = NodeTypeNormalizer.normalizeToFullForm(nodeType);
+
     // Use node-specific validators
     switch (normalizedNodeType) {
-      case 'nodes-base.slack':
+      case 'n8n-nodes-base.slack':
         NodeSpecificValidators.validateSlack(context);
         this.enhanceSlackValidation(config, result);
         break;
-        
-      case 'nodes-base.googleSheets':
+
+      case 'n8n-nodes-base.googleSheets':
         NodeSpecificValidators.validateGoogleSheets(context);
         this.enhanceGoogleSheetsValidation(config, result);
         break;
-        
-      case 'nodes-base.httpRequest':
+
+      case 'n8n-nodes-base.httpRequest':
         // Use existing HTTP validation from base class
         this.enhanceHttpRequestValidation(config, result);
         break;
-        
-      case 'nodes-base.code':
+
+      case 'n8n-nodes-base.code':
         NodeSpecificValidators.validateCode(context);
         break;
-        
-      case 'nodes-base.openAi':
+
+      case 'n8n-nodes-base.openAi':
         NodeSpecificValidators.validateOpenAI(context);
         break;
-        
-      case 'nodes-base.mongoDb':
+
+      case 'n8n-nodes-base.mongoDb':
         NodeSpecificValidators.validateMongoDB(context);
         break;
-        
-      case 'nodes-base.webhook':
+
+      case 'n8n-nodes-base.webhook':
         NodeSpecificValidators.validateWebhook(context);
         break;
-        
-      case 'nodes-base.postgres':
+
+      case 'n8n-nodes-base.postgres':
         NodeSpecificValidators.validatePostgres(context);
         break;
-        
-      case 'nodes-base.mysql':
+
+      case 'n8n-nodes-base.mysql':
         NodeSpecificValidators.validateMySQL(context);
         break;
 
-      case 'nodes-langchain.agent':
+      case '@n8n/n8n-nodes-langchain.agent':
         NodeSpecificValidators.validateAIAgent(context);
         break;
 
-      case 'nodes-base.set':
+      case 'n8n-nodes-base.set':
         NodeSpecificValidators.validateSet(context);
         break;
 
-      case 'nodes-base.switch':
+      case 'n8n-nodes-base.switch':
         this.validateSwitchNodeStructure(config, result);
         break;
-        
-      case 'nodes-base.if':
+
+      case 'n8n-nodes-base.if':
         this.validateIfNodeStructure(config, result);
         break;
-        
-      case 'nodes-base.filter':
+
+      case 'n8n-nodes-base.filter':
         this.validateFilterNodeStructure(config, result);
         break;
         

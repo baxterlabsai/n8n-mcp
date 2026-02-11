@@ -60,7 +60,7 @@ describe('WorkflowValidator - Loop Node Validation', () => {
 
     it('should detect reversed SplitInBatches connections (processing node on done output)', async () => {
       mockNodeRepository.getNode.mockReturnValue({
-        nodeType: 'nodes-base.splitInBatches',
+        nodeType: 'n8n-nodes-base.splitInBatches',
         properties: []
       });
 
@@ -110,7 +110,7 @@ describe('WorkflowValidator - Loop Node Validation', () => {
 
     it('should warn about processing node on done output without loop back', async () => {
       mockNodeRepository.getNode.mockReturnValue({
-        nodeType: 'nodes-base.splitInBatches',
+        nodeType: 'n8n-nodes-base.splitInBatches',
         properties: []
       });
 
@@ -139,7 +139,7 @@ describe('WorkflowValidator - Loop Node Validation', () => {
 
     it('should warn about final processing node on loop output', async () => {
       mockNodeRepository.getNode.mockReturnValue({
-        nodeType: 'nodes-base.splitInBatches',
+        nodeType: 'n8n-nodes-base.splitInBatches',
         properties: []
       });
 
@@ -167,7 +167,7 @@ describe('WorkflowValidator - Loop Node Validation', () => {
 
     it('should warn about loop output without loop back connection', async () => {
       mockNodeRepository.getNode.mockReturnValue({
-        nodeType: 'nodes-base.splitInBatches',
+        nodeType: 'n8n-nodes-base.splitInBatches',
         properties: []
       });
 
@@ -196,7 +196,7 @@ describe('WorkflowValidator - Loop Node Validation', () => {
 
     it('should accept correct SplitInBatches connections', async () => {
       mockNodeRepository.getNode.mockReturnValue({
-        nodeType: 'nodes-base.splitInBatches',
+        nodeType: 'n8n-nodes-base.splitInBatches',
         properties: []
       });
 
@@ -261,7 +261,7 @@ describe('WorkflowValidator - Loop Node Validation', () => {
 
     it('should handle complex loop structures', async () => {
       mockNodeRepository.getNode.mockReturnValue({
-        nodeType: 'nodes-base.splitInBatches',
+        nodeType: 'n8n-nodes-base.splitInBatches',
         properties: []
       });
 
@@ -328,7 +328,7 @@ describe('WorkflowValidator - Loop Node Validation', () => {
 
     it('should detect node type patterns for processing detection', async () => {
       mockNodeRepository.getNode.mockReturnValue({
-        nodeType: 'nodes-base.splitInBatches',
+        nodeType: 'n8n-nodes-base.splitInBatches',
         properties: []
       });
 
@@ -387,7 +387,7 @@ describe('WorkflowValidator - Loop Node Validation', () => {
   describe('checkForLoopBack method', () => {
     it('should detect direct loop back connection', async () => {
       mockNodeRepository.getNode.mockReturnValue({
-        nodeType: 'nodes-base.splitInBatches',
+        nodeType: 'n8n-nodes-base.splitInBatches',
         properties: []
       });
 
@@ -420,7 +420,7 @@ describe('WorkflowValidator - Loop Node Validation', () => {
 
     it('should detect indirect loop back connection through multiple nodes', async () => {
       mockNodeRepository.getNode.mockReturnValue({
-        nodeType: 'nodes-base.splitInBatches',
+        nodeType: 'n8n-nodes-base.splitInBatches',
         properties: []
       });
 
@@ -465,7 +465,7 @@ describe('WorkflowValidator - Loop Node Validation', () => {
 
     it('should respect max depth to prevent infinite recursion', async () => {
       mockNodeRepository.getNode.mockReturnValue({
-        nodeType: 'nodes-base.splitInBatches',
+        nodeType: 'n8n-nodes-base.splitInBatches',
         properties: []
       });
 
@@ -518,7 +518,7 @@ describe('WorkflowValidator - Loop Node Validation', () => {
 
     it('should handle circular references without infinite loops', async () => {
       mockNodeRepository.getNode.mockReturnValue({
-        nodeType: 'nodes-base.splitInBatches',
+        nodeType: 'n8n-nodes-base.splitInBatches',
         properties: []
       });
 
@@ -559,7 +559,7 @@ describe('WorkflowValidator - Loop Node Validation', () => {
   describe('self-referencing connections', () => {
     it('should allow self-referencing for SplitInBatches (loop back)', async () => {
       mockNodeRepository.getNode.mockReturnValue({
-        nodeType: 'nodes-base.splitInBatches',
+        nodeType: 'n8n-nodes-base.splitInBatches',
         properties: []
       });
 
@@ -589,7 +589,7 @@ describe('WorkflowValidator - Loop Node Validation', () => {
 
     it('should warn about self-referencing for non-loop nodes', async () => {
       mockNodeRepository.getNode.mockReturnValue({
-        nodeType: 'nodes-base.set',
+        nodeType: 'n8n-nodes-base.set',
         properties: []
       });
 
@@ -620,7 +620,7 @@ describe('WorkflowValidator - Loop Node Validation', () => {
   describe('edge cases', () => {
     it('should handle missing target node gracefully', async () => {
       mockNodeRepository.getNode.mockReturnValue({
-        nodeType: 'nodes-base.splitInBatches',
+        nodeType: 'n8n-nodes-base.splitInBatches',
         properties: []
       });
 
@@ -650,7 +650,7 @@ describe('WorkflowValidator - Loop Node Validation', () => {
 
     it('should handle empty connections gracefully', async () => {
       mockNodeRepository.getNode.mockReturnValue({
-        nodeType: 'nodes-base.splitInBatches',
+        nodeType: 'n8n-nodes-base.splitInBatches',
         properties: []
       });
 
@@ -677,7 +677,7 @@ describe('WorkflowValidator - Loop Node Validation', () => {
 
     it('should handle null/undefined connection arrays', async () => {
       mockNodeRepository.getNode.mockReturnValue({
-        nodeType: 'nodes-base.splitInBatches',
+        nodeType: 'n8n-nodes-base.splitInBatches',
         properties: []
       });
 

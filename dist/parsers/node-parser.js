@@ -80,7 +80,7 @@ class NodeParser {
         if (name.includes('.')) {
             return name;
         }
-        const packagePrefix = packageName.replace('@n8n/', '').replace('n8n-', '');
+        const packagePrefix = packageName.replace('@n8n/', '');
         return `${packagePrefix}.${name}`;
     }
     extractCategory(description) {

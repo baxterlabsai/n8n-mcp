@@ -1,33 +1,18 @@
+import { NodeTypeNormalizer } from './node-type-normalizer';
+
 /**
- * Normalizes node type from n8n export format to database format
- * 
- * Examples:
- * - 'n8n-nodes-base.httpRequest' → 'nodes-base.httpRequest'
- * - '@n8n/n8n-nodes-langchain.agent' → 'nodes-langchain.agent'
- * - 'n8n-nodes-langchain.chatTrigger' → 'nodes-langchain.chatTrigger'
- * - 'nodes-base.slack' → 'nodes-base.slack' (unchanged)
- * 
+ * Normalizes node type to FULL form (n8n-nodes-base.*)
+ * Delegates to NodeTypeNormalizer for consistency.
+ *
+ * @example
+ * normalizeNodeType('nodes-base.httpRequest') → 'n8n-nodes-base.httpRequest'
+ * normalizeNodeType('n8n-nodes-base.slack') → 'n8n-nodes-base.slack' (unchanged)
+ *
  * @param nodeType The node type to normalize
- * @returns The normalized node type
+ * @returns The normalized node type in FULL form
  */
 export function normalizeNodeType(nodeType: string): string {
-  // Handle n8n-nodes-base -> nodes-base
-  if (nodeType.startsWith('n8n-nodes-base.')) {
-    return nodeType.replace('n8n-nodes-base.', 'nodes-base.');
-  }
-  
-  // Handle @n8n/n8n-nodes-langchain -> nodes-langchain
-  if (nodeType.startsWith('@n8n/n8n-nodes-langchain.')) {
-    return nodeType.replace('@n8n/n8n-nodes-langchain.', 'nodes-langchain.');
-  }
-  
-  // Handle n8n-nodes-langchain -> nodes-langchain (without @n8n/ prefix)
-  if (nodeType.startsWith('n8n-nodes-langchain.')) {
-    return nodeType.replace('n8n-nodes-langchain.', 'nodes-langchain.');
-  }
-  
-  // Return unchanged if already normalized or unknown format
-  return nodeType;
+  return NodeTypeNormalizer.normalizeToFullForm(nodeType);
 }
 
 /**
@@ -67,14 +52,18 @@ export function getNodeTypeAlternatives(nodeType: string): string[] {
     }
   }
   
-  // If it's just a bare node name, try with common prefixes
+  // If it's just a bare node name, try with common prefixes (FULL form first)
   if (!nodeType.includes('.')) {
+    alternatives.push(`n8n-nodes-base.${nodeType}`);
+    alternatives.push(`@n8n/n8n-nodes-langchain.${nodeType}`);
     alternatives.push(`nodes-base.${nodeType}`);
     alternatives.push(`nodes-langchain.${nodeType}`);
-    
+
     // Also try camelCase variants for bare names
     const camelCaseVariants = generateCamelCaseVariants(nodeType);
     camelCaseVariants.forEach(variant => {
+      alternatives.push(`n8n-nodes-base.${variant}`);
+      alternatives.push(`@n8n/n8n-nodes-langchain.${variant}`);
       alternatives.push(`nodes-base.${variant}`);
       alternatives.push(`nodes-langchain.${variant}`);
     });

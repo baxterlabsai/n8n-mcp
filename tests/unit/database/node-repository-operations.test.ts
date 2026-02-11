@@ -63,7 +63,7 @@ describe('NodeRepository - Operations and Resources', () => {
   describe('getNodeOperations', () => {
     it('should extract operations from array format', () => {
       const mockNode = {
-        node_type: 'nodes-base.httpRequest',
+        node_type: 'n8n-nodes-base.httpRequest',
         display_name: 'HTTP Request',
         operations: JSON.stringify([
           { name: 'get', displayName: 'GET' },
@@ -73,9 +73,9 @@ describe('NodeRepository - Operations and Resources', () => {
         credentials_required: '[]'
       };
 
-      mockAdapter._setMockNode('nodes-base.httpRequest', mockNode);
+      mockAdapter._setMockNode('n8n-nodes-base.httpRequest', mockNode);
 
-      const operations = repository.getNodeOperations('nodes-base.httpRequest');
+      const operations = repository.getNodeOperations('n8n-nodes-base.httpRequest');
 
       expect(operations).toEqual([
         { name: 'get', displayName: 'GET' },
@@ -85,7 +85,7 @@ describe('NodeRepository - Operations and Resources', () => {
 
     it('should extract operations from object format grouped by resource', () => {
       const mockNode = {
-        node_type: 'nodes-base.slack',
+        node_type: 'n8n-nodes-base.slack',
         display_name: 'Slack',
         operations: JSON.stringify({
           message: [
@@ -101,10 +101,10 @@ describe('NodeRepository - Operations and Resources', () => {
         credentials_required: '[]'
       };
 
-      mockAdapter._setMockNode('nodes-base.slack', mockNode);
+      mockAdapter._setMockNode('n8n-nodes-base.slack', mockNode);
 
-      const allOperations = repository.getNodeOperations('nodes-base.slack');
-      const messageOperations = repository.getNodeOperations('nodes-base.slack', 'message');
+      const allOperations = repository.getNodeOperations('n8n-nodes-base.slack');
+      const messageOperations = repository.getNodeOperations('n8n-nodes-base.slack', 'message');
 
       expect(allOperations).toHaveLength(4);
       expect(messageOperations).toEqual([
@@ -115,7 +115,7 @@ describe('NodeRepository - Operations and Resources', () => {
 
     it('should extract operations from properties with operation field', () => {
       const mockNode = {
-        node_type: 'nodes-base.googleSheets',
+        node_type: 'n8n-nodes-base.googleSheets',
         display_name: 'Google Sheets',
         operations: '[]',
         properties_schema: JSON.stringify([
@@ -141,9 +141,9 @@ describe('NodeRepository - Operations and Resources', () => {
         credentials_required: '[]'
       };
 
-      mockAdapter._setMockNode('nodes-base.googleSheets', mockNode);
+      mockAdapter._setMockNode('n8n-nodes-base.googleSheets', mockNode);
 
-      const operations = repository.getNodeOperations('nodes-base.googleSheets');
+      const operations = repository.getNodeOperations('n8n-nodes-base.googleSheets');
 
       expect(operations).toEqual([
         { name: 'append', displayName: 'Append Row' },
@@ -153,7 +153,7 @@ describe('NodeRepository - Operations and Resources', () => {
 
     it('should filter operations by resource when specified', () => {
       const mockNode = {
-        node_type: 'nodes-base.googleSheets',
+        node_type: 'n8n-nodes-base.googleSheets',
         display_name: 'Google Sheets',
         operations: '[]',
         properties_schema: JSON.stringify([
@@ -185,47 +185,47 @@ describe('NodeRepository - Operations and Resources', () => {
         credentials_required: '[]'
       };
 
-      mockAdapter._setMockNode('nodes-base.googleSheets', mockNode);
+      mockAdapter._setMockNode('n8n-nodes-base.googleSheets', mockNode);
 
-      const sheetOperations = repository.getNodeOperations('nodes-base.googleSheets', 'sheet');
-      const cellOperations = repository.getNodeOperations('nodes-base.googleSheets', 'cell');
+      const sheetOperations = repository.getNodeOperations('n8n-nodes-base.googleSheets', 'sheet');
+      const cellOperations = repository.getNodeOperations('n8n-nodes-base.googleSheets', 'cell');
 
       expect(sheetOperations).toEqual([{ name: 'append', displayName: 'Append Row' }]);
       expect(cellOperations).toEqual([{ name: 'update', displayName: 'Update Cell' }]);
     });
 
     it('should return empty array for non-existent node', () => {
-      const operations = repository.getNodeOperations('nodes-base.nonexistent');
+      const operations = repository.getNodeOperations('n8n-nodes-base.nonexistent');
       expect(operations).toEqual([]);
     });
 
     it('should handle nodes without operations', () => {
       const mockNode = {
-        node_type: 'nodes-base.simple',
+        node_type: 'n8n-nodes-base.simple',
         display_name: 'Simple Node',
         operations: '[]',
         properties_schema: '[]',
         credentials_required: '[]'
       };
 
-      mockAdapter._setMockNode('nodes-base.simple', mockNode);
+      mockAdapter._setMockNode('n8n-nodes-base.simple', mockNode);
 
-      const operations = repository.getNodeOperations('nodes-base.simple');
+      const operations = repository.getNodeOperations('n8n-nodes-base.simple');
       expect(operations).toEqual([]);
     });
 
     it('should handle malformed operations JSON gracefully', () => {
       const mockNode = {
-        node_type: 'nodes-base.broken',
+        node_type: 'n8n-nodes-base.broken',
         display_name: 'Broken Node',
         operations: '{invalid json}',
         properties_schema: '[]',
         credentials_required: '[]'
       };
 
-      mockAdapter._setMockNode('nodes-base.broken', mockNode);
+      mockAdapter._setMockNode('n8n-nodes-base.broken', mockNode);
 
-      const operations = repository.getNodeOperations('nodes-base.broken');
+      const operations = repository.getNodeOperations('n8n-nodes-base.broken');
       expect(operations).toEqual([]);
     });
   });
@@ -233,7 +233,7 @@ describe('NodeRepository - Operations and Resources', () => {
   describe('getNodeResources', () => {
     it('should extract resources from properties', () => {
       const mockNode = {
-        node_type: 'nodes-base.slack',
+        node_type: 'n8n-nodes-base.slack',
         display_name: 'Slack',
         operations: '[]',
         properties_schema: JSON.stringify([
@@ -250,9 +250,9 @@ describe('NodeRepository - Operations and Resources', () => {
         credentials_required: '[]'
       };
 
-      mockAdapter._setMockNode('nodes-base.slack', mockNode);
+      mockAdapter._setMockNode('n8n-nodes-base.slack', mockNode);
 
-      const resources = repository.getNodeResources('nodes-base.slack');
+      const resources = repository.getNodeResources('n8n-nodes-base.slack');
 
       expect(resources).toEqual([
         { name: 'message', displayName: 'Message' },
@@ -263,7 +263,7 @@ describe('NodeRepository - Operations and Resources', () => {
 
     it('should return empty array for node without resources', () => {
       const mockNode = {
-        node_type: 'nodes-base.simple',
+        node_type: 'n8n-nodes-base.simple',
         display_name: 'Simple Node',
         operations: '[]',
         properties_schema: JSON.stringify([
@@ -272,20 +272,20 @@ describe('NodeRepository - Operations and Resources', () => {
         credentials_required: '[]'
       };
 
-      mockAdapter._setMockNode('nodes-base.simple', mockNode);
+      mockAdapter._setMockNode('n8n-nodes-base.simple', mockNode);
 
-      const resources = repository.getNodeResources('nodes-base.simple');
+      const resources = repository.getNodeResources('n8n-nodes-base.simple');
       expect(resources).toEqual([]);
     });
 
     it('should return empty array for non-existent node', () => {
-      const resources = repository.getNodeResources('nodes-base.nonexistent');
+      const resources = repository.getNodeResources('n8n-nodes-base.nonexistent');
       expect(resources).toEqual([]);
     });
 
     it('should handle multiple resource properties', () => {
       const mockNode = {
-        node_type: 'nodes-base.multi',
+        node_type: 'n8n-nodes-base.multi',
         display_name: 'Multi Resource Node',
         operations: '[]',
         properties_schema: JSON.stringify([
@@ -303,9 +303,9 @@ describe('NodeRepository - Operations and Resources', () => {
         credentials_required: '[]'
       };
 
-      mockAdapter._setMockNode('nodes-base.multi', mockNode);
+      mockAdapter._setMockNode('n8n-nodes-base.multi', mockNode);
 
-      const resources = repository.getNodeResources('nodes-base.multi');
+      const resources = repository.getNodeResources('n8n-nodes-base.multi');
 
       expect(resources).toEqual([
         { name: 'type1', displayName: 'Type 1' },
@@ -317,7 +317,7 @@ describe('NodeRepository - Operations and Resources', () => {
   describe('getOperationsForResource', () => {
     it('should return operations for specific resource', () => {
       const mockNode = {
-        node_type: 'nodes-base.slack',
+        node_type: 'n8n-nodes-base.slack',
         display_name: 'Slack',
         operations: '[]',
         properties_schema: JSON.stringify([
@@ -350,11 +350,11 @@ describe('NodeRepository - Operations and Resources', () => {
         credentials_required: '[]'
       };
 
-      mockAdapter._setMockNode('nodes-base.slack', mockNode);
+      mockAdapter._setMockNode('n8n-nodes-base.slack', mockNode);
 
-      const messageOps = repository.getOperationsForResource('nodes-base.slack', 'message');
-      const channelOps = repository.getOperationsForResource('nodes-base.slack', 'channel');
-      const nonExistentOps = repository.getOperationsForResource('nodes-base.slack', 'nonexistent');
+      const messageOps = repository.getOperationsForResource('n8n-nodes-base.slack', 'message');
+      const channelOps = repository.getOperationsForResource('n8n-nodes-base.slack', 'channel');
+      const nonExistentOps = repository.getOperationsForResource('n8n-nodes-base.slack', 'nonexistent');
 
       expect(messageOps).toEqual([
         { name: 'send', displayName: 'Send Message' },
@@ -368,7 +368,7 @@ describe('NodeRepository - Operations and Resources', () => {
 
     it('should handle array format for resource display options', () => {
       const mockNode = {
-        node_type: 'nodes-base.multi',
+        node_type: 'n8n-nodes-base.multi',
         display_name: 'Multi Node',
         operations: '[]',
         properties_schema: JSON.stringify([
@@ -388,11 +388,11 @@ describe('NodeRepository - Operations and Resources', () => {
         credentials_required: '[]'
       };
 
-      mockAdapter._setMockNode('nodes-base.multi', mockNode);
+      mockAdapter._setMockNode('n8n-nodes-base.multi', mockNode);
 
-      const messageOps = repository.getOperationsForResource('nodes-base.multi', 'message');
-      const channelOps = repository.getOperationsForResource('nodes-base.multi', 'channel');
-      const otherOps = repository.getOperationsForResource('nodes-base.multi', 'other');
+      const messageOps = repository.getOperationsForResource('n8n-nodes-base.multi', 'message');
+      const channelOps = repository.getOperationsForResource('n8n-nodes-base.multi', 'channel');
+      const otherOps = repository.getOperationsForResource('n8n-nodes-base.multi', 'other');
 
       expect(messageOps).toEqual([{ name: 'list', displayName: 'List Items' }]);
       expect(channelOps).toEqual([{ name: 'list', displayName: 'List Items' }]);
@@ -400,13 +400,13 @@ describe('NodeRepository - Operations and Resources', () => {
     });
 
     it('should return empty array for non-existent node', () => {
-      const operations = repository.getOperationsForResource('nodes-base.nonexistent', 'message');
+      const operations = repository.getOperationsForResource('n8n-nodes-base.nonexistent', 'message');
       expect(operations).toEqual([]);
     });
 
     it('should handle string format for single resource', () => {
       const mockNode = {
-        node_type: 'nodes-base.single',
+        node_type: 'n8n-nodes-base.single',
         display_name: 'Single Node',
         operations: '[]',
         properties_schema: JSON.stringify([
@@ -426,9 +426,9 @@ describe('NodeRepository - Operations and Resources', () => {
         credentials_required: '[]'
       };
 
-      mockAdapter._setMockNode('nodes-base.single', mockNode);
+      mockAdapter._setMockNode('n8n-nodes-base.single', mockNode);
 
-      const operations = repository.getOperationsForResource('nodes-base.single', 'document');
+      const operations = repository.getOperationsForResource('n8n-nodes-base.single', 'document');
       expect(operations).toEqual([{ name: 'create', displayName: 'Create Document' }]);
     });
   });
@@ -437,21 +437,21 @@ describe('NodeRepository - Operations and Resources', () => {
     it('should collect operations from all nodes', () => {
       const mockNodes = [
         {
-          node_type: 'nodes-base.httpRequest',
+          node_type: 'n8n-nodes-base.httpRequest',
           display_name: 'HTTP Request',
           operations: JSON.stringify([{ name: 'execute' }]),
           properties_schema: '[]',
           credentials_required: '[]'
         },
         {
-          node_type: 'nodes-base.slack',
+          node_type: 'n8n-nodes-base.slack',
           display_name: 'Slack',
           operations: JSON.stringify([{ name: 'send' }]),
           properties_schema: '[]',
           credentials_required: '[]'
         },
         {
-          node_type: 'nodes-base.empty',
+          node_type: 'n8n-nodes-base.empty',
           display_name: 'Empty Node',
           operations: '[]',
           properties_schema: '[]',
@@ -466,9 +466,9 @@ describe('NodeRepository - Operations and Resources', () => {
       const allOperations = repository.getAllOperations();
 
       expect(allOperations.size).toBe(2); // Only nodes with operations
-      expect(allOperations.get('nodes-base.httpRequest')).toEqual([{ name: 'execute' }]);
-      expect(allOperations.get('nodes-base.slack')).toEqual([{ name: 'send' }]);
-      expect(allOperations.has('nodes-base.empty')).toBe(false);
+      expect(allOperations.get('n8n-nodes-base.httpRequest')).toEqual([{ name: 'execute' }]);
+      expect(allOperations.get('n8n-nodes-base.slack')).toEqual([{ name: 'send' }]);
+      expect(allOperations.has('n8n-nodes-base.empty')).toBe(false);
     });
 
     it('should handle empty node list', () => {
@@ -481,7 +481,7 @@ describe('NodeRepository - Operations and Resources', () => {
     it('should collect resources from all nodes', () => {
       const mockNodes = [
         {
-          node_type: 'nodes-base.slack',
+          node_type: 'n8n-nodes-base.slack',
           display_name: 'Slack',
           operations: '[]',
           properties_schema: JSON.stringify([
@@ -493,7 +493,7 @@ describe('NodeRepository - Operations and Resources', () => {
           credentials_required: '[]'
         },
         {
-          node_type: 'nodes-base.sheets',
+          node_type: 'n8n-nodes-base.sheets',
           display_name: 'Google Sheets',
           operations: '[]',
           properties_schema: JSON.stringify([
@@ -505,7 +505,7 @@ describe('NodeRepository - Operations and Resources', () => {
           credentials_required: '[]'
         },
         {
-          node_type: 'nodes-base.simple',
+          node_type: 'n8n-nodes-base.simple',
           display_name: 'Simple Node',
           operations: '[]',
           properties_schema: '[]', // No resources
@@ -520,12 +520,12 @@ describe('NodeRepository - Operations and Resources', () => {
       const allResources = repository.getAllResources();
 
       expect(allResources.size).toBe(2); // Only nodes with resources
-      expect(allResources.get('nodes-base.slack')).toEqual([
+      expect(allResources.get('n8n-nodes-base.slack')).toEqual([
         { name: 'message' },
         { name: 'channel' }
       ]);
-      expect(allResources.get('nodes-base.sheets')).toEqual([{ name: 'sheet' }]);
-      expect(allResources.has('nodes-base.simple')).toBe(false);
+      expect(allResources.get('n8n-nodes-base.sheets')).toEqual([{ name: 'sheet' }]);
+      expect(allResources.has('n8n-nodes-base.simple')).toBe(false);
     });
 
     it('should handle empty node list', () => {
@@ -537,17 +537,17 @@ describe('NodeRepository - Operations and Resources', () => {
   describe('edge cases and error handling', () => {
     it('should handle null or undefined properties gracefully', () => {
       const mockNode = {
-        node_type: 'nodes-base.null',
+        node_type: 'n8n-nodes-base.null',
         display_name: 'Null Node',
         operations: null,
         properties_schema: null,
         credentials_required: null
       };
 
-      mockAdapter._setMockNode('nodes-base.null', mockNode);
+      mockAdapter._setMockNode('n8n-nodes-base.null', mockNode);
 
-      const operations = repository.getNodeOperations('nodes-base.null');
-      const resources = repository.getNodeResources('nodes-base.null');
+      const operations = repository.getNodeOperations('n8n-nodes-base.null');
+      const resources = repository.getNodeResources('n8n-nodes-base.null');
 
       expect(operations).toEqual([]);
       expect(resources).toEqual([]);
@@ -555,7 +555,7 @@ describe('NodeRepository - Operations and Resources', () => {
 
     it('should handle complex nested operation properties', () => {
       const mockNode = {
-        node_type: 'nodes-base.complex',
+        node_type: 'n8n-nodes-base.complex',
         display_name: 'Complex Node',
         operations: '[]',
         properties_schema: JSON.stringify([
@@ -576,15 +576,15 @@ describe('NodeRepository - Operations and Resources', () => {
         credentials_required: '[]'
       };
 
-      mockAdapter._setMockNode('nodes-base.complex', mockNode);
+      mockAdapter._setMockNode('n8n-nodes-base.complex', mockNode);
 
-      const operations = repository.getNodeOperations('nodes-base.complex');
+      const operations = repository.getNodeOperations('n8n-nodes-base.complex');
       expect(operations).toEqual([{ name: 'complexOperation', displayName: 'Complex Operation' }]);
     });
 
     it('should handle operations with mixed data types', () => {
       const mockNode = {
-        node_type: 'nodes-base.mixed',
+        node_type: 'n8n-nodes-base.mixed',
         display_name: 'Mixed Node',
         operations: JSON.stringify({
           string_operation: 'invalid', // Should be array
@@ -595,9 +595,9 @@ describe('NodeRepository - Operations and Resources', () => {
         credentials_required: '[]'
       };
 
-      mockAdapter._setMockNode('nodes-base.mixed', mockNode);
+      mockAdapter._setMockNode('n8n-nodes-base.mixed', mockNode);
 
-      const operations = repository.getNodeOperations('nodes-base.mixed');
+      const operations = repository.getNodeOperations('n8n-nodes-base.mixed');
       expect(operations).toEqual([{ name: 'valid' }]); // Only valid array operations
     });
 
@@ -617,16 +617,16 @@ describe('NodeRepository - Operations and Resources', () => {
       ];
 
       const mockNode = {
-        node_type: 'nodes-base.deep',
+        node_type: 'n8n-nodes-base.deep',
         display_name: 'Deep Node',
         operations: '[]',
         properties_schema: JSON.stringify(deepProperties),
         credentials_required: '[]'
       };
 
-      mockAdapter._setMockNode('nodes-base.deep', mockNode);
+      mockAdapter._setMockNode('n8n-nodes-base.deep', mockNode);
 
-      const resources = repository.getNodeResources('nodes-base.deep');
+      const resources = repository.getNodeResources('n8n-nodes-base.deep');
       expect(resources).toEqual([{ name: 'deep', displayName: 'Deep Resource' }]);
     });
   });

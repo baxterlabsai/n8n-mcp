@@ -273,9 +273,9 @@ export class WorkflowValidator {
     if (workflow.nodes.length === 1) {
       const singleNode = workflow.nodes[0];
       const normalizedType = NodeTypeNormalizer.normalizeToFullForm(singleNode.type);
-      const isWebhook = normalizedType === 'nodes-base.webhook' ||
-                       normalizedType === 'nodes-base.webhookTrigger';
-      const isLangchainNode = normalizedType.startsWith('nodes-langchain.');
+      const isWebhook = normalizedType === 'n8n-nodes-base.webhook' ||
+                       normalizedType === 'n8n-nodes-base.webhookTrigger';
+      const isLangchainNode = normalizedType.startsWith('@n8n/n8n-nodes-langchain.');
 
       // Langchain nodes can be validated standalone for AI tool purposes
       if (!isWebhook && !isLangchainNode) {
@@ -522,7 +522,7 @@ export class WorkflowValidator {
         // Skip PARAMETER validation for langchain nodes (but NOT typeVersion validation above!)
         // Langchain nodes have dedicated AI-specific validators in validateAISpecificNodes()
         // which handle their unique parameter structures (AI connections, tool ports, etc.)
-        if (normalizedType.startsWith('nodes-langchain.')) {
+        if (normalizedType.startsWith('@n8n/n8n-nodes-langchain.') || normalizedType.startsWith('n8n-nodes-langchain.')) {
           continue;
         }
 
@@ -1094,7 +1094,7 @@ export class WorkflowValidator {
       // Skip expression validation for langchain nodes
       // They have AI-specific validators and different expression rules
       const normalizedType = NodeTypeNormalizer.normalizeToFullForm(node.type);
-      if (normalizedType.startsWith('nodes-langchain.')) {
+      if (normalizedType.startsWith('@n8n/n8n-nodes-langchain.') || normalizedType.startsWith('n8n-nodes-langchain.')) {
         continue;
       }
 

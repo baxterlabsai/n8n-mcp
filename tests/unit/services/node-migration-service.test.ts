@@ -45,10 +45,10 @@ describe('NodeMigrationService', () => {
 
   describe('migrateNode', () => {
     it('should update node typeVersion', async () => {
-      const node = createMockNode('node-1', 'nodes-base.httpRequest', 1);
+      const node = createMockNode('node-1', 'n8n-nodes-base.httpRequest', 1);
 
       const mockAnalysis: VersionUpgradeAnalysis = {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         fromVersion: '1.0',
         toVersion: '2.0',
         hasBreakingChanges: false,
@@ -69,10 +69,10 @@ describe('NodeMigrationService', () => {
     });
 
     it('should apply auto-migratable changes', async () => {
-      const node = createMockNode('node-1', 'nodes-base.httpRequest', 1, {});
+      const node = createMockNode('node-1', 'n8n-nodes-base.httpRequest', 1, {});
 
       const mockAnalysis: VersionUpgradeAnalysis = {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         fromVersion: '1.0',
         toVersion: '2.0',
         hasBreakingChanges: true,
@@ -98,10 +98,10 @@ describe('NodeMigrationService', () => {
     });
 
     it('should collect remaining manual issues', async () => {
-      const node = createMockNode('node-1', 'nodes-base.httpRequest', 1);
+      const node = createMockNode('node-1', 'n8n-nodes-base.httpRequest', 1);
 
       const mockAnalysis: VersionUpgradeAnalysis = {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         fromVersion: '1.0',
         toVersion: '2.0',
         hasBreakingChanges: true,
@@ -124,10 +124,10 @@ describe('NodeMigrationService', () => {
     });
 
     it('should determine confidence based on remaining issues', async () => {
-      const node = createMockNode('node-1', 'nodes-base.httpRequest', 1);
+      const node = createMockNode('node-1', 'n8n-nodes-base.httpRequest', 1);
 
       const mockAnalysisNoIssues: VersionUpgradeAnalysis = {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         fromVersion: '1.0',
         toVersion: '2.0',
         hasBreakingChanges: false,
@@ -147,10 +147,10 @@ describe('NodeMigrationService', () => {
     });
 
     it('should set MEDIUM confidence for few issues', async () => {
-      const node = createMockNode('node-1', 'nodes-base.httpRequest', 1);
+      const node = createMockNode('node-1', 'n8n-nodes-base.httpRequest', 1);
 
       const mockAnalysis: VersionUpgradeAnalysis = {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         fromVersion: '1.0',
         toVersion: '2.0',
         hasBreakingChanges: true,
@@ -172,10 +172,10 @@ describe('NodeMigrationService', () => {
     });
 
     it('should set LOW confidence for many issues', async () => {
-      const node = createMockNode('node-1', 'nodes-base.httpRequest', 1);
+      const node = createMockNode('node-1', 'n8n-nodes-base.httpRequest', 1);
 
       const mockAnalysis: VersionUpgradeAnalysis = {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         fromVersion: '1.0',
         toVersion: '2.0',
         hasBreakingChanges: true,
@@ -196,10 +196,10 @@ describe('NodeMigrationService', () => {
 
   describe('addProperty migration', () => {
     it('should add new property with default value', async () => {
-      const node = createMockNode('node-1', 'nodes-base.httpRequest', 1, {});
+      const node = createMockNode('node-1', 'n8n-nodes-base.httpRequest', 1, {});
 
       const mockAnalysis: VersionUpgradeAnalysis = {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         fromVersion: '1.0',
         toVersion: '2.0',
         hasBreakingChanges: false,
@@ -223,10 +223,10 @@ describe('NodeMigrationService', () => {
     });
 
     it('should handle nested property paths', async () => {
-      const node = createMockNode('node-1', 'nodes-base.httpRequest', 1, { parameters: {} });
+      const node = createMockNode('node-1', 'n8n-nodes-base.httpRequest', 1, { parameters: {} });
 
       const mockAnalysis: VersionUpgradeAnalysis = {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         fromVersion: '1.0',
         toVersion: '2.0',
         hasBreakingChanges: false,
@@ -306,11 +306,11 @@ describe('NodeMigrationService', () => {
 
   describe('removeProperty migration', () => {
     it('should remove deprecated property', async () => {
-      const node = createMockNode('node-1', 'nodes-base.httpRequest', 1, {});
+      const node = createMockNode('node-1', 'n8n-nodes-base.httpRequest', 1, {});
       (node as any).oldField = 'value';
 
       const mockAnalysis: VersionUpgradeAnalysis = {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         fromVersion: '1.0',
         toVersion: '2.0',
         hasBreakingChanges: true,
@@ -336,12 +336,12 @@ describe('NodeMigrationService', () => {
     });
 
     it('should handle removing nested properties', async () => {
-      const node = createMockNode('node-1', 'nodes-base.httpRequest', 1, {
+      const node = createMockNode('node-1', 'n8n-nodes-base.httpRequest', 1, {
         parameters: { oldAuth: 'basic' }
       });
 
       const mockAnalysis: VersionUpgradeAnalysis = {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         fromVersion: '1.0',
         toVersion: '2.0',
         hasBreakingChanges: true,
@@ -364,10 +364,10 @@ describe('NodeMigrationService', () => {
     });
 
     it('should skip removal if property does not exist', async () => {
-      const node = createMockNode('node-1', 'nodes-base.httpRequest', 1, {});
+      const node = createMockNode('node-1', 'n8n-nodes-base.httpRequest', 1, {});
 
       const mockAnalysis: VersionUpgradeAnalysis = {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         fromVersion: '1.0',
         toVersion: '2.0',
         hasBreakingChanges: true,
@@ -392,11 +392,11 @@ describe('NodeMigrationService', () => {
 
   describe('renameProperty migration', () => {
     it('should rename property', async () => {
-      const node = createMockNode('node-1', 'nodes-base.httpRequest', 1, {});
+      const node = createMockNode('node-1', 'n8n-nodes-base.httpRequest', 1, {});
       (node as any).oldName = 'value';
 
       const mockAnalysis: VersionUpgradeAnalysis = {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         fromVersion: '1.0',
         toVersion: '2.0',
         hasBreakingChanges: true,
@@ -426,12 +426,12 @@ describe('NodeMigrationService', () => {
     it.skip('should handle nested property renaming', async () => {
       // Skipped: deep cloning creates new objects that aren't detected by the migration logic
       // The feature works in production, but testing nested renames requires more complex mocking
-      const node = createMockNode('node-1', 'nodes-base.httpRequest', 1, {
+      const node = createMockNode('node-1', 'n8n-nodes-base.httpRequest', 1, {
         parameters: { oldParam: 'test' }
       });
 
       const mockAnalysis: VersionUpgradeAnalysis = {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         fromVersion: '1.0',
         toVersion: '2.0',
         hasBreakingChanges: true,
@@ -458,10 +458,10 @@ describe('NodeMigrationService', () => {
     });
 
     it('should skip rename if source does not exist', async () => {
-      const node = createMockNode('node-1', 'nodes-base.httpRequest', 1, {});
+      const node = createMockNode('node-1', 'n8n-nodes-base.httpRequest', 1, {});
 
       const mockAnalysis: VersionUpgradeAnalysis = {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         fromVersion: '1.0',
         toVersion: '2.0',
         hasBreakingChanges: true,
@@ -488,10 +488,10 @@ describe('NodeMigrationService', () => {
 
   describe('setDefault migration', () => {
     it('should set default value if property is undefined', async () => {
-      const node = createMockNode('node-1', 'nodes-base.httpRequest', 1, {});
+      const node = createMockNode('node-1', 'n8n-nodes-base.httpRequest', 1, {});
 
       const mockAnalysis: VersionUpgradeAnalysis = {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         fromVersion: '1.0',
         toVersion: '2.0',
         hasBreakingChanges: false,
@@ -515,11 +515,11 @@ describe('NodeMigrationService', () => {
     });
 
     it('should not overwrite existing value', async () => {
-      const node = createMockNode('node-1', 'nodes-base.httpRequest', 1, {});
+      const node = createMockNode('node-1', 'n8n-nodes-base.httpRequest', 1, {});
       (node as any).field = 'existing';
 
       const mockAnalysis: VersionUpgradeAnalysis = {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         fromVersion: '1.0',
         toVersion: '2.0',
         hasBreakingChanges: false,
@@ -546,27 +546,27 @@ describe('NodeMigrationService', () => {
 
   describe('validateMigratedNode', () => {
     it('should validate basic node structure', async () => {
-      const node = createMockNode('node-1', 'nodes-base.httpRequest', 2, {});
+      const node = createMockNode('node-1', 'n8n-nodes-base.httpRequest', 2, {});
 
-      const result = await service.validateMigratedNode(node, 'nodes-base.httpRequest');
+      const result = await service.validateMigratedNode(node, 'n8n-nodes-base.httpRequest');
 
       expect(result.valid).toBe(true);
       expect(result.errors).toHaveLength(0);
     });
 
     it('should detect missing typeVersion', async () => {
-      const node = { ...createMockNode('node-1', 'nodes-base.httpRequest', 2), typeVersion: undefined };
+      const node = { ...createMockNode('node-1', 'n8n-nodes-base.httpRequest', 2), typeVersion: undefined };
 
-      const result = await service.validateMigratedNode(node, 'nodes-base.httpRequest');
+      const result = await service.validateMigratedNode(node, 'n8n-nodes-base.httpRequest');
 
       expect(result.valid).toBe(false);
       expect(result.errors).toContain('Missing typeVersion after migration');
     });
 
     it('should detect missing parameters', async () => {
-      const node = { ...createMockNode('node-1', 'nodes-base.httpRequest', 2), parameters: undefined };
+      const node = { ...createMockNode('node-1', 'n8n-nodes-base.httpRequest', 2), parameters: undefined };
 
-      const result = await service.validateMigratedNode(node, 'nodes-base.httpRequest');
+      const result = await service.validateMigratedNode(node, 'n8n-nodes-base.httpRequest');
 
       expect(result.valid).toBe(false);
       expect(result.errors).toContain('Missing parameters object');
@@ -603,8 +603,8 @@ describe('NodeMigrationService', () => {
     it('should migrate multiple nodes in a workflow', async () => {
       const workflow = {
         nodes: [
-          createMockNode('node-1', 'nodes-base.httpRequest', 1),
-          createMockNode('node-2', 'nodes-base.webhook', 2)
+          createMockNode('node-1', 'n8n-nodes-base.httpRequest', 1),
+          createMockNode('node-2', 'n8n-nodes-base.webhook', 2)
         ]
       };
 
@@ -637,8 +637,8 @@ describe('NodeMigrationService', () => {
     it('should calculate overall confidence as LOW if any migration is LOW', async () => {
       const workflow = {
         nodes: [
-          createMockNode('node-1', 'nodes-base.httpRequest', 1),
-          createMockNode('node-2', 'nodes-base.webhook', 2)
+          createMockNode('node-1', 'n8n-nodes-base.httpRequest', 1),
+          createMockNode('node-2', 'n8n-nodes-base.webhook', 2)
         ]
       };
 
@@ -668,12 +668,12 @@ describe('NodeMigrationService', () => {
     it('should update nodes in place', async () => {
       const workflow = {
         nodes: [
-          createMockNode('node-1', 'nodes-base.httpRequest', 1, {})
+          createMockNode('node-1', 'n8n-nodes-base.httpRequest', 1, {})
         ]
       };
 
       const mockAnalysis: VersionUpgradeAnalysis = {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         fromVersion: '1.0',
         toVersion: '2.0',
         hasBreakingChanges: false,
@@ -698,13 +698,13 @@ describe('NodeMigrationService', () => {
     it('should skip nodes without target versions', async () => {
       const workflow = {
         nodes: [
-          createMockNode('node-1', 'nodes-base.httpRequest', 1),
-          createMockNode('node-2', 'nodes-base.webhook', 2)
+          createMockNode('node-1', 'n8n-nodes-base.httpRequest', 1),
+          createMockNode('node-2', 'n8n-nodes-base.webhook', 2)
         ]
       };
 
       const mockAnalysis: VersionUpgradeAnalysis = {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         fromVersion: '1',
         toVersion: '2.0',
         hasBreakingChanges: false,
@@ -730,7 +730,7 @@ describe('NodeMigrationService', () => {
 
   describe('edge cases', () => {
     it('should handle nodes without typeVersion', async () => {
-      const node = { ...createMockNode('node-1', 'nodes-base.httpRequest', 1), typeVersion: undefined };
+      const node = { ...createMockNode('node-1', 'n8n-nodes-base.httpRequest', 1), typeVersion: undefined };
 
       const workflow = { nodes: [node] };
       const targetVersions = { 'node-1': '2.0' };
@@ -752,10 +752,10 @@ describe('NodeMigrationService', () => {
     });
 
     it('should handle version string with single digit', async () => {
-      const node = createMockNode('node-1', 'nodes-base.httpRequest', 1);
+      const node = createMockNode('node-1', 'n8n-nodes-base.httpRequest', 1);
 
       const mockAnalysis: VersionUpgradeAnalysis = {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         fromVersion: '1',
         toVersion: '2',
         hasBreakingChanges: false,
@@ -774,10 +774,10 @@ describe('NodeMigrationService', () => {
     });
 
     it('should handle version string with decimal', async () => {
-      const node = createMockNode('node-1', 'nodes-base.httpRequest', 1);
+      const node = createMockNode('node-1', 'n8n-nodes-base.httpRequest', 1);
 
       const mockAnalysis: VersionUpgradeAnalysis = {
-        nodeType: 'nodes-base.httpRequest',
+        nodeType: 'n8n-nodes-base.httpRequest',
         fromVersion: '1.1',
         toVersion: '2.3',
         hasBreakingChanges: false,

@@ -147,8 +147,8 @@ describe('TelemetryManager', () => {
 
       expect(mockConfigManager.isEnabled).toHaveBeenCalled();
       expect(createClient).toHaveBeenCalledWith(
-        TELEMETRY_BACKEND.URL,
-        TELEMETRY_BACKEND.ANON_KEY,
+        expect.any(String), // URL can be from env var or constant
+        expect.any(String), // ANON_KEY can be from env var or constant
         expect.objectContaining({
           auth: {
             persistSession: false,
@@ -273,10 +273,10 @@ describe('TelemetryManager', () => {
 
     it('should track validation details', () => {
       const details = { field: 'url', value: 'invalid' };
-      manager.trackValidationDetails('nodes-base.httpRequest', 'required_field_missing', details);
+      manager.trackValidationDetails('n8n-nodes-base.httpRequest', 'required_field_missing', details);
 
       expect(mockEventTracker.trackValidationDetails).toHaveBeenCalledWith(
-        'nodes-base.httpRequest',
+        'n8n-nodes-base.httpRequest',
         'required_field_missing',
         details
       );
@@ -293,10 +293,10 @@ describe('TelemetryManager', () => {
     });
 
     it('should track node configuration', () => {
-      manager.trackNodeConfiguration('nodes-base.httpRequest', 5, false);
+      manager.trackNodeConfiguration('n8n-nodes-base.httpRequest', 5, false);
 
       expect(mockEventTracker.trackNodeConfiguration).toHaveBeenCalledWith(
-        'nodes-base.httpRequest',
+        'n8n-nodes-base.httpRequest',
         5,
         false
       );

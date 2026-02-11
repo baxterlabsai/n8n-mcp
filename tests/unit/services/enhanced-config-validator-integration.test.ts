@@ -92,7 +92,7 @@ describe('EnhancedConfigValidator - Integration Tests', () => {
       ]);
 
       const result = EnhancedConfigValidator.validateWithMode(
-        'nodes-base.slack',
+        'n8n-nodes-base.slack',
         config,
         properties,
         'operation',
@@ -100,7 +100,7 @@ describe('EnhancedConfigValidator - Integration Tests', () => {
       );
 
       expect(mockResourceService.findSimilarResources).toHaveBeenCalledWith(
-        'nodes-base.slack',
+        'n8n-nodes-base.slack',
         'invalidResource',
         expect.any(Number)
       );
@@ -152,7 +152,7 @@ describe('EnhancedConfigValidator - Integration Tests', () => {
       ]);
 
       const result = EnhancedConfigValidator.validateWithMode(
-        'nodes-base.slack',
+        'n8n-nodes-base.slack',
         config,
         properties,
         'operation',
@@ -160,7 +160,7 @@ describe('EnhancedConfigValidator - Integration Tests', () => {
       );
 
       expect(mockOperationService.findSimilarOperations).toHaveBeenCalledWith(
-        'nodes-base.slack',
+        'n8n-nodes-base.slack',
         'invalidOperation',
         'message',
         expect.any(Number)
@@ -194,7 +194,7 @@ describe('EnhancedConfigValidator - Integration Tests', () => {
       });
 
       const result = EnhancedConfigValidator.validateWithMode(
-        'nodes-base.slack',
+        'n8n-nodes-base.slack',
         config,
         properties,
         'operation',
@@ -250,7 +250,7 @@ describe('EnhancedConfigValidator - Integration Tests', () => {
       ];
 
       const result = EnhancedConfigValidator.validateWithMode(
-        'nodes-base.slack',
+        'n8n-nodes-base.slack',
         config,
         properties,
         'operation',
@@ -280,7 +280,7 @@ describe('EnhancedConfigValidator - Integration Tests', () => {
       ];
 
       EnhancedConfigValidator.validateWithMode(
-        'nodes-base.slack',
+        'n8n-nodes-base.slack',
         config,
         properties,
         'operation',
@@ -288,7 +288,7 @@ describe('EnhancedConfigValidator - Integration Tests', () => {
       );
 
       expect(mockResourceService.findSimilarResources).toHaveBeenCalledWith(
-        'nodes-base.slack',
+        'n8n-nodes-base.slack',
         'invalidResource',
         3 // Should limit to 3 suggestions
       );
@@ -324,7 +324,7 @@ describe('EnhancedConfigValidator - Integration Tests', () => {
       ]);
 
       const result = EnhancedConfigValidator.validateWithMode(
-        'nodes-base.slack',
+        'n8n-nodes-base.slack',
         config,
         properties,
         'operation',
@@ -381,7 +381,7 @@ describe('EnhancedConfigValidator - Integration Tests', () => {
       ]);
 
       const result = EnhancedConfigValidator.validateWithMode(
-        'nodes-base.slack',
+        'n8n-nodes-base.slack',
         config,
         properties,
         'operation',
@@ -421,7 +421,7 @@ describe('EnhancedConfigValidator - Integration Tests', () => {
       ]);
 
       const result = EnhancedConfigValidator.validateWithMode(
-        'nodes-base.slack',
+        'n8n-nodes-base.slack',
         config,
         properties,
         'operation',
@@ -474,7 +474,7 @@ describe('EnhancedConfigValidator - Integration Tests', () => {
       ]);
 
       const result = EnhancedConfigValidator.validateWithMode(
-        'nodes-base.slack',
+        'n8n-nodes-base.slack',
         config,
         properties,
         'operation',
@@ -515,7 +515,7 @@ describe('EnhancedConfigValidator - Integration Tests', () => {
       ]);
 
       const result = EnhancedConfigValidator.validateWithMode(
-        'nodes-base.slack',
+        'n8n-nodes-base.slack',
         config,
         properties,
         'operation',
@@ -566,7 +566,7 @@ describe('EnhancedConfigValidator - Integration Tests', () => {
       ]);
 
       const result = EnhancedConfigValidator.validateWithMode(
-        'nodes-base.slack',
+        'n8n-nodes-base.slack',
         config,
         properties,
         'operation',
@@ -606,7 +606,7 @@ describe('EnhancedConfigValidator - Integration Tests', () => {
       ]);
 
       const result = EnhancedConfigValidator.validateWithMode(
-        'nodes-base.slack',
+        'n8n-nodes-base.slack',
         config,
         properties,
         'minimal',
@@ -659,7 +659,7 @@ describe('EnhancedConfigValidator - Integration Tests', () => {
       ]);
 
       const result = EnhancedConfigValidator.validateWithMode(
-        'nodes-base.slack',
+        'n8n-nodes-base.slack',
         config,
         properties,
         'operation',
@@ -693,7 +693,7 @@ describe('EnhancedConfigValidator - Integration Tests', () => {
       ]);
 
       const result = EnhancedConfigValidator.validateWithMode(
-        'nodes-base.slack',
+        'n8n-nodes-base.slack',
         config,
         properties,
         'operation',

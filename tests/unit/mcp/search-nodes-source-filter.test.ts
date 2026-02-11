@@ -46,7 +46,7 @@ describe('MCP Server - search_nodes source filter', () => {
   const sampleNodes: MockRow[] = [
     // Core nodes
     {
-      node_type: 'nodes-base.httpRequest',
+      node_type: 'n8n-nodes-base.httpRequest',
       display_name: 'HTTP Request',
       description: 'Makes HTTP requests',
       package_name: 'n8n-nodes-base',
@@ -62,7 +62,7 @@ describe('MCP Server - search_nodes source filter', () => {
       is_versioned: 1,
     },
     {
-      node_type: 'nodes-base.slack',
+      node_type: 'n8n-nodes-base.slack',
       display_name: 'Slack',
       description: 'Send messages to Slack',
       package_name: 'n8n-nodes-base',
@@ -181,8 +181,8 @@ describe('MCP Server - search_nodes source filter', () => {
 
       expect(result).toHaveLength(2);
       expect(result.every((n) => n.is_community === 0)).toBe(true);
-      expect(result.some((n) => n.node_type === 'nodes-base.httpRequest')).toBe(true);
-      expect(result.some((n) => n.node_type === 'nodes-base.slack')).toBe(true);
+      expect(result.some((n) => n.node_type === 'n8n-nodes-base.httpRequest')).toBe(true);
+      expect(result.some((n) => n.node_type === 'n8n-nodes-base.slack')).toBe(true);
     });
 
     it('should return only community nodes with source=community', () => {
@@ -312,7 +312,7 @@ describe('MCP Server - search_nodes source filter', () => {
       const result = searchWithSourceFilter(sampleNodes, 'http', 'core');
 
       expect(result).toHaveLength(1);
-      expect(result[0].node_type).toBe('nodes-base.httpRequest');
+      expect(result[0].node_type).toBe('n8n-nodes-base.httpRequest');
     });
 
     it('should return matching verified nodes only with source=verified', () => {
