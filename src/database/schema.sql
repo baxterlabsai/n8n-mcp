@@ -68,18 +68,16 @@ END;
 
 CREATE TRIGGER IF NOT EXISTS nodes_fts_update AFTER UPDATE ON nodes
 BEGIN
-  UPDATE nodes_fts
-  SET node_type = new.node_type,
-      display_name = new.display_name,
-      description = new.description,
-      documentation = new.documentation,
-      operations = new.operations
-  WHERE rowid = new.rowid;
+  INSERT INTO nodes_fts(nodes_fts, rowid, node_type, display_name, description, documentation, operations)
+  VALUES('delete', old.rowid, old.node_type, old.display_name, old.description, old.documentation, old.operations);
+  INSERT INTO nodes_fts(rowid, node_type, display_name, description, documentation, operations)
+  VALUES(new.rowid, new.node_type, new.display_name, new.description, new.documentation, new.operations);
 END;
 
 CREATE TRIGGER IF NOT EXISTS nodes_fts_delete AFTER DELETE ON nodes
 BEGIN
-  DELETE FROM nodes_fts WHERE rowid = old.rowid;
+  INSERT INTO nodes_fts(nodes_fts, rowid, node_type, display_name, description, documentation, operations)
+  VALUES('delete', old.rowid, old.node_type, old.display_name, old.description, old.documentation, old.operations);
 END;
 
 -- Templates table for n8n workflow templates
