@@ -181,8 +181,13 @@ async function rebuild() {
     console.log('   No templates found in database');
   }
   
+  // Rebuild FTS5 index to eliminate any orphaned entries from triggers
+  console.log('\n🔨 Rebuilding FTS5 index...');
+  db.exec("INSERT INTO nodes_fts(nodes_fts) VALUES('rebuild')");
+  console.log('✅ FTS5 index rebuilt successfully');
+
   console.log('\n✨ Rebuild complete!');
-  
+
   db.close();
 }
 
